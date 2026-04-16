@@ -247,21 +247,31 @@ export default function TicketDetail() {
                 </label>
 
                 {/* Text Area with Dynamic Styling */}
-                <textarea
-                  value={messageContent}
-                  onChange={(e) => setMessageContent(e.target.value)}
-                  placeholder={
-                    messageType === 'reply'
-                      ? 'Write a reply to the customer...'
-                      : 'Write an internal note (visible to staff only)...'
-                  }
-                  className={`w-full p-4 rounded-lg border focus:outline-none focus:ring-2 resize-none transition-all ${
-                    messageType === 'internal'
-                      ? 'bg-[#FFFBEB] border-yellow-400 focus:border-yellow-500 focus:ring-yellow-200'
-                      : 'bg-white border-gray-300 focus:border-brand-orange focus:ring-brand-orange'
-                  }`}
-                  rows={4}
-                />
+                <div className="relative">
+                  <textarea
+                    value={messageContent}
+                    onChange={(e) => setMessageContent(e.target.value)}
+                    placeholder={
+                      messageType === 'reply'
+                        ? 'Write a reply to the customer...'
+                        : 'Write an internal note (visible to staff only)...'
+                    }
+                    className={`w-full p-4 rounded-lg border focus:outline-none focus:ring-2 resize-none transition-all ${
+                      messageType === 'internal'
+                        ? 'bg-[#FFFBEB] border-yellow-400 focus:border-yellow-500 focus:ring-yellow-200'
+                        : 'bg-white border-gray-300 focus:border-brand-orange focus:ring-brand-orange'
+                    }`}
+                    rows={4}
+                  />
+                  {messageType === 'internal' && (
+                    <div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1 bg-yellow-600 text-white text-xs rounded font-medium">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      Staff Only
+                    </div>
+                  )}
+                </div>
 
                 {/* Action Button */}
                 <div className="flex justify-end mt-3">
