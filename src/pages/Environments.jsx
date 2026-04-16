@@ -58,6 +58,7 @@ export default function Environments() {
   });
   const [accountConnected, setAccountConnected] = useState(true);
   const [checkingAccount, setCheckingAccount] = useState(false);
+  const [deploymentStep, setDeploymentStep] = useState(0);
   const [selectedPipeline, setSelectedPipeline] = useState('');
   const [selectedProvider, setSelectedProvider] = useState('');
   const [selectedRepository, setSelectedRepository] = useState('');
@@ -146,10 +147,10 @@ export default function Environments() {
     localStorage.setItem('cache_urls', JSON.stringify(cacheUrls));
   }, [cacheUrls]);
 
-  // Update breadcrumb on mount
+  // Update breadcrumb on mount - matches hierarchy: All Clients > Example Company > Website Name > Environment
   useEffect(() => {
     const event = new CustomEvent('breadcrumb-update', {
-      detail: { company: 'Example Agency', website: 'Production Env' }
+      detail: { company: 'Example Company', website: 'Main Website' }
     });
     window.dispatchEvent(event);
   }, []);
@@ -160,7 +161,7 @@ export default function Environments() {
     setActivePodsCount(runningPods);
   }, [pods]);
 
-  // Simulate live data fluctuations for Pods and Nodes
+  // Simulate live data fluctuations for Pods and Nodes - updates every 2 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setPods(prevPods => prevPods.map(pod => ({
@@ -174,7 +175,7 @@ export default function Environments() {
         cpu: node.status === 'running' ? Math.min(100, Math.max(0, node.cpu + (Math.random() - 0.5) * 4)).toFixed(0) : node.cpu,
         memory: node.status === 'running' ? Math.max(0.1, (node.memory + (Math.random() - 0.5) * 0.5)).toFixed(1) : node.memory
       })));
-    }, 3000);
+    }, 2000);
     
     return () => clearInterval(interval);
   }, []);
@@ -257,9 +258,9 @@ export default function Environments() {
     setDiagnosticsOutput([]);
     
     const steps = [
-      { text: 'Validating SSL...', result: '[OK]', delay: 500 },
-      { text: 'Testing DB...', result: '[OK]', delay: 1200 },
-      { text: 'Checking Latency...', result: '24ms', delay: 1800 },
+      { text: 'Checking SSL...', result: 'OK', delay: 500 },
+      { text: 'Testing Database...', result: 'OK', delay: 1200 },
+      { text: 'Latency:', result: '12ms', delay: 1800 },
     ];
     
     let totalDelay = 0;
@@ -307,6 +308,7 @@ export default function Environments() {
     setSelectedProvider(provider);
     setSelectedRepository('');
     setSelectedBranch('');
+    setDeploymentStep(1);
     setCheckingAccount(true);
     setAccountConnected(false);
     
@@ -321,7 +323,23 @@ export default function Environments() {
   // Handle repository selection - reset branch
   const handleRepositoryChange = (repo) => {
     setSelectedRepository(repo);
+    setDeploymentStep(2);
     setSelectedBranch('');
+  };
+
+  // Handle pipeline selection
+  const handlePipelineChange = (pipeline) => {
+    setSelectedPipeline(pipeline);
+    setDeploymentStep(1);
+    setSelectedProvider('');
+    setSelectedRepository('');
+    setSelectedBranch('');
+  };
+
+  // Handle branch selection
+  const handleBranchChange = (branch) => {
+    setSelectedBranch(branch);
+    setDeploymentStep(3);
   };
 
   const handleDeploy = () => {
@@ -413,41 +431,37 @@ export default function Environments() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-200 bg-gray-50">
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Name</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Type</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Pod Name</th>
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">Status</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">CPU</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">RAM</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">CPU %</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Memory</th>
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {[...pods.map(p => ({ ...p, type: 'Pod' })), ...nodes.map(n => ({ ...n, type: 'Node', name: n.name, id: n.id }))].map((item, idx) => (
-                  <tr key={`${item.type}-${item.id}`} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                {pods.map((pod) => (
+                  <tr key={`pod-${pod.id}`} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                     <td className="py-2 px-3">
-                      <OrangeLink href="#" className="font-mono text-sm">{item.name}</OrangeLink>
-                    </td>
-                    <td className="py-2 px-3">
-                      <span className="text-xs px-2 py-1 bg-gray-200 rounded text-gray-600">{item.type}</span>
+                      <OrangeLink href="#" className="font-mono text-sm">{pod.name}</OrangeLink>
                     </td>
                     <td className="py-2 px-3">
                       <div className="flex items-center gap-2">
-                        <span className={`w-2 h-2 rounded-full ${item.status === 'running' ? 'bg-green-500 animate-pulse' : item.status === 'error' ? 'bg-red-500' : 'bg-yellow-500 animate-pulse'}`}></span>
-                        <span className="text-gray-700 capitalize">{item.status}</span>
+                        <span className={`w-2 h-2 rounded-full ${pod.status === 'running' ? 'bg-green-500 animate-pulse' : pod.status === 'error' ? 'bg-red-500' : 'bg-yellow-500 animate-pulse'}`}></span>
+                        <span className="text-gray-700 capitalize">{pod.status}</span>
                       </div>
                     </td>
                     <td className="py-2 px-3">
                       <div className="flex items-center gap-2">
                         <div className="w-16 bg-gray-200 rounded-full h-1.5">
-                          <div className="bg-brand-orange h-1.5 rounded-full" style={{ width: `${item.cpu}%` }}></div>
+                          <div className="bg-brand-orange h-1.5 rounded-full" style={{ width: `${pod.cpu}%` }}></div>
                         </div>
-                        <span className="font-mono text-xs text-gray-600">{item.cpu}%</span>
+                        <span className="font-mono text-xs text-gray-600">{pod.cpu}%</span>
                       </div>
                     </td>
                     <td className="py-2 px-3">
                       <div className="flex items-center gap-2">
                         <MemoryStick className="w-3 h-3 text-gray-400" />
-                        <span className="font-mono text-xs text-gray-600">{item.memory}GB</span>
+                        <span className="font-mono text-xs text-gray-600">{pod.memory}GB</span>
                       </div>
                     </td>
                     <td className="py-2 px-3">
@@ -517,15 +531,15 @@ export default function Environments() {
             )}
             
             {!accountConnected && !checkingAccount && selectedProvider === 'GitHub' && (
-              <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex items-center gap-3">
-                <AlertTriangle className="w-5 h-5 text-yellow-600" />
-                <span className="text-yellow-800 font-medium">
-                  ⚠️ No account connected. <OrangeLink href="#" className="font-semibold">Link GitHub Account</OrangeLink>
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
+                <AlertTriangle className="w-5 h-5 text-red-600" />
+                <span className="text-red-800 font-medium">
+                  No account connected. <OrangeLink href="#" className="font-semibold">Link GitHub Account</OrangeLink>
                 </span>
               </div>
             )}
             
-            {!accountConnected && !checkingAccount && selectedProvider !== 'GitHub' && (
+            {!accountConnected && !checkingAccount && selectedProvider !== 'GitHub' && selectedProvider && (
               <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex items-center gap-3">
                 <AlertTriangle className="w-5 h-5 text-yellow-600" />
                 <span className="text-yellow-800 font-medium">⚠️ No account connected. Please link a provider in Settings.</span>
@@ -533,16 +547,16 @@ export default function Environments() {
             )}
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl">
-              {/* Pipeline Dropdown */}
+              {/* Pipeline Dropdown - Step 0 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Pipeline</label>
                 <div className="relative">
                   <select
                     value={selectedPipeline}
-                    onChange={(e) => setSelectedPipeline(e.target.value)}
-                    disabled={!accountConnected || checkingAccount}
+                    onChange={(e) => handlePipelineChange(e.target.value)}
+                    disabled={checkingAccount}
                     className={`w-full px-3 py-2 border border-gray-300 rounded-md appearance-none bg-white pr-10
-                      ${(!accountConnected || checkingAccount) ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-400'}
+                      ${checkingAccount ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-400'}
                       focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
                   >
                     <option value="">Select Pipeline</option>
@@ -554,16 +568,16 @@ export default function Environments() {
                 </div>
               </div>
               
-              {/* Provider Dropdown */}
+              {/* Provider Dropdown - Step 1 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Provider</label>
                 <div className="relative">
                   <select
                     value={selectedProvider}
                     onChange={(e) => handleProviderChange(e.target.value)}
-                    disabled={!accountConnected || !selectedPipeline || checkingAccount}
+                    disabled={deploymentStep < 1 || checkingAccount}
                     className={`w-full px-3 py-2 border border-gray-300 rounded-md appearance-none bg-white pr-10
-                      ${(!accountConnected || !selectedPipeline || checkingAccount) ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-400'}
+                      ${(deploymentStep < 1 || checkingAccount) ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-400'}
                       focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
                   >
                     <option value="">Select Provider</option>
@@ -575,16 +589,16 @@ export default function Environments() {
                 </div>
               </div>
               
-              {/* Repository Dropdown */}
+              {/* Repository Dropdown - Step 2 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Repository</label>
                 <div className="relative">
                   <select
                     value={selectedRepository}
                     onChange={(e) => handleRepositoryChange(e.target.value)}
-                    disabled={!accountConnected || !selectedPipeline || !selectedProvider || checkingAccount}
+                    disabled={deploymentStep < 2 || checkingAccount}
                     className={`w-full px-3 py-2 border border-gray-300 rounded-md appearance-none bg-white pr-10
-                      ${(!accountConnected || !selectedPipeline || !selectedProvider || checkingAccount) ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-400'}
+                      ${(deploymentStep < 2 || checkingAccount) ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-400'}
                       focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
                   >
                     <option value="">Select Repository</option>
@@ -596,16 +610,16 @@ export default function Environments() {
                 </div>
               </div>
               
-              {/* Branch Dropdown */}
+              {/* Branch Dropdown - Step 3 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Branch</label>
                 <div className="relative">
                   <select
                     value={selectedBranch}
-                    onChange={(e) => setSelectedBranch(e.target.value)}
-                    disabled={!accountConnected || !selectedPipeline || !selectedProvider || !selectedRepository || checkingAccount}
+                    onChange={(e) => handleBranchChange(e.target.value)}
+                    disabled={deploymentStep < 3 || checkingAccount}
                     className={`w-full px-3 py-2 border border-gray-300 rounded-md appearance-none bg-white pr-10
-                      ${(!accountConnected || !selectedPipeline || !selectedProvider || !selectedRepository || checkingAccount) ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-400'}
+                      ${(deploymentStep < 3 || checkingAccount) ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-400'}
                       focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
                   >
                     <option value="">Select Branch</option>
@@ -701,15 +715,24 @@ export default function Environments() {
                   
                   <tr className="border-b border-gray-100 bg-gray-50">
                     <td className="py-2 px-3">
-                      <input
-                        type="text"
-                        value={newIP}
-                        onChange={(e) => setNewIP(e.target.value)}
-                        placeholder="Enter IPv4 or IPv6 address"
-                        className={`w-full px-3 py-2 border rounded-md font-mono text-sm
-                          ${isValidIP(newIP) || newIP === '' ? 'border-gray-300' : 'border-red-300 focus:border-red-500'}
-                          focus:outline-none focus:ring-2 focus:ring-brand-orange`}
-                      />
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          value={newIP}
+                          onChange={(e) => setNewIP(e.target.value)}
+                          placeholder="Enter IPv4 or IPv6 address"
+                          className={`w-full px-3 py-2 border rounded-md font-mono text-sm
+                            ${isValidIP(newIP) || newIP === '' ? 'border-gray-300' : 'border-red-300 focus:border-red-500'}
+                            focus:outline-none focus:ring-2 focus:ring-brand-orange`}
+                        />
+                        <button
+                          onClick={handleAddCurrentIP}
+                          className="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-md text-sm font-medium text-gray-700 transition-colors whitespace-nowrap"
+                          title="Use My Current IP"
+                        >
+                          Use My Current IP
+                        </button>
+                      </div>
                     </td>
                     <td className="py-2 px-3">
                       <select
@@ -934,14 +957,17 @@ export default function Environments() {
             </div>
             
             {(diagnosticsOutput.length > 0 || diagnosticsRunning) && (
-              <div className="bg-gray-900 rounded-lg p-4 font-mono text-sm">
-                <div className="text-gray-400 mb-2 border-b border-gray-700 pb-2">Terminal Output</div>
-                <div className="space-y-2">
+              <div className="bg-black rounded-lg p-4 font-mono text-sm border border-gray-800">
+                <div className="text-green-500 mb-3 border-b border-gray-700 pb-2 flex items-center gap-2">
+                  <Terminal className="w-4 h-4" />
+                  Terminal Output
+                </div>
+                <div className="space-y-2 min-h-[120px]">
                   {diagnosticsOutput.map((line, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <span className="text-green-400">✓</span>
-                      <span className="text-gray-300">{line.text}</span>
-                      <span className="text-green-400 ml-auto">{line.status}</span>
+                    <div key={index} className="flex items-center gap-2 text-gray-300">
+                      <span className="text-green-400">$</span>
+                      <span>{line.text}</span>
+                      <span className="text-green-400">{line.result}</span>
                     </div>
                   ))}
                   {diagnosticsRunning && (
@@ -967,7 +993,7 @@ export default function Environments() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
           <h1 className="text-2xl font-bold text-gray-900">
-            <OrangeLink href="#" className="hover:text-orange-600">Production - Main Site</OrangeLink>
+            <OrangeLink href="#" className="hover:text-orange-600">{envDetails.name}</OrangeLink>
           </h1>
           <StatusBadge type="success" label="Live" active={true} />
         </div>
