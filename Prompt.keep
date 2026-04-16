@@ -1,19 +1,20 @@
-Task: Implement strict functional logic and UI refinements for the Corefinity Control Panel Phase 1.
-​1. Environments: The Sequential Deployment Flow (Image 11):
-​In the Environments > Deployments tab, create a "New Deployment" card.
-​Logic: Define 4 state-dependent dropdowns: Pipeline, Provider, Repository, and Branch.
-​Behavior: Provider is disabled until Pipeline is selected. Repository is disabled until Provider is selected, and so on.
-​Validation: If the Provider selection shows no linked accounts, display a red warning: "No account connected. Link your GitHub/Bitbucket in Profile > API Tokens."
-​2. Tickets: The Communication Clarity (Image 34):
-​In the Ticket View, implement the "Dual-Input" system.
-​Staff Note (Internal): Label it "Internal Comment." When selected, the textarea border becomes Yellow, the background becomes #FFFBEB, and the button says "Post Staff Note."
-​Customer Reply (External): Label it "Send Reply." When selected, the UI uses brand-orange accents and the button says "Reply to Customer."
-​Ticket Context: Ensure the sidebar prominently displays the Agency, Company, and Website as OrangeLink components.
-​3. Deployment Tasks: Real-time Simulation (Image 26):
-​In the Environments > Deployment Tasks tab, create a list where the top item has a "Running" status with a pulsing Green dot.
-​Add a "Rollback" button to previous successful tasks.
-​4. Navigation & Breadcrumbs:
-​Ensure the top header breadcrumb updates dynamically: All Clients > [Company Name] > [Website Name].
-​All text referring to Companies, Websites, or Environments must be the specific Corefinity Orange and act as a functional link.
-​5. Refined Tables:
-​Use divide-y divide-gray-200 for tables. Add a subtle hover effect (hover:bg-gray-50) to rows in the Ticket Listing and Environment Pods screens to give it a premium feel.
+Task: Refine the Corefinity Control Panel with strict functional logic and premium UI interactions as per the specification document.
+​1. The "Sequential Dropdown" Logic (Environments > Deployments):  
+​Implement a "New Repository" form with four dropdowns: Pipeline, Provider, Repository, and Branch.
+​Strict Rule: Each dropdown must be disabled until the one immediately before it has a value selected.
+​Validation: If "Provider" is selected but no account is linked, display a high-visibility warning: "⚠️ No account connected. Please link a provider in Profile > API Tokens."  
+​The "Confirm & Save" button must remain disabled until all 4 fields are valid.
+​2. The "Dual-Communication" System (Tickets View):  
+​In the Ticket Detail view, implement a clearer distinction between Internal and External replies.
+​Internal Comment (Staff Only): When this tab/toggle is active, the message area background must change to a subtle Yellow (#FFFBEB) and the primary button should say "Post Internal Note."
+​Send Reply (Customer Visible): When active, use the standard white background and brand-orange "Send Reply" button.
+​Metadata Sidebar: Ensure the ticket detail page always shows the Company, Agency, and Website as OrangeLink components in the right-hand sidebar.  
+​3. Real-Time Task Simulation (Deployment Tasks):  
+​In the Deployment Tasks tab, the most recent task must be at the top.
+​Give the top task a "Running" status with a pulsing green indicator. All previous tasks should show "Succeeded" with a "Rollback" action button.  
+​4. Global Navigation "Orange Rule":  
+​Audit the entire site: Ensure every mention of a Company, Website, or Environment is rendered using the OrangeLink component.
+​Ensure the top breadcrumb is dynamic (e.g., All Clients > Example Agency > Production Env).
+​5. UI Polish:
+​Add a "Copy to Clipboard" icon next to IP addresses in the Firewall tab and API Tokens in the Profile tab.
+​Use a "skeleton loader" or a clean transition when switching between the many horizontal tabs in the Environments view. 
