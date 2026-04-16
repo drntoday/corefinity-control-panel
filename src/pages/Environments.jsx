@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ChevronDown, MoreVertical, Plus, Trash2, AlertTriangle, Copy, Check, Loader2, ToggleLeft, ToggleRight, Activity, Server, Zap, Shield, RefreshCw, Container, Globe, WifiOff } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ChevronDown, MoreVertical, Plus, Trash2, AlertTriangle, Copy, Check, Loader2, ToggleLeft, ToggleRight, Activity, Server, Zap, Shield, RefreshCw, Container, Globe, WifiOff, Terminal, HardDrive, MapPin, Cpu, MemoryStick } from 'lucide-react';
 import StatusBadge from '../components/StatusBadge';
 import OrangeLink from '../components/OrangeLink';
 
@@ -23,21 +23,39 @@ const mockRepositories = { GitHub: ['corefinity/web-app', 'corefinity/api-servic
 const mockBranches = { 'corefinity/web-app': ['main', 'develop', 'feature/new-ui'], 'corefinity/api-service': ['main', 'develop'], 'infra/terraform': ['main'], 'legacy/monolith': ['master', 'develop'] };
 
 const TABS = [
-  'General', 'Pods', 'Nodes', 'Deployments', 'Pipelines', 'Emails', 
-  'Cache Warmer', 'Actions', 'Diagnostics', 'Autoscaler', 'Monitors', 
-  'Quick Actions', 'Firewall'
+  'General', 'Pods & Nodes', 'Deployments', 'Firewall', 
+  'Cache Warmer', 'Autoscaler', 'Diagnostics', 'Monitors'
 ];
 
 export default function Environments() {
-  const [activeTab, setActiveTab] = useState('Pods');
+  const [activeTab, setActiveTab] = useState('General');
   const [quickActionsOpen, setQuickActionsOpen] = useState(false);
   const [tabLoading, setTabLoading] = useState(false);
+  
+  // Environment details data with localStorage persistence
+  const [envDetails] = useState({
+    name: 'Production - Main Site',
+    id: 'env-prod-7a8b9c0d',
+    ip: '192.168.1.100',
+    region: 'us-east-1',
+    phpVersion: '8.2',
+    diskUsage: '45%',
+    sslStatus: 'Active'
+  });
   
   // Live data state for Pods and Nodes
   const [pods, setPods] = useState(initialPods);
   const [nodes, setNodes] = useState(initialNodes);
   
-  // Deployment form state
+  // Deployment form state with localStorage persistence
+  const [deploymentHistory, setDeploymentHistory] = useState(() => {
+    const saved = localStorage.getItem('deployment_history');
+    return saved ? JSON.parse(saved) : [
+      { id: 1, pipeline: 'main-pipeline', provider: 'GitHub', repo: 'corefinity/web-app', branch: 'main', status: 'completed', progress: 100, date: '2024-01-15 10:30' },
+      { id: 2, pipeline: 'staging-pipeline', provider: 'GitLab', repo: 'infra/terraform', branch: 'develop', status: 'completed', progress: 100, date: '2024-01-14 15:45' },
+      { id: 3, pipeline: 'main-pipeline', provider: 'GitHub', repo: 'corefinity/api-service', branch: 'main', status: 'failed', progress: 65, date: '2024-01-13 09:15' },
+    ];
+  });
   const [accountConnected, setAccountConnected] = useState(true);
   const [checkingAccount, setCheckingAccount] = useState(false);
   const [selectedPipeline, setSelectedPipeline] = useState('');
@@ -48,41 +66,85 @@ export default function Environments() {
   const [isDeploying, setIsDeploying] = useState(false);
   
   // Firewall state with localStorage persistence
-  const [whitelistedIPs, setWhitelistedIPs] = useState(() => {
-    const saved = localStorage.getItem('firewall_ips');
-    return saved ? JSON.parse(saved) : ['192.168.1.1', '10.0.0.1'];
+  const [firewallRules, setFirewallRules] = useState(() => {
+    const saved = localStorage.getItem('firewall_rules');
+    return saved ? JSON.parse(saved) : [
+      { ip: '192.168.1.1', type: 'Allow' },
+      { ip: '10.0.0.1', type: 'Allow' }
+    ];
   });
   const [newIP, setNewIP] = useState('');
+  const [newRuleType, setNewRuleType] = useState('Allow');
   const [copiedIP, setCopiedIP] = useState(null);
   
-  // Autoscaler state
-  const [autoscalerEnabled, setAutoscalerEnabled] = useState(true);
-  const [minReplicas, setMinReplicas] = useState(2);
-  const [maxReplicas, setMaxReplicas] = useState(10);
-  const [targetCPU, setTargetCPU] = useState(70);
-  const [activePodsCount, setActivePodsCount] = useState(4);
-  
-  // Cache Warmer state
+  // Cache Warmer state with localStorage persistence
+  const [cacheUrls, setCacheUrls] = useState(() => {
+    const saved = localStorage.getItem('cache_urls');
+    return saved ? JSON.parse(saved) : [
+      'https://example.com/',
+      'https://example.com/products',
+      'https://example.com/about'
+    ];
+  });
+  const [newUrl, setNewUrl] = useState('');
   const [automaticWarming, setAutomaticWarming] = useState(true);
   const [cacheCleared, setCacheCleared] = useState(false);
+  const [clearingCache, setClearingCache] = useState(false);
+  
+  // Autoscaler state with localStorage persistence
+  const [autoscalerEnabled, setAutoscalerEnabled] = useState(() => {
+    const saved = localStorage.getItem('autoscaler_enabled');
+    return saved ? JSON.parse(saved) : true;
+  });
+  const [minReplicas, setMinReplicas] = useState(() => {
+    const saved = localStorage.getItem('min_replicas');
+    return saved ? parseInt(saved) : 2;
+  });
+  const [maxReplicas, setMaxReplicas] = useState(() => {
+    const saved = localStorage.getItem('max_replicas');
+    return saved ? parseInt(saved) : 10;
+  });
+  const [targetCPU, setTargetCPU] = useState(() => {
+    const saved = localStorage.getItem('target_cpu');
+    return saved ? parseInt(saved) : 70;
+  });
+  const [activePodsCount, setActivePodsCount] = useState(4);
+  const [scalingHistory, setScalingHistory] = useState([4, 5, 4, 6, 5, 4, 5, 6, 7, 6]);
   
   // Diagnostics state
   const [diagnosticsRunning, setDiagnosticsRunning] = useState(false);
   const [diagnosticsOutput, setDiagnosticsOutput] = useState([]);
+  const terminalRef = useRef(null);
   
   // Monitors state
-  const [monitors, setMonitors] = useState({
-    uptime: true,
-    performance: true,
-    errors: true,
-    logs: false,
-    security: true
+  const [monitors] = useState({
+    http: { uptime: '99.99%', status: 'healthy' },
+    ping: { uptime: '99.98%', status: 'healthy' },
+    ssl: { uptime: '99.99%', status: 'healthy' }
   });
 
-  // Save IPs to localStorage whenever they change
+  // Save firewall rules to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem('firewall_ips', JSON.stringify(whitelistedIPs));
-  }, [whitelistedIPs]);
+    localStorage.setItem('firewall_rules', JSON.stringify(firewallRules));
+  }, [firewallRules]);
+
+  // Save deployment history to localStorage
+  useEffect(() => {
+    localStorage.setItem('deployment_history', JSON.stringify(deploymentHistory));
+  }, [deploymentHistory]);
+
+  // Save autoscaler settings to localStorage
+  useEffect(() => {
+    localStorage.setItem('autoscaler_enabled', JSON.stringify(autoscalerEnabled));
+    localStorage.setItem('min_replicas', minReplicas.toString());
+    localStorage.setItem('max_replicas', maxReplicas.toString());
+    localStorage.setItem('target_cpu', targetCPU.toString());
+  }, [autoscalerEnabled, minReplicas, maxReplicas, targetCPU]);
+
+  // Save cache URLs to localStorage
+  useEffect(() => {
+    localStorage.setItem('cache_urls', JSON.stringify(cacheUrls));
+  }, [cacheUrls]);
 
   // Update breadcrumb on mount
   useEffect(() => {
@@ -136,17 +198,18 @@ export default function Environments() {
     return ipv4Regex.test(ip) || ipv6Regex.test(ip);
   };
   
-  const canAddIP = isValidIP(newIP) && !whitelistedIPs.includes(newIP);
+  const canAddIP = isValidIP(newIP) && !firewallRules.some(rule => rule.ip === newIP);
   
   const handleAddIP = () => {
     if (canAddIP) {
-      setWhitelistedIPs([...whitelistedIPs, newIP]);
+      setFirewallRules([...firewallRules, { ip: newIP, type: newRuleType }]);
       setNewIP('');
+      setNewRuleType('Allow');
     }
   };
   
   const handleRemoveIP = (ipToRemove) => {
-    setWhitelistedIPs(whitelistedIPs.filter(ip => ip !== ipToRemove));
+    setFirewallRules(firewallRules.filter(rule => rule.ip !== ipToRemove));
   };
 
   const handleCopyIP = (ip) => {
@@ -154,6 +217,75 @@ export default function Environments() {
     setCopiedIP(ip);
     setTimeout(() => setCopiedIP(null), 2000);
   };
+
+  // Get current IP for firewall
+  const handleAddCurrentIP = () => {
+    const mockCurrentIP = '203.0.113.42';
+    if (!firewallRules.some(rule => rule.ip === mockCurrentIP)) {
+      setFirewallRules([...firewallRules, { ip: mockCurrentIP, type: 'Allow' }]);
+    }
+    setNewIP(mockCurrentIP);
+  };
+
+  // Handle clearing cache with 2 second loading
+  const handleClearCache = () => {
+    setClearingCache(true);
+    setCacheCleared(false);
+    setTimeout(() => {
+      setClearingCache(false);
+      setCacheCleared(true);
+      setTimeout(() => setCacheCleared(false), 3000);
+    }, 2000);
+  };
+
+  // Handle adding URL to cache warmer
+  const handleAddUrl = () => {
+    if (newUrl && !cacheUrls.includes(newUrl)) {
+      setCacheUrls([...cacheUrls, newUrl]);
+      setNewUrl('');
+    }
+  };
+
+  // Handle removing URL from cache warmer
+  const handleRemoveUrl = (urlToRemove) => {
+    setCacheUrls(cacheUrls.filter(url => url !== urlToRemove));
+  };
+
+  // Handle running diagnostics with typed output
+  const handleRunDiagnostics = () => {
+    setDiagnosticsRunning(true);
+    setDiagnosticsOutput([]);
+    
+    const steps = [
+      { text: 'Validating SSL...', result: '[OK]', delay: 500 },
+      { text: 'Testing DB...', result: '[OK]', delay: 1200 },
+      { text: 'Checking Latency...', result: '24ms', delay: 1800 },
+    ];
+    
+    let totalDelay = 0;
+    steps.forEach((step, index) => {
+      totalDelay = step.delay;
+      setTimeout(() => {
+        setDiagnosticsOutput(prev => [...prev, { text: step.text, result: step.result }]);
+        if (index === steps.length - 1) {
+          setDiagnosticsRunning(false);
+        }
+      }, step.delay);
+    });
+  };
+
+  // Simulate scaling history updates for the graph
+  useEffect(() => {
+    if (autoscalerEnabled) {
+      const interval = setInterval(() => {
+        setScalingHistory(prev => {
+          const newCount = Math.max(minReplicas, Math.min(maxReplicas, prev[prev.length - 1] + (Math.random() > 0.5 ? 1 : -1)));
+          return [...prev.slice(1), newCount];
+        });
+      }, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [autoscalerEnabled, minReplicas, maxReplicas]);
   
   // Check if all deployment fields are filled
   const canSaveDeployment = selectedPipeline && selectedProvider && selectedRepository && selectedBranch;
@@ -199,105 +331,130 @@ export default function Environments() {
     }
   };
 
-  // Handle adding current IP to firewall
-  const handleAddCurrentIP = () => {
-    const mockCurrentIP = '192.168.1.1';
-    if (!whitelistedIPs.includes(mockCurrentIP)) {
-      setWhitelistedIPs([...whitelistedIPs, mockCurrentIP]);
-    }
-    setNewIP(mockCurrentIP);
-  };
-
-  // Handle clearing cache
-  const handleClearCache = () => {
-    setCacheCleared(true);
-    setTimeout(() => setCacheCleared(false), 3000);
-  };
-
-  // Handle running diagnostics
-  const handleRunDiagnostics = () => {
-    setDiagnosticsRunning(true);
-    setDiagnosticsOutput([]);
-    
-    const steps = [
-      { text: 'Checking SSL...', delay: 500 },
-      { text: 'Checking DB Connection...', delay: 1000 },
-      { text: 'Checking Disk Space... 82%', delay: 1500 },
-    ];
-    
-    let totalDelay = 0;
-    steps.forEach((step, index) => {
-      totalDelay = step.delay;
-      setTimeout(() => {
-        setDiagnosticsOutput(prev => [...prev, { text: step.text, status: 'OK' }]);
-        if (index === steps.length - 1) {
-          setDiagnosticsRunning(false);
-        }
-      }, step.delay);
-    });
-  };
-
   const renderTabContent = () => {
     switch (activeTab) {
-      case 'Pods':
+      case 'General':
         return (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Name</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Status</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">CPU Usage</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Memory Usage</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pods.map((pod) => (
-                  <tr key={pod.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td className="py-2 px-3">
-                      <OrangeLink href="#" className="font-mono text-sm">{pod.name}</OrangeLink>
-                    </td>
-                    <td className="py-2 px-3">
-                      <StatusBadge 
-                        type={pod.status === 'running' ? (parseInt(pod.cpu) > 90 ? 'pending' : 'success') : pod.status === 'error' ? 'error' : 'pending'} 
-                        active={pod.status === 'running' && parseInt(pod.cpu) <= 90}
-                      />
-                    </td>
-                    <td className="py-2 px-3 text-gray-600 font-mono">{pod.cpu}%</td>
-                    <td className="py-2 px-3 text-gray-600 font-mono">{pod.memory}GB</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="p-6">
+            <div className="grid grid-cols-2 gap-6">
+              {/* Left Column - Environment Details */}
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <h3 className="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
+                  <Server className="w-4 h-4" />
+                  Environment Details
+                </h3>
+                <div className="space-y-3">
+                  <div>
+                    <label className="text-xs text-gray-500 uppercase">Name</label>
+                    <OrangeLink href="#" className="block font-medium text-sm">{envDetails.name}</OrangeLink>
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-500 uppercase">ID</label>
+                    <div className="flex items-center gap-2">
+                      <OrangeLink href="#" className="font-mono text-sm">{envDetails.id}</OrangeLink>
+                      <button onClick={() => { navigator.clipboard.writeText(envDetails.id); }} className="text-gray-400 hover:text-gray-600">
+                        <Copy className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-500 uppercase">IP Address</label>
+                    <div className="flex items-center gap-2">
+                      <OrangeLink href="#" className="font-mono text-sm">{envDetails.ip}</OrangeLink>
+                      <button onClick={() => { navigator.clipboard.writeText(envDetails.ip); }} className="text-gray-400 hover:text-gray-600">
+                        <Copy className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-500 uppercase">Region</label>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-3 h-3 text-gray-400" />
+                      <OrangeLink href="#" className="font-medium text-sm">{envDetails.region}</OrangeLink>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Right Column - Technical Specs */}
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <h3 className="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
+                  <Cpu className="w-4 h-4" />
+                  Technical Specifications
+                </h3>
+                <div className="space-y-3">
+                  <div>
+                    <label className="text-xs text-gray-500 uppercase">PHP Version</label>
+                    <p className="font-mono text-sm text-gray-900">{envDetails.phpVersion}</p>
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-500 uppercase">Disk Usage</label>
+                    <div className="flex items-center gap-2">
+                      <HardDrive className="w-3 h-3 text-gray-400" />
+                      <p className="font-mono text-sm text-gray-900">{envDetails.diskUsage}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-500 uppercase">SSL Status</label>
+                    <div className="flex items-center gap-2">
+                      <Shield className="w-3 h-3 text-green-500" />
+                      <p className="font-medium text-sm text-green-700">{envDetails.sslStatus}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         );
-      
-      case 'Nodes':
+
+      case 'Pods & Nodes':
         return (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200">
+                <tr className="border-b border-gray-200 bg-gray-50">
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">Name</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Type</th>
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">Status</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">CPU Usage</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Memory Usage</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">CPU</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">RAM</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {nodes.map((node) => (
-                  <tr key={node.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                {[...pods.map(p => ({ ...p, type: 'Pod' })), ...nodes.map(n => ({ ...n, type: 'Node', name: n.name, id: n.id }))].map((item, idx) => (
+                  <tr key={`${item.type}-${item.id}`} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                     <td className="py-2 px-3">
-                      <OrangeLink href="#" className="font-mono text-sm">{node.name}</OrangeLink>
+                      <OrangeLink href="#" className="font-mono text-sm">{item.name}</OrangeLink>
                     </td>
                     <td className="py-2 px-3">
-                      <StatusBadge 
-                        type={node.status === 'running' ? (parseInt(node.cpu) > 90 ? 'pending' : 'success') : node.status === 'error' ? 'error' : 'pending'} 
-                        active={node.status === 'running' && parseInt(node.cpu) <= 90}
-                      />
+                      <span className="text-xs px-2 py-1 bg-gray-200 rounded text-gray-600">{item.type}</span>
                     </td>
-                    <td className="py-2 px-3 text-gray-600 font-mono">{node.cpu}%</td>
-                    <td className="py-2 px-3 text-gray-600 font-mono">{node.memory}GB</td>
+                    <td className="py-2 px-3">
+                      <div className="flex items-center gap-2">
+                        <span className={`w-2 h-2 rounded-full ${item.status === 'running' ? 'bg-green-500 animate-pulse' : item.status === 'error' ? 'bg-red-500' : 'bg-yellow-500 animate-pulse'}`}></span>
+                        <span className="text-gray-700 capitalize">{item.status}</span>
+                      </div>
+                    </td>
+                    <td className="py-2 px-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-16 bg-gray-200 rounded-full h-1.5">
+                          <div className="bg-brand-orange h-1.5 rounded-full" style={{ width: `${item.cpu}%` }}></div>
+                        </div>
+                        <span className="font-mono text-xs text-gray-600">{item.cpu}%</span>
+                      </div>
+                    </td>
+                    <td className="py-2 px-3">
+                      <div className="flex items-center gap-2">
+                        <MemoryStick className="w-3 h-3 text-gray-400" />
+                        <span className="font-mono text-xs text-gray-600">{item.memory}GB</span>
+                      </div>
+                    </td>
+                    <td className="py-2 px-3">
+                      <button className="text-xs px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded text-gray-700 transition-colors">
+                        Restart
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -487,36 +644,37 @@ export default function Environments() {
         return (
           <div className="p-4">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Whitelisted IPs</h3>
+              <h3 className="text-lg font-semibold text-gray-900">Firewall Rules</h3>
               <button
                 onClick={handleAddCurrentIP}
                 className="px-4 py-2 bg-brand-orange text-white rounded-md text-sm font-medium hover:bg-orange-600 transition-colors flex items-center gap-2"
               >
                 <Shield className="w-4 h-4" />
-                Add My Current IP
+                Use My Current IP
               </button>
             </div>
             
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200">
+                  <tr className="border-b border-gray-200 bg-gray-50">
                     <th className="text-left py-2 px-3 font-semibold text-gray-700">IP Address</th>
+                    <th className="text-left py-2 px-3 font-semibold text-gray-700">Rule Type</th>
                     <th className="text-right py-2 px-3 font-semibold text-gray-700">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {whitelistedIPs.map((ip) => (
-                    <tr key={ip} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                  {firewallRules.map((rule) => (
+                    <tr key={rule.ip} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                       <td className="py-2 px-3">
                         <div className="flex items-center gap-2">
-                          <OrangeLink href="#" className="font-mono text-sm">{ip}</OrangeLink>
+                          <OrangeLink href="#" className="font-mono text-sm">{rule.ip}</OrangeLink>
                           <button
-                            onClick={() => handleCopyIP(ip)}
+                            onClick={() => handleCopyIP(rule.ip)}
                             className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
                             title="Copy to clipboard"
                           >
-                            {copiedIP === ip ? (
+                            {copiedIP === rule.ip ? (
                               <Check className="w-4 h-4 text-green-600" />
                             ) : (
                               <Copy className="w-4 h-4" />
@@ -524,11 +682,16 @@ export default function Environments() {
                           </button>
                         </div>
                       </td>
+                      <td className="py-2 px-3">
+                        <span className={`text-xs px-2 py-1 rounded ${rule.type === 'Allow' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                          {rule.type}
+                        </span>
+                      </td>
                       <td className="py-2 px-3 text-right">
                         <button
-                          onClick={() => handleRemoveIP(ip)}
+                          onClick={() => handleRemoveIP(rule.ip)}
                           className="text-red-600 hover:text-red-800 transition-colors p-1"
-                          title="Remove IP"
+                          title="Remove Rule"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -548,6 +711,16 @@ export default function Environments() {
                           focus:outline-none focus:ring-2 focus:ring-brand-orange`}
                       />
                     </td>
+                    <td className="py-2 px-3">
+                      <select
+                        value={newRuleType}
+                        onChange={(e) => setNewRuleType(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                      >
+                        <option value="Allow">Allow</option>
+                        <option value="Deny">Deny</option>
+                      </select>
+                    </td>
                     <td className="py-2 px-3 text-right">
                       <button
                         onClick={handleAddIP}
@@ -556,7 +729,7 @@ export default function Environments() {
                           ${canAddIP 
                             ? 'bg-brand-orange text-white hover:bg-orange-600' 
                             : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}
-                        title="Add IP"
+                        title="Add Rule"
                       >
                         <Plus className="w-4 h-4" />
                       </button>
@@ -783,72 +956,8 @@ export default function Environments() {
           </div>
         );
       
-      case 'Quick Actions':
-        return (
-          <div className="p-4">
-            <h3 className="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <button className="p-6 bg-white border-2 border-gray-200 rounded-lg hover:border-brand-orange hover:bg-orange-50 transition-all group">
-                <div className="flex flex-col items-center gap-3">
-                  <RefreshCw className="w-10 h-10 text-gray-400 group-hover:text-brand-orange transition-colors" />
-                  <span className="font-medium text-gray-900">Restart PHP-FPM</span>
-                  <span className="text-sm text-gray-500 text-center">Restart the PHP FastCGI Process Manager</span>
-                </div>
-              </button>
-              
-              <button className="p-6 bg-white border-2 border-gray-200 rounded-lg hover:border-brand-orange hover:bg-orange-50 transition-all group">
-                <div className="flex flex-col items-center gap-3">
-                  <Container className="w-10 h-10 text-gray-400 group-hover:text-brand-orange transition-colors" />
-                  <span className="font-medium text-gray-900">Rebuild Containers</span>
-                  <span className="text-sm text-gray-500 text-center">Rebuild all Docker containers</span>
-                </div>
-              </button>
-              
-              <button className="p-6 bg-white border-2 border-gray-200 rounded-lg hover:border-brand-orange hover:bg-orange-50 transition-all group">
-                <div className="flex flex-col items-center gap-3">
-                  <Globe className="w-10 h-10 text-gray-400 group-hover:text-brand-orange transition-colors" />
-                  <span className="font-medium text-gray-900">Purge CDN</span>
-                  <span className="text-sm text-gray-500 text-center">Clear all CDN cached content</span>
-                </div>
-              </button>
-            </div>
-          </div>
-        );
-      
-      case 'General':
-      case 'Pipelines':
-      case 'Emails':
-      case 'Actions':
-        return (
-          <div className="p-8 text-center text-gray-500">
-            <div className="max-w-md mx-auto">
-              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Server className="w-12 h-12 text-gray-300" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">{activeTab}</h3>
-              <p className="text-gray-600 mb-6">This feature is coming soon. Check back later for updates.</p>
-              <button className="px-6 py-2 bg-brand-orange text-white font-medium rounded-md hover:bg-orange-600 transition-colors">
-                Get Notified
-              </button>
-            </div>
-          </div>
-        );
-      
       default:
-        return (
-          <div className="p-8 text-center text-gray-500">
-            <div className="max-w-md mx-auto">
-              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Server className="w-12 h-12 text-gray-300" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Nothing here yet</h3>
-              <p className="text-gray-600 mb-6">This feature is coming soon. Check back later for updates.</p>
-              <button className="px-6 py-2 bg-brand-orange text-white font-medium rounded-md hover:bg-orange-600 transition-colors">
-                Get Notified
-              </button>
-            </div>
-          </div>
-        );
+        return null;
     }
   };
 
