@@ -1,21 +1,30 @@
-Task: Fully populate and functionalize all 13 sub-tabs within the "Environments" view.
-​1. Data Simulation (The "Live" Feel):
-​Pods & Nodes: Implement a useState hook with a useEffect interval. Every 3 seconds, randomly fluctuate CPU and RAM usage by \pm 2\%.
-​Logic: If CPU usage > 90%, change the status badge to "Warning" (Yellow). If < 90%, keep it "Healthy" (Green pulsing dot).
-​2. The Deployment Flow (Strict Logic):
-​Sequential Selection: Create a state machine for the "New Deployment" form.
-​Step 1: Pipeline (Options: Web, Worker, Cron)
-​Step 2: Provider (Options: GitHub, Bitbucket, GitLab) — Disabled until Step 1 is chosen.
-​Step 3: Repository (Fetch mock list) — Disabled until Step 2 is chosen.
-​Step 4: Branch (Options: main, develop, staging) — Disabled until Step 3 is chosen.
-​Error State: If GitHub is selected as Provider, show the specific alert: "No account connected. [Link GitHub Account]" (Link must be an OrangeLink).
-​3. Missing Tabs Implementation:
-​Firewall: Create a list of active rules. Add a button "Add My Current IP" that auto-populates the input with 192.168.1.1 (mock) and adds it to the list.
-​Cache Warmer: Add a simple toggle switch for "Automatic Warming" and a "Clear All Cache" button that shows a success toast notification when clicked.
-​Autoscaler: Add two slider inputs: "Minimum Pods" and "Maximum Pods." Show a live count of "Currently Active Pods."
-​Diagnostics: Add a "Run Health Check" button. When clicked, show a terminal-style output window that prints: Checking SSL... OK, Checking DB Connection... OK, Checking Disk Space... 82%.
-​4. Technical Consistency:
-​Ensure every single ID (e.g., env-3029), Company name, and Website name uses the OrangeLink component.
-​Use high-density tables (small padding) to fit more technical data on the screen, matching the "Developer Tool" aesthetic.
-​Quick Actions Tab: Add big, clear buttons for: Restart PHP-FPM, Rebuild Containers, and Purge CDN.
-​5. UI Transitions: > * Add a subtle "fade-in" animation when switching between tabs to prevent the UI from feeling "jumpy."
+Task: Fully implement all sub-tabs in the Environments view with interactive state-driven content.
+​1. State Management for Tabs:
+​Implement a useState hook to track the active sub-tab.
+​Use a switch statement or a mapping object to render different content based on the active tab.
+​2. Tab-by-Tab Implementation (Strict Adherence):
+​General: Show a two-column "Environment Details" card. Left: Name, ID, IP, Region (with copy icons). Right: Technical Specs (PHP Version, Disk Usage, SSL Status).
+​Pods & Nodes: Build a high-density table.
+​Columns: Name, Status (Pulsing Dot), CPU (Dynamic %), RAM (Dynamic %), Restart (Button).
+​Logic: Use setInterval to make CPU/RAM fluctuate between 10% and 80%.
+​Deployments (The Core Flow):
+​Deployment Card: Create the 4-step sequential form: Pipeline -> Provider -> Repository -> Branch.
+​Functional Lock: Dropdown n+1 must be disabled unless dropdown n has a value.
+​Tasks Table: List recent deployments with a progress bar for the top one.
+​Firewall:
+​Table of whitelisted IPs.
+​"Add IP" form with a "Use My Current IP" button.
+​Add a "Rule Type" dropdown (Allow/Deny).
+​Cache Warmer:
+​List of URLs to warm.
+​"Clear All Cache" button with a loading spinner that lasts 2 seconds before showing "Success."
+​Autoscaler: >    - A "Live Scaling" graph (simple CSS bars) showing Pod count over time.
+​Range sliders for Min/Max instances.
+​Diagnostics: >    - A black "Terminal" window.
+​"Run Check" button that types out lines of text: > Validating SSL... [OK], > Testing DB... [OK], > Checking Latency... 24ms.
+​Monitors: >    - Simple uptime cards (HTTP, Ping, SSL) with "99.99%" uptime percentages.
+​3. UI Branding:
+​Ensure all technical references (IDs, Names) are Orange Links.
+​Use small, technical fonts (Monospace for IDs) to maintain the "hosting provider" aesthetic.
+​Ensure all tables have a hover:bg-gray-50 effect.
+​4. Data Persistence: > - Wrap the state in localStorage so that when the user adds an IP or changes a setting, it persists across refreshes.
