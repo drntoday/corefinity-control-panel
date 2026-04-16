@@ -1,21 +1,20 @@
-Task: Convert the Corefinity Control Panel into a fully functional, state-driven React SaaS application. Every tab must be interactive.
-​1. Environments Command Center (Logic & Data):
-​Pods & Nodes Tabs: Create a realistic monitoring dashboard. Use a useEffect to simulate live data—CPU and Memory percentages should fluctuate slightly every few seconds. Use pulsing green dots for "Healthy" statuses.
-​Firewall Tab: Implement a working "Add IP" feature. Users can type an IP; clicking "Add" inserts it into a list. Validate for IPv4/IPv6. Include a "Delete" icon for each row.
-​Deployments Tab (The Contest Winner): >     * Implement the Sequential Lock: Pipeline > Provider > Repository > Branch.
-​If Provider is selected, show a "Checking for accounts..." loader, then show the "No account connected" error if no data exists.
-​Deployment Tasks: Show a vertical timeline. The top task should have a "Progress Bar" that actually fills up to 100% to simulate a real deployment.
-​2. Support Ticket System (Staff vs. Client UI):
-​Ticket View: Build a fully functional chat interface.
-​The "Yellow Box" Logic: Create a toggle for "Internal Note" vs. "Public Reply."
-​Internal: Background becomes light yellow (#FFFBEB), border becomes gold, and a "Staff Only" badge appears.
-​Public: Standard brand styling.
-​History Tab: Implement a list of "System Events" (e.g., "Status changed to Pending by Catherine") separate from the chat.
-​3. User Profile & Security:
-​2FA Setup: Create a functional "Toggle" for Google Authenticator. When turned on, show a mock QR Code and a verification code input field.
-​SSH Keys: Allow users to "Add New Key." When saved, it should appear in a list with the date added and a "Remove" button.
-​4. Global UX & Polish:
-​Navigation: Ensure the "Currently viewing as" dropdown in the top bar works to filter the context.
-​Loading States: Add "Skeleton Loaders" for all tables so the UI feels fast and "app-like."
-​Orange Links: Ensure every single ID, Environment name, and Company name is an OrangeLink.
-​5. Data Persistence (Mock): Use localStorage to save things like added IP addresses or SSH keys so that if the hirer refreshes the page, their data is still there.
+Task: Finalize the Corefinity Control Panel into a fully interactive, production-ready SaaS application.
+​1. Interactive Environments (All Tabs):
+​Pods & Nodes: Create a "Live Monitoring" effect. Use a timer to make the CPU and RAM usage percentages fluctuate slightly (e.g., 42% -> 44%). This makes the dashboard feel connected to real servers.
+​Firewall (Functional): Enable the "Add IP" button. When clicked, the new IP should appear in the table immediately. Add a "Delete" icon to remove entries.
+​Autoscaler & Monitors: Populate these with mock toggle switches and sliders that users can adjust.
+​2. Advanced Deployment Logic (The Prize Winner):
+​Pipeline Logic: Use React state to strictly enforce the dropdown sequence (Pipeline -> Provider -> Repository -> Branch).
+​Live Progress: In the "Deployment Tasks" tab, add a progress bar to the top-most task. When the page loads, make it animate from 0% to 100% with status text updating (e.g., "Cloning Repo," "Running Build," "Clean up").
+​Rollback Feature: Make the "Rollback" buttons functional—when clicked, show a confirmation modal: "Are you sure you want to rollback to version [X]?".
+​3. Complete Ticket System:
+​Chat Functionality: Allow the user to type a message and "Send" it. It should appear in the chat bubble list immediately.
+​Visual Distinction: Ensure the "Internal Note" toggle works perfectly—turning the entire input area Yellow and changing the button text to "Post Staff Note."
+​Status Management: Add a dropdown in the Ticket View to change the status (Open, Pending, Resolved). Changing it should update the badge color instantly.
+​4. Security & Profile Completion:
+​2FA Experience: In the Two-Factor tab, implement the "Setup" flow. Clicking "Enable" should show a mock QR code and a 6-digit input field.
+​SSH Keys: Ensure the "Add Key" form works. Saved keys should be stored in localStorage so they stay there if the page is refreshed.
+​5. Global "SaaS" Polish:
+​Orange Link Audit: Double-check that every single instance of a Company name, Website name, or Environment ID is clickable and colored in Corefinity Orange.
+​Breadcrumbs: Make the breadcrumbs dynamic so they reflect the user's current "navigation path" (e.g., Agency > Client > Production).
+​Zero States: If a tab is empty, don't leave it blank; add a "Nothing here yet" illustration and a Call-to-Action button.
