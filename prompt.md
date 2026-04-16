@@ -1,14 +1,9 @@
-Task: Fix the GitHub Pages 404 error for a Vite + React project and set up an automated Deployment Workflow.
-​1. Vite Configuration:
-​Update vite.config.js to include base: '/corefinity-control-panel/'. This ensures all asset paths (JS/CSS) point to the correct GitHub subfolder.
-​2. GitHub Actions Workflow:
-​Create a file at .github/workflows/deploy.yml.
-​Write a workflow that:
-​Triggers on every push to the main branch.
-​Sets up Node.js.
-​Runs npm install and npm run build.
-​Uses the JamesIves/github-pages-deploy-action to push the contents of the dist folder to a branch named gh-pages.
-​3. Routing Fix:
-​Since this is a Single Page Application (SPA), update the BrowserRouter in main.jsx or App.jsx to include basename="/corefinity-control-panel".
-​4. Public Folder:
-​Add a 404.html file in the public folder that redirects to index.html. (This is a standard trick to keep React Router working on GitHub Pages).
+Task: Move all files and folders from a sub-directory to the root directory of the repository.
+​Current Structure: /corefinity-control-panel/corefinity-panel/[all-files]
+Target Structure: /corefinity-control-panel/[all-files]
+​Commands to Execute:
+​Identify all items inside the corefinity-panel folder (including hidden files like .gitignore).
+​Move all identified items up to the current root directory.
+​Remove the now-empty corefinity-panel folder.
+​Update the package.json and vite.config.js if they contain any hardcoded paths that pointed to the sub-folder.
+​Deliverable: Provide a single-line shell command (for Mac/Linux) or a PowerShell script (for Windows) to perform this move safely without deleting the .git history.
