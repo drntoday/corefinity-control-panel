@@ -1,20 +1,21 @@
-Task: Finalize the Corefinity Control Panel into a fully interactive, production-ready SaaS application.
-​1. Interactive Environments (All Tabs):
-​Pods & Nodes: Create a "Live Monitoring" effect. Use a timer to make the CPU and RAM usage percentages fluctuate slightly (e.g., 42% -> 44%). This makes the dashboard feel connected to real servers.
-​Firewall (Functional): Enable the "Add IP" button. When clicked, the new IP should appear in the table immediately. Add a "Delete" icon to remove entries.
-​Autoscaler & Monitors: Populate these with mock toggle switches and sliders that users can adjust.
-​2. Advanced Deployment Logic (The Prize Winner):
-​Pipeline Logic: Use React state to strictly enforce the dropdown sequence (Pipeline -> Provider -> Repository -> Branch).
-​Live Progress: In the "Deployment Tasks" tab, add a progress bar to the top-most task. When the page loads, make it animate from 0% to 100% with status text updating (e.g., "Cloning Repo," "Running Build," "Clean up").
-​Rollback Feature: Make the "Rollback" buttons functional—when clicked, show a confirmation modal: "Are you sure you want to rollback to version [X]?".
-​3. Complete Ticket System:
-​Chat Functionality: Allow the user to type a message and "Send" it. It should appear in the chat bubble list immediately.
-​Visual Distinction: Ensure the "Internal Note" toggle works perfectly—turning the entire input area Yellow and changing the button text to "Post Staff Note."
-​Status Management: Add a dropdown in the Ticket View to change the status (Open, Pending, Resolved). Changing it should update the badge color instantly.
-​4. Security & Profile Completion:
-​2FA Experience: In the Two-Factor tab, implement the "Setup" flow. Clicking "Enable" should show a mock QR code and a 6-digit input field.
-​SSH Keys: Ensure the "Add Key" form works. Saved keys should be stored in localStorage so they stay there if the page is refreshed.
-​5. Global "SaaS" Polish:
-​Orange Link Audit: Double-check that every single instance of a Company name, Website name, or Environment ID is clickable and colored in Corefinity Orange.
-​Breadcrumbs: Make the breadcrumbs dynamic so they reflect the user's current "navigation path" (e.g., Agency > Client > Production).
-​Zero States: If a tab is empty, don't leave it blank; add a "Nothing here yet" illustration and a Call-to-Action button.
+Task: Fully populate and functionalize all 13 sub-tabs within the "Environments" view.
+​1. Data Simulation (The "Live" Feel):
+​Pods & Nodes: Implement a useState hook with a useEffect interval. Every 3 seconds, randomly fluctuate CPU and RAM usage by \pm 2\%.
+​Logic: If CPU usage > 90%, change the status badge to "Warning" (Yellow). If < 90%, keep it "Healthy" (Green pulsing dot).
+​2. The Deployment Flow (Strict Logic):
+​Sequential Selection: Create a state machine for the "New Deployment" form.
+​Step 1: Pipeline (Options: Web, Worker, Cron)
+​Step 2: Provider (Options: GitHub, Bitbucket, GitLab) — Disabled until Step 1 is chosen.
+​Step 3: Repository (Fetch mock list) — Disabled until Step 2 is chosen.
+​Step 4: Branch (Options: main, develop, staging) — Disabled until Step 3 is chosen.
+​Error State: If GitHub is selected as Provider, show the specific alert: "No account connected. [Link GitHub Account]" (Link must be an OrangeLink).
+​3. Missing Tabs Implementation:
+​Firewall: Create a list of active rules. Add a button "Add My Current IP" that auto-populates the input with 192.168.1.1 (mock) and adds it to the list.
+​Cache Warmer: Add a simple toggle switch for "Automatic Warming" and a "Clear All Cache" button that shows a success toast notification when clicked.
+​Autoscaler: Add two slider inputs: "Minimum Pods" and "Maximum Pods." Show a live count of "Currently Active Pods."
+​Diagnostics: Add a "Run Health Check" button. When clicked, show a terminal-style output window that prints: Checking SSL... OK, Checking DB Connection... OK, Checking Disk Space... 82%.
+​4. Technical Consistency:
+​Ensure every single ID (e.g., env-3029), Company name, and Website name uses the OrangeLink component.
+​Use high-density tables (small padding) to fit more technical data on the screen, matching the "Developer Tool" aesthetic.
+​Quick Actions Tab: Add big, clear buttons for: Restart PHP-FPM, Rebuild Containers, and Purge CDN.
+​5. UI Transitions: > * Add a subtle "fade-in" animation when switching between tabs to prevent the UI from feeling "jumpy."
