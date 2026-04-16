@@ -26,6 +26,7 @@ export default function Profile() {
   const [activeTab, setActiveTab] = useState('profile');
   const [showTokenModal, setShowTokenModal] = useState(false);
   const [generatedToken, setGeneratedToken] = useState('');
+  const [copiedTokenId, setCopiedTokenId] = useState(null);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [twoFactorMethod, setTwoFactorMethod] = useState('authenticator');
   const [ssoEnabled, setSsoEnabled] = useState(false);
@@ -87,8 +88,10 @@ export default function Profile() {
     setShowNewTokenForm(false);
   };
 
-  const handleCopyToken = () => {
-    navigator.clipboard.writeText(generatedToken);
+  const handleCopyToken = (token, tokenId) => {
+    navigator.clipboard.writeText(token);
+    setCopiedTokenId(tokenId);
+    setTimeout(() => setCopiedTokenId(null), 2000);
   };
 
   const handleValidateSSHKey = () => {
@@ -452,7 +455,20 @@ export default function Profile() {
                   <tr key={token.id} className="border-b border-gray-100 hover:bg-gray-50">
                     <td className="py-3 px-4 text-sm text-gray-900">{token.name}</td>
                     <td className="py-3 px-4">
-                      <code className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-700">{token.token}</code>
+                      <div className="flex items-center gap-2">
+                        <code className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-700">{token.token}</code>
+                        <button
+                          onClick={() => handleCopyToken(token.token, token.id)}
+                          className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+                          title="Copy to clipboard"
+                        >
+                          {copiedTokenId === token.id ? (
+                            <Check className="w-4 h-4 text-green-600" />
+                          ) : (
+                            <Copy className="w-4 h-4" />
+                          )}
+                        </button>
+                      </div>
                     </td>
                     <td className="py-3 px-4 text-sm text-gray-600">{token.created}</td>
                     <td className="py-3 px-4">
