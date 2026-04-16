@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Search, ChevronDown, LogOut, Key, User as UserIcon } from 'lucide-react';
+import OrangeLink from './OrangeLink';
 
 export default function Header({ onMenuClick }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -47,7 +48,7 @@ export default function Header({ onMenuClick }) {
             <svg className="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            <span className="font-medium text-gray-900">Example Company</span>
+            <OrangeLink className="font-medium !no-underline hover:!underline">Example Company</OrangeLink>
           </nav>
         </div>
 
@@ -60,7 +61,7 @@ export default function Header({ onMenuClick }) {
               type="text"
               placeholder="Search..."
               className="w-full pl-10 pr-12 py-2 bg-gray-100 border border-transparent rounded-lg 
-                         focus:bg-white focus:border-corefinity-blue focus:outline-none 
+                         focus:bg-white focus:border-brand-blue focus:outline-none 
                          transition-colors duration-200 text-sm"
             />
             <kbd className="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-0.5 text-xs 
@@ -125,7 +126,7 @@ export default function Header({ onMenuClick }) {
             type="text"
             placeholder="Search..."
             className="w-full pl-10 pr-12 py-2 bg-gray-100 border border-transparent rounded-lg 
-                       focus:bg-white focus:border-corefinity-blue focus:outline-none 
+                       focus:bg-white focus:border-brand-blue focus:outline-none 
                        transition-colors duration-200 text-sm"
           />
         </div>

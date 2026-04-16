@@ -7,6 +7,7 @@ import {
   User, 
   ChevronRight
 } from 'lucide-react';
+import OrangeLink from './OrangeLink';
 
 const navItems = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -34,7 +35,7 @@ export default function Sidebar({ isOpen, onClose }) {
       {/* Sidebar */}
       <aside 
         className={`
-          fixed top-0 left-0 h-full w-64 bg-corefinity-blue text-white
+          fixed top-0 left-0 h-full w-64 bg-brand-blue text-white
           transform transition-transform duration-300 ease-in-out
           lg:translate-x-0 lg:static lg:flex-shrink-0
           z-50
@@ -44,7 +45,7 @@ export default function Sidebar({ isOpen, onClose }) {
         {/* Logo */}
         <div className="p-6 border-b border-white/10">
           <h1 className="text-xl font-bold tracking-tight">
-            Core<span className="text-corefinity-orange">finity</span>
+            Core<span className="text-brand-orange">finity</span>
           </h1>
         </div>
 
@@ -54,9 +55,15 @@ export default function Sidebar({ isOpen, onClose }) {
             {hierarchyBreadcrumb.map((item, index) => (
               <span key={item} className="flex items-center">
                 {index > 0 && <ChevronRight className="w-3 h-3 mx-1" />}
-                <span className={index === hierarchyBreadcrumb.length - 1 ? 'text-white' : ''}>
-                  {item}
-                </span>
+                {index === hierarchyBreadcrumb.length - 1 ? (
+                  <OrangeLink className="text-white hover:text-brand-orange !no-underline">{item}</OrangeLink>
+                ) : index === 1 ? (
+                  <OrangeLink className="hover:text-brand-orange !no-underline">{item}</OrangeLink>
+                ) : (
+                  <span className={index === hierarchyBreadcrumb.length - 1 ? 'text-white' : ''}>
+                    {item}
+                  </span>
+                )}
               </span>
             ))}
           </nav>
@@ -77,7 +84,7 @@ export default function Sidebar({ isOpen, onClose }) {
                   flex items-center gap-3 px-4 py-3 rounded-lg
                   transition-colors duration-200
                   ${isActive 
-                    ? 'bg-corefinity-orange text-white' 
+                    ? 'bg-brand-orange text-white' 
                     : 'text-gray-300 hover:bg-white/10 hover:text-white'
                   }
                 `}

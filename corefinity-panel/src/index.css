@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-corefinity-blue: #0a192f;
-  --color-corefinity-orange: #FF6B00;
-  --color-content-bg: #F9FAFB;
+  --color-brand-blue: #0a192f;
+  --color-brand-orange: #FF6B00;
+  --color-surface-gray: #F9FAFB;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
