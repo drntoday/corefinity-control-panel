@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, MoreVertical, Plus, Trash2, AlertTriangle } from 'lucide-react';
+import { ChevronDown, MoreVertical, Plus, Trash2, AlertTriangle, Copy, Check } from 'lucide-react';
 import StatusBadge from '../components/StatusBadge';
 import OrangeLink from '../components/OrangeLink';
 
@@ -31,6 +31,7 @@ const TABS = [
 export default function Environments() {
   const [activeTab, setActiveTab] = useState('Pods');
   const [quickActionsOpen, setQuickActionsOpen] = useState(false);
+  const [tabLoading, setTabLoading] = useState(false);
   
   // Deployment form state
   const [accountConnected, setAccountConnected] = useState(true);
@@ -42,7 +43,16 @@ export default function Environments() {
   // Firewall state
   const [whitelistedIPs, setWhitelistedIPs] = useState(['192.168.1.1', '10.0.0.1']);
   const [newIP, setNewIP] = useState('');
-  
+  const [copiedIP, setCopiedIP] = useState(null);
+
+  // Update breadcrumb on mount
+  useEffect(() => {
+    const event = new CustomEvent('breadcrumb-update', {
+      detail: { company: 'Example Agency', website: 'Production Env' }
+    });
+    window.dispatchEvent(event);
+  }, []);
+
   // IPv4 regex validation
   const isValidIPv4 = (ip) => {
     const ipv4Regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -60,6 +70,12 @@ export default function Environments() {
   
   const handleRemoveIP = (ipToRemove) => {
     setWhitelistedIPs(whitelistedIPs.filter(ip => ip !== ipToRemove));
+  };
+
+  const handleCopyIP = (ip) => {
+    navigator.clipboard.writeText(ip);
+    setCopiedIP(ip);
+    setTimeout(() => setCopiedIP(null), 2000);
   };
   
   // Check if all deployment fields are filled
@@ -287,7 +303,20 @@ export default function Environments() {
                   {whitelistedIPs.map((ip) => (
                     <tr key={ip} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                       <td className="py-3 px-4">
-                        <OrangeLink href="#" className="font-mono text-sm">{ip}</OrangeLink>
+                        <div className="flex items-center gap-2">
+                          <OrangeLink href="#" className="font-mono text-sm">{ip}</OrangeLink>
+                          <button
+                            onClick={() => handleCopyIP(ip)}
+                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+                            title="Copy to clipboard"
+                          >
+                            {copiedIP === ip ? (
+                              <Check className="w-4 h-4 text-green-600" />
+                            ) : (
+                              <Copy className="w-4 h-4" />
+                            )}
+                          </button>
+                        </div>
                       </td>
                       <td className="py-3 px-4 text-right">
                         <button
@@ -392,7 +421,13 @@ export default function Environments() {
             {TABS.map((tab) => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => {
+                  setTabLoading(true);
+                  setTimeout(() => {
+                    setActiveTab(tab);
+                    setTabLoading(false);
+                  }, 150);
+                }}
                 className={`px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2
                   ${activeTab === tab 
                     ? 'text-brand-orange border-brand-orange bg-orange-50' 
@@ -405,8 +440,16 @@ export default function Environments() {
         </div>
         
         {/* Tab Content */}
-        <div className="p-0">
-          {renderTabContent()}
+        <div className="p-0 min-h-[200px]">
+          {tabLoading ? (
+            <div className="p-8 space-y-4 animate-pulse">
+              <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+            </div>
+          ) : (
+            renderTabContent()
+          )}
         </div>
       </div>
     </div>

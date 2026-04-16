@@ -276,7 +276,7 @@ export default function TicketDetail() {
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     }`}
                   >
-                    {messageType === 'internal' ? 'Post Staff Note' : 'Reply to Customer'}
+                    {messageType === 'internal' ? 'Post Internal Note' : 'Send Reply'}
                   </button>
                 </div>
               </div>
