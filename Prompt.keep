@@ -1,15 +1,19 @@
-Task: Build the User Profile and Security section for the Corefinity Control Panel. This must feel premium and highly secure.
-​1. Profile Navigation:
-​Create a vertical sub-navigation or a tab system for: Profile, Notifications, API Tokens, Two Factor Authentication, Firewall (IP Whitelist), and SSH Keys.
-​2. Security Features (Strict Adherence):
-​Two-Factor Authentication (2FA): Create a clear setup UI for both "Google Authenticator" and "SMS Authentication." Show status badges (Enabled/Disabled).
-​SSO (Single Sign-On): Add a section for "Organization Access" where users can enable/configure SSO. Use a professional placeholder for "Connect to Identity Provider."
-​3. Record Creation UI:
-​SSH Keys: Create a form with a label input and a large textarea for the Public Key. Add a "Validate Key" button before saving.
-​Firewall: Build an interface to manage "Personal Whitelisted IPs." Include a "Use My Current IP" shortcut button that auto-fills the user's IP address.
-​API Tokens: Create a list of active tokens with "Last Used" dates and a prominent "Generate New Token" button. When a token is generated, show it in a "Copy to Clipboard" modal that emphasizes it will only be shown once.
-​4. Notifications Management:
-​Group notification toggles by category as per the instructions: Emergency Alerts, Maintenance Windows, Monitoring Alerts, and Deployment Alerts.
-​5. Visual Polish:
-​Ensure all "Update" and "Save" buttons use the brand-orange.
-​Use the StatusBadge component to show the health of the user's security settings (e.g., Red badge if 2FA is off).
+Task: Implement strict functional logic and UI refinements for the Corefinity Control Panel Phase 1.
+​1. Environments: The Sequential Deployment Flow (Image 11):
+​In the Environments > Deployments tab, create a "New Deployment" card.
+​Logic: Define 4 state-dependent dropdowns: Pipeline, Provider, Repository, and Branch.
+​Behavior: Provider is disabled until Pipeline is selected. Repository is disabled until Provider is selected, and so on.
+​Validation: If the Provider selection shows no linked accounts, display a red warning: "No account connected. Link your GitHub/Bitbucket in Profile > API Tokens."
+​2. Tickets: The Communication Clarity (Image 34):
+​In the Ticket View, implement the "Dual-Input" system.
+​Staff Note (Internal): Label it "Internal Comment." When selected, the textarea border becomes Yellow, the background becomes #FFFBEB, and the button says "Post Staff Note."
+​Customer Reply (External): Label it "Send Reply." When selected, the UI uses brand-orange accents and the button says "Reply to Customer."
+​Ticket Context: Ensure the sidebar prominently displays the Agency, Company, and Website as OrangeLink components.
+​3. Deployment Tasks: Real-time Simulation (Image 26):
+​In the Environments > Deployment Tasks tab, create a list where the top item has a "Running" status with a pulsing Green dot.
+​Add a "Rollback" button to previous successful tasks.
+​4. Navigation & Breadcrumbs:
+​Ensure the top header breadcrumb updates dynamically: All Clients > [Company Name] > [Website Name].
+​All text referring to Companies, Websites, or Environments must be the specific Corefinity Orange and act as a functional link.
+​5. Refined Tables:
+​Use divide-y divide-gray-200 for tables. Add a subtle hover effect (hover:bg-gray-50) to rows in the Ticket Listing and Environment Pods screens to give it a premium feel.
