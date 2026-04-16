@@ -1,1 +1,19 @@
-Nothing should be ignored based on the provided file changes. The modification of `vite.config.js` is a source code file that should be tracked in version control.
+```
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+
+# Environment variables
+.env
+.env.local
+*.env.*
+
+# IDE
+.vscode/
+
+# Logs
+*.log
+
+```
