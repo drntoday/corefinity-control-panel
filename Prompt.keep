@@ -1,22 +1,15 @@
-Task: Build the Support Ticket system for the Corefinity Control Panel, including both the Ticket Listing and Ticket Detail View.
-​1. Ticket Listing Page:
-​Create a table showing: Subject, Created Date, Last Update, Priority, and Status.
-​Include filter buttons at the top for Status (e.g., All, Open, Pending, Closed).
-​Make the Subject an OrangeLink that navigates to the detailed view.
-​Ensure table headers are clickable for sorting.
-​2. Ticket Detail View (Layout):
-​Top Bar: Display Ticket Title and Status.
-​Context Sidebar: On the right side, show a "Ticket Info" box with associated links:
-​Agency: [OrangeLink]
-​Company: [OrangeLink]
-​Website: [OrangeLink]
-​Tabbed Detail: Create two tabs: Conversation and History. (History should contain a log of status changes to keep the main chat clean).
-​3. Strict Requirement: The "Dual-Input" Messaging Box:
-​Create a messaging interface at the bottom of the Conversation tab.
-​Constraint: Clearly distinguish between an "Internal Note" and a "Customer Reply."
-​UI Implementation: >    - Provide a toggle or two distinct tabs above the text area: "Internal Comment" (Staff Only) and "Send Reply" (Visible to Client).
-​When "Internal Comment" is active, change the background of the text area to a subtle Light Yellow and change the button to "Post Internal Note."
-​When "Send Reply" is active, use the standard Corefinity Blue/Orange button.
-​4. Chat Styling:
-​Style the conversation like a modern thread (similar to Jira or Zendesk).
-​Use different background colors for messages from the "User" vs. "Corefinity Support."
+Task: Build the User Profile and Security section for the Corefinity Control Panel. This must feel premium and highly secure.
+​1. Profile Navigation:
+​Create a vertical sub-navigation or a tab system for: Profile, Notifications, API Tokens, Two Factor Authentication, Firewall (IP Whitelist), and SSH Keys.
+​2. Security Features (Strict Adherence):
+​Two-Factor Authentication (2FA): Create a clear setup UI for both "Google Authenticator" and "SMS Authentication." Show status badges (Enabled/Disabled).
+​SSO (Single Sign-On): Add a section for "Organization Access" where users can enable/configure SSO. Use a professional placeholder for "Connect to Identity Provider."
+​3. Record Creation UI:
+​SSH Keys: Create a form with a label input and a large textarea for the Public Key. Add a "Validate Key" button before saving.
+​Firewall: Build an interface to manage "Personal Whitelisted IPs." Include a "Use My Current IP" shortcut button that auto-fills the user's IP address.
+​API Tokens: Create a list of active tokens with "Last Used" dates and a prominent "Generate New Token" button. When a token is generated, show it in a "Copy to Clipboard" modal that emphasizes it will only be shown once.
+​4. Notifications Management:
+​Group notification toggles by category as per the instructions: Emergency Alerts, Maintenance Windows, Monitoring Alerts, and Deployment Alerts.
+​5. Visual Polish:
+​Ensure all "Update" and "Save" buttons use the brand-orange.
+​Use the StatusBadge component to show the health of the user's security settings (e.g., Red badge if 2FA is off).
