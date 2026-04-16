@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import OrangeLink from '../components/OrangeLink';
 import StatusBadge from '../components/StatusBadge';
@@ -101,6 +101,16 @@ export default function TicketDetail() {
   const [messageContent, setMessageContent] = useState('');
 
   const ticket = mockTickets.find(t => t.id === parseInt(id));
+
+  // Update breadcrumb on mount
+  useEffect(() => {
+    if (ticket) {
+      const event = new CustomEvent('breadcrumb-update', {
+        detail: { company: ticket.company, website: ticket.website }
+      });
+      window.dispatchEvent(event);
+    }
+  }, [ticket]);
 
   if (!ticket) {
     return (
@@ -213,7 +223,7 @@ export default function TicketDetail() {
                     onClick={() => setMessageType('reply')}
                     className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                       messageType === 'reply'
-                        ? 'bg-brand-blue text-white'
+                        ? 'bg-brand-orange text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -231,6 +241,11 @@ export default function TicketDetail() {
                   </button>
                 </div>
 
+                {/* Label */}
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {messageType === 'internal' ? 'Internal Comment' : 'Customer Reply'}
+                </label>
+
                 {/* Text Area with Dynamic Styling */}
                 <textarea
                   value={messageContent}
@@ -240,10 +255,10 @@ export default function TicketDetail() {
                       ? 'Write a reply to the customer...'
                       : 'Write an internal note (visible to staff only)...'
                   }
-                  className={`w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-orange resize-none ${
+                  className={`w-full p-4 rounded-lg border focus:outline-none focus:ring-2 resize-none transition-all ${
                     messageType === 'internal'
-                      ? 'bg-yellow-50'
-                      : 'bg-white'
+                      ? 'bg-[#FFFBEB] border-yellow-400 focus:border-yellow-500 focus:ring-yellow-200'
+                      : 'bg-white border-gray-300 focus:border-brand-orange focus:ring-brand-orange'
                   }`}
                   rows={4}
                 />
@@ -261,7 +276,7 @@ export default function TicketDetail() {
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     }`}
                   >
-                    {messageType === 'internal' ? 'Post Internal Note' : 'Send Reply'}
+                    {messageType === 'internal' ? 'Post Staff Note' : 'Reply to Customer'}
                   </button>
                 </div>
               </div>
@@ -296,7 +311,7 @@ export default function TicketDetail() {
               <div>
                 <label className="text-xs text-gray-500 uppercase tracking-wide">Agency</label>
                 <p>
-                  <OrangeLink to="#" className="block mt-1">
+                  <OrangeLink to="#" className="block mt-1 font-medium">
                     {ticket.agency}
                   </OrangeLink>
                 </p>
@@ -304,7 +319,7 @@ export default function TicketDetail() {
               <div>
                 <label className="text-xs text-gray-500 uppercase tracking-wide">Company</label>
                 <p>
-                  <OrangeLink to="#" className="block mt-1">
+                  <OrangeLink to="#" className="block mt-1 font-medium">
                     {ticket.company}
                   </OrangeLink>
                 </p>
@@ -312,7 +327,7 @@ export default function TicketDetail() {
               <div>
                 <label className="text-xs text-gray-500 uppercase tracking-wide">Website</label>
                 <p>
-                  <OrangeLink href={ticket.website} external className="block mt-1">
+                  <OrangeLink href={ticket.website} external className="block mt-1 font-medium">
                     {ticket.website}
                   </OrangeLink>
                 </p>

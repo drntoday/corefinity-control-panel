@@ -4,6 +4,12 @@ import OrangeLink from './OrangeLink';
 
 export default function Header({ onMenuClick }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  
+  // Mock breadcrumb data - in real app this would come from router state or context
+  const [breadcrumbData, setBreadcrumbData] = useState({
+    company: 'Example Company',
+    website: 'Main Website'
+  });
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -30,6 +36,16 @@ export default function Header({ onMenuClick }) {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Listen for breadcrumb updates from child components
+  useEffect(() => {
+    const handleBreadcrumbUpdate = (event) => {
+      setBreadcrumbData(event.detail);
+    };
+
+    window.addEventListener('breadcrumb-update', handleBreadcrumbUpdate);
+    return () => window.removeEventListener('breadcrumb-update', handleBreadcrumbUpdate);
+  }, []);
+
   return (
     <header className="bg-white border-b border-gray-200 px-4 py-3 lg:px-6">
       <div className="flex items-center justify-between gap-4">
@@ -44,11 +60,15 @@ export default function Header({ onMenuClick }) {
             </svg>
           </button>
           <nav className="hidden sm:flex items-center text-sm text-gray-600">
-            <span className="hover:text-gray-900 cursor-pointer transition-colors">All Clients</span>
+            <OrangeLink to="/dashboard" className="hover:text-gray-900 transition-colors">All Clients</OrangeLink>
             <svg className="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            <OrangeLink className="font-medium !no-underline hover:!underline">Example Company</OrangeLink>
+            <OrangeLink to="/environments" className="font-medium !no-underline hover:!underline">{breadcrumbData.company}</OrangeLink>
+            <svg className="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+            <OrangeLink to="/environments" className="font-medium !no-underline hover:!underline">{breadcrumbData.website}</OrangeLink>
           </nav>
         </div>
 
