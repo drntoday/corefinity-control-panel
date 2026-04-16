@@ -8,7 +8,7 @@ import Profile from './pages/Profile';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/corefinity-control-panel">
       <Layout>
         <Routes>
           <Route path="/" element={<Dashboard />} />
