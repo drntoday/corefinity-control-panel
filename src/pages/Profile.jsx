@@ -36,21 +36,30 @@ export default function Profile() {
     monitoring: true,
     deployment: false
   });
-  const [sshKeys, setSshKeys] = useState([
-    { id: 1, label: 'Production Server', key: 'ssh-rsa AAAAB3NzaC1yc2E...', addedDate: '2024-01-15' },
-    { id: 2, label: 'Development Machine', key: 'ssh-rsa AAAAB3NzaC1yc2E...', addedDate: '2024-02-20' }
-  ]);
+  const [sshKeys, setSshKeys] = useState(() => {
+    const saved = localStorage.getItem('ssh_keys');
+    return saved ? JSON.parse(saved) : [
+      { id: 1, label: 'Production Server', key: 'ssh-rsa AAAAB3NzaC1yc2E...', addedDate: '2024-01-15' },
+      { id: 2, label: 'Development Machine', key: 'ssh-rsa AAAAB3NzaC1yc2E...', addedDate: '2024-02-20' }
+    ];
+  });
   const [newSshKey, setNewSshKey] = useState({ label: '', key: '' });
   const [sshValidationStatus, setSshValidationStatus] = useState(null);
-  const [whitelistedIPs, setWhitelistedIPs] = useState([
-    { id: 1, ip: '192.168.1.100', addedDate: '2024-01-10' },
-    { id: 2, ip: '10.0.0.50', addedDate: '2024-02-15' }
-  ]);
+  const [whitelistedIPs, setWhitelistedIPs] = useState(() => {
+    const saved = localStorage.getItem('profile_whitelist_ips');
+    return saved ? JSON.parse(saved) : [
+      { id: 1, ip: '192.168.1.100', addedDate: '2024-01-10' },
+      { id: 2, ip: '10.0.0.50', addedDate: '2024-02-15' }
+    ];
+  });
   const [newIP, setNewIP] = useState('');
-  const [apiTokens, setApiTokens] = useState([
-    { id: 1, name: 'CI/CD Pipeline', token: 'pk_live_abc123...', lastUsed: '2024-03-10', created: '2024-01-05' },
-    { id: 2, name: 'Monitoring Service', token: 'pk_live_xyz789...', lastUsed: '2024-03-08', created: '2024-02-01' }
-  ]);
+  const [apiTokens, setApiTokens] = useState(() => {
+    const saved = localStorage.getItem('api_tokens');
+    return saved ? JSON.parse(saved) : [
+      { id: 1, name: 'CI/CD Pipeline', token: 'pk_live_abc123...', lastUsed: '2024-03-10', created: '2024-01-05' },
+      { id: 2, name: 'Monitoring Service', token: 'pk_live_xyz789...', lastUsed: '2024-03-08', created: '2024-02-01' }
+    ];
+  });
   const [newTokenName, setNewTokenName] = useState('');
   const [showNewTokenForm, setShowNewTokenForm] = useState(false);
   const [currentIP, setCurrentIP] = useState('');
@@ -76,13 +85,15 @@ export default function Profile() {
     if (!newTokenName.trim()) return;
     const newToken = `pk_live_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`;
     setGeneratedToken(newToken);
-    setApiTokens([...apiTokens, {
+    const updated = [...apiTokens, {
       id: Date.now(),
       name: newTokenName,
       token: `pk_live_${newToken.substring(8, 12)}...`,
       lastUsed: 'Never',
       created: new Date().toISOString().split('T')[0]
-    }]);
+    }];
+    setApiTokens(updated);
+    localStorage.setItem('api_tokens', JSON.stringify(updated));
     setShowTokenModal(true);
     setNewTokenName('');
     setShowNewTokenForm(false);
@@ -105,28 +116,36 @@ export default function Profile() {
 
   const handleAddSSHKey = () => {
     if (sshValidationStatus === 'valid' && newSshKey.label.trim()) {
-      setSshKeys([...sshKeys, {
+      const newKey = {
         id: Date.now(),
         label: newSshKey.label,
         key: newSshKey.key.substring(0, 30) + '...',
         addedDate: new Date().toISOString().split('T')[0]
-      }]);
+      };
+      const updated = [...sshKeys, newKey];
+      setSshKeys(updated);
+      localStorage.setItem('ssh_keys', JSON.stringify(updated));
       setNewSshKey({ label: '', key: '' });
       setSshValidationStatus(null);
     }
   };
 
   const handleDeleteSSHKey = (id) => {
-    setSshKeys(sshKeys.filter(key => key.id !== id));
+    const updated = sshKeys.filter(key => key.id !== id);
+    setSshKeys(updated);
+    localStorage.setItem('ssh_keys', JSON.stringify(updated));
   };
 
   const handleAddIP = () => {
     if (newIP.trim()) {
-      setWhitelistedIPs([...whitelistedIPs, {
+      const newEntry = {
         id: Date.now(),
         ip: newIP,
         addedDate: new Date().toISOString().split('T')[0]
-      }]);
+      };
+      const updated = [...whitelistedIPs, newEntry];
+      setWhitelistedIPs(updated);
+      localStorage.setItem('profile_whitelist_ips', JSON.stringify(updated));
       setNewIP('');
     }
   };
@@ -138,11 +157,15 @@ export default function Profile() {
   };
 
   const handleDeleteIP = (id) => {
-    setWhitelistedIPs(whitelistedIPs.filter(ip => ip.id !== id));
+    const updated = whitelistedIPs.filter(ip => ip.id !== id);
+    setWhitelistedIPs(updated);
+    localStorage.setItem('profile_whitelist_ips', JSON.stringify(updated));
   };
 
   const handleDeleteToken = (id) => {
-    setApiTokens(apiTokens.filter(token => token.id !== id));
+    const updated = apiTokens.filter(token => token.id !== id);
+    setApiTokens(updated);
+    localStorage.setItem('api_tokens', JSON.stringify(updated));
   };
 
   const getSecurityHealth = () => {
