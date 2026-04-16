@@ -1,9 +1,9 @@
-Task: Move all files and folders from a sub-directory to the root directory of the repository.
-​Current Structure: /corefinity-control-panel/corefinity-panel/[all-files]
-Target Structure: /corefinity-control-panel/[all-files]
-​Commands to Execute:
-​Identify all items inside the corefinity-panel folder (including hidden files like .gitignore).
-​Move all identified items up to the current root directory.
-​Remove the now-empty corefinity-panel folder.
-​Update the package.json and vite.config.js if they contain any hardcoded paths that pointed to the sub-folder.
-​Deliverable: Provide a single-line shell command (for Mac/Linux) or a PowerShell script (for Windows) to perform this move safely without deleting the .git history.
+Task: Fix the white screen on GitHub Pages by correcting asset paths and base URL configuration.
+​1. Vite Configuration:
+​In vite.config.js, set base: './' (using a relative path) or base: '/corefinity-control-panel/'. This ensures <script> and <link> tags in the generated index.html have the correct prefix.
+​2. React Router Configuration:
+​If using BrowserRouter, update the component to include the basename prop: <BrowserRouter basename="/corefinity-control-panel">.
+​3. Asset Referencing:
+​Ensure all images or local assets are imported using standard ESM syntax (e.g., import logo from './assets/logo.svg') rather than absolute strings.
+​4. Build Check:
+​Remind the user to run npm run build and ensure the dist folder is what is being pushed to the gh-pages branch.
