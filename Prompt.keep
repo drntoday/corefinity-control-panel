@@ -1,30 +1,18 @@
-Task: Fully implement all sub-tabs in the Environments view with interactive state-driven content.
-​1. State Management for Tabs:
-​Implement a useState hook to track the active sub-tab.
-​Use a switch statement or a mapping object to render different content based on the active tab.
-​2. Tab-by-Tab Implementation (Strict Adherence):
-​General: Show a two-column "Environment Details" card. Left: Name, ID, IP, Region (with copy icons). Right: Technical Specs (PHP Version, Disk Usage, SSL Status).
-​Pods & Nodes: Build a high-density table.
-​Columns: Name, Status (Pulsing Dot), CPU (Dynamic %), RAM (Dynamic %), Restart (Button).
-​Logic: Use setInterval to make CPU/RAM fluctuate between 10% and 80%.
-​Deployments (The Core Flow):
-​Deployment Card: Create the 4-step sequential form: Pipeline -> Provider -> Repository -> Branch.
-​Functional Lock: Dropdown n+1 must be disabled unless dropdown n has a value.
-​Tasks Table: List recent deployments with a progress bar for the top one.
-​Firewall:
-​Table of whitelisted IPs.
-​"Add IP" form with a "Use My Current IP" button.
-​Add a "Rule Type" dropdown (Allow/Deny).
-​Cache Warmer:
-​List of URLs to warm.
-​"Clear All Cache" button with a loading spinner that lasts 2 seconds before showing "Success."
-​Autoscaler: >    - A "Live Scaling" graph (simple CSS bars) showing Pod count over time.
-​Range sliders for Min/Max instances.
-​Diagnostics: >    - A black "Terminal" window.
-​"Run Check" button that types out lines of text: > Validating SSL... [OK], > Testing DB... [OK], > Checking Latency... 24ms.
-​Monitors: >    - Simple uptime cards (HTTP, Ping, SSL) with "99.99%" uptime percentages.
-​3. UI Branding:
-​Ensure all technical references (IDs, Names) are Orange Links.
-​Use small, technical fonts (Monospace for IDs) to maintain the "hosting provider" aesthetic.
-​Ensure all tables have a hover:bg-gray-50 effect.
-​4. Data Persistence: > - Wrap the state in localStorage so that when the user adds an IP or changes a setting, it persists across refreshes.
+Task: Finish the Environments Tab to strictly resonate with Corefinity instructions.
+​1. Sequential Deployment Form (Image 11):
+​Create a React state deploymentStep.
+​Logic: Pipeline dropdown (Step 0) -> Provider (Step 1) -> Repository (Step 2) -> Branch (Step 3).
+​Set disabled={deploymentStep < X} for each dropdown.
+​If Provider === 'GitHub', show a Red Alert: "No account connected. [Link GitHub Account]".
+​2. High-Density Technical Data (Pods/Nodes):
+​Populate the Pods tab with a table: Pod Name | Status | CPU % | Memory | Actions.
+​Use a setInterval to make the CPU and Memory numbers change every 2 seconds to simulate a live server.
+​Status should be a "Pulsing Green Dot" for 'Running'.
+​3. Interactive Diagnostics (Terminal View):
+​In the Diagnostics tab, create a black box component. When a "Run Diagnostics" button is clicked, have it "type out" lines: Checking SSL... OK, Testing Database... OK, Latency: 12ms.
+​4. Functional Firewall (Image 13):
+​Add a "Use My Current IP" button next to the IP input field.
+​Ensure the list of IPs has a "Delete" icon and a "Rule Type" label (e.g., "Allow").
+​5. Global Orange Link Audit:
+​Wrap all instance of Company Names, Website Names, and Environment IDs in the OrangeLink component.
+​Ensure the top breadcrumb matches the hierarchy: All Clients > Example Company > Website Name > Environment.
