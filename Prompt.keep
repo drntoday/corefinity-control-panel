@@ -1,0 +1,20 @@
+Task: Build the "Environments View" page for the Corefinity Control Panel. This is a high-density, technical data page.
+​1. Page Header:
+​Display the Environment Name (e.g., "Production - Main Site") in a bold header.
+​Use the StatusBadge we created to show "Live" or "Active".
+​Include a "Quick Actions" dropdown on the far right (Restart Service, Clear Cache).
+​2. High-Density Tabs:
+​Implement a horizontal tab system: General, Pods, Nodes, Deployments, Pipelines, Emails, Cache Warmer, Actions, Diagnostics, Autoscaler, Monitors, Quick Actions, and Firewall.
+​Tab 1 (Pods/Nodes): Create a table with columns for Name, Status (with pulsing dots), CPU Usage, and Memory Usage.
+​3. Strict Logic: The Deployment Form:
+​In the Deployments tab, create a "Add New Repository" section.
+​Constraint: Create 4 dropdowns: Pipeline, Provider, Repository, and Branch.
+​Logic: Every dropdown must be disabled (greyed out) until the one before it is selected.
+​If no account is connected, display a clear warning banner: "⚠️ No account connected. Please link a provider in Settings."
+​Add a "Confirm & Save" button that only becomes active once all 4 fields are filled.
+​4. Functional Firewall Tab:
+​Create a simple table for "Whitelisted IPs".
+​Include an "Add IP" row with a text input. Use a regex to validate that the input is a valid IPv4 address before the "Add" button is clickable.
+​5. Brand Styling:
+​Ensure all technical names and environment labels use the OrangeLink component.
+​Use a clean, "technical" table style (thin borders, subtle hover effects on rows).
