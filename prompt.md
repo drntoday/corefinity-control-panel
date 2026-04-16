@@ -1,16 +1,14 @@
-Task: Initialize the Design System and Utility Components for the Corefinity Project.
-​1. Tailwind Configuration:
-Extend the tailwind.config.js to include the following specific brand colors:
-​brand-blue: '#0a192f' (Primary Dark)
-​brand-orange: '#FF6B00' (Primary Action)
-​surface-gray: '#F9FAFB' (Background)
-​2. Core Components:
-Create a reusable React component named OrangeLink.
-​Behavior: It should render an <a> or Link tag.
-​Styling: Text color should be brand-orange. On hover, it should show an underline and a slightly deeper orange.
-​Requirement: As per project instructions, use this component for all references to Companies, Websites, and Environments.
-​3. Global Elements:
-​Set the global font-family to 'Inter' via CSS or Tailwind.
-​Create a StatusBadge component that accepts a type prop ('success', 'pending', 'error') and returns a pill-shaped badge with the appropriate brand-aligned background and a pulsing dot for 'active' states.
-​4. Integration:
-Ensure these colors and components are available globally so they can be used in the Sidebar and Top Header navigation.
+Task: Fix the GitHub Pages 404 error for a Vite + React project and set up an automated Deployment Workflow.
+​1. Vite Configuration:
+​Update vite.config.js to include base: '/corefinity-control-panel/'. This ensures all asset paths (JS/CSS) point to the correct GitHub subfolder.
+​2. GitHub Actions Workflow:
+​Create a file at .github/workflows/deploy.yml.
+​Write a workflow that:
+​Triggers on every push to the main branch.
+​Sets up Node.js.
+​Runs npm install and npm run build.
+​Uses the JamesIves/github-pages-deploy-action to push the contents of the dist folder to a branch named gh-pages.
+​3. Routing Fix:
+​Since this is a Single Page Application (SPA), update the BrowserRouter in main.jsx or App.jsx to include basename="/corefinity-control-panel".
+​4. Public Folder:
+​Add a 404.html file in the public folder that redirects to index.html. (This is a standard trick to keep React Router working on GitHub Pages).
