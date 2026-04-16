@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard';
 import Environments from './pages/Environments';
 import Deployments from './pages/Deployments';
 import Tickets from './pages/Tickets';
+import TicketDetail from './pages/TicketDetail';
 import Profile from './pages/Profile';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/environments" element={<Environments />} />
           <Route path="/deployments" element={<Deployments />} />
           <Route path="/tickets" element={<Tickets />} />
+          <Route path="/tickets/:id" element={<TicketDetail />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </Layout>
