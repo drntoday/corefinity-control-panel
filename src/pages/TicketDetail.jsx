@@ -99,6 +99,7 @@ export default function TicketDetail() {
   const [activeTab, setActiveTab] = useState('conversation');
   const [messageType, setMessageType] = useState('reply'); // 'reply' or 'internal'
   const [messageContent, setMessageContent] = useState('');
+  const [ticketStatus, setTicketStatus] = useState('Open');
 
   const ticket = mockTickets.find(t => t.id === parseInt(id));
 
@@ -109,6 +110,7 @@ export default function TicketDetail() {
         detail: { company: ticket.company, website: ticket.website }
       });
       window.dispatchEvent(event);
+      setTicketStatus(ticket.status);
     }
   }, [ticket]);
 
@@ -128,6 +130,12 @@ export default function TicketDetail() {
     setMessageContent('');
   };
 
+  const handleStatusChange = (newStatus) => {
+    setTicketStatus(newStatus);
+    // In a real app, this would update the backend
+    console.log(`Status changed to: ${newStatus}`);
+  };
+
   // Filter messages to only show replies and user messages in conversation tab
   const conversationMessages = ticket.messages.filter(m => m.type !== 'internal');
   const internalMessages = ticket.messages.filter(m => m.type === 'internal');
@@ -144,10 +152,19 @@ export default function TicketDetail() {
             ← Back
           </button>
           <h2 className="text-2xl font-bold text-gray-900">{ticket.subject}</h2>
-          <StatusBadge 
-            type={statusTypeMap[ticket.status]} 
-            label={ticket.status}
-          />
+                    <select
+            value={ticketStatus}
+            onChange={(e) => handleStatusChange(e.target.value)}
+            className={`px-3 py-1.5 rounded-md text-sm font-medium border-2 focus:outline-none focus:ring-2 focus:ring-brand-orange ${
+              ticketStatus === 'Open' ? 'bg-green-100 text-green-800 border-green-300' :
+              ticketStatus === 'Pending' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
+              'bg-red-100 text-red-800 border-red-300'
+            }`}
+          >
+            <option value="Open">Open</option>
+            <option value="Pending">Pending</option>
+            <option value="Closed">Closed</option>
+          </select>
         </div>
         <span className={`px-3 py-1 rounded text-sm font-medium ${
           ticket.priority === 'Critical' ? 'bg-red-100 text-red-800' :

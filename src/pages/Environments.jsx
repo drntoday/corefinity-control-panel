@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ChevronDown, MoreVertical, Plus, Trash2, AlertTriangle, Copy, Check, Loader2 } from 'lucide-react';
+import { ChevronDown, MoreVertical, Plus, Trash2, AlertTriangle, Copy, Check, Loader2, ToggleLeft, ToggleRight, Activity, Server, Zap, Shield } from 'lucide-react';
 import StatusBadge from '../components/StatusBadge';
 import OrangeLink from '../components/OrangeLink';
 
@@ -54,6 +54,21 @@ export default function Environments() {
   });
   const [newIP, setNewIP] = useState('');
   const [copiedIP, setCopiedIP] = useState(null);
+  
+  // Autoscaler state
+  const [autoscalerEnabled, setAutoscalerEnabled] = useState(true);
+  const [minReplicas, setMinReplicas] = useState(2);
+  const [maxReplicas, setMaxReplicas] = useState(10);
+  const [targetCPU, setTargetCPU] = useState(70);
+  
+  // Monitors state
+  const [monitors, setMonitors] = useState({
+    uptime: true,
+    performance: true,
+    errors: true,
+    logs: false,
+    security: true
+  });
 
   // Save IPs to localStorage whenever they change
   useEffect(() => {
@@ -482,10 +497,129 @@ export default function Environments() {
           </div>
         );
       
+      case 'Autoscaler':
+        return (
+          <div className="p-4 space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Horizontal Pod Autoscaler</h3>
+                <p className="text-sm text-gray-600">Automatically scale your application based on CPU usage</p>
+              </div>
+              <button
+                onClick={() => setAutoscalerEnabled(!autoscalerEnabled)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors ${
+                  autoscalerEnabled 
+                    ? 'bg-green-100 text-green-800' 
+                    : 'bg-gray-100 text-gray-600'
+                }`}
+              >
+                {autoscalerEnabled ? <ToggleRight className="w-6 h-6" /> : <ToggleLeft className="w-6 h-6" />}
+                {autoscalerEnabled ? 'Enabled' : 'Disabled'}
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Min Replicas: {minReplicas}</label>
+                <input
+                  type="range"
+                  min="1"
+                  max="5"
+                  value={minReplicas}
+                  onChange={(e) => setMinReplicas(Math.min(parseInt(e.target.value), maxReplicas - 1))}
+                  disabled={!autoscalerEnabled}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-orange"
+                />
+              </div>
+              
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Max Replicas: {maxReplicas}</label>
+                <input
+                  type="range"
+                  min="3"
+                  max="20"
+                  value={maxReplicas}
+                  onChange={(e) => setMaxReplicas(Math.max(parseInt(e.target.value), minReplicas + 1))}
+                  disabled={!autoscalerEnabled}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-orange"
+                />
+              </div>
+              
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Target CPU: {targetCPU}%</label>
+                <input
+                  type="range"
+                  min="10"
+                  max="90"
+                  value={targetCPU}
+                  onChange={(e) => setTargetCPU(parseInt(e.target.value))}
+                  disabled={!autoscalerEnabled}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-orange"
+                />
+              </div>
+            </div>
+            
+            {autoscalerEnabled && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="flex items-center gap-2 text-green-800">
+                  <Activity className="w-5 h-5" />
+                  <span className="font-medium">Autoscaler is active and monitoring pod metrics</span>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      
+      case 'Monitors':
+        return (
+          <div className="p-4 space-y-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Monitoring Configuration</h3>
+            <div className="space-y-3">
+              {[
+                { key: 'uptime', label: 'Uptime Monitoring', desc: 'Alert when service is unreachable', icon: Activity },
+                { key: 'performance', label: 'Performance Metrics', desc: 'Track response times and throughput', icon: Zap },
+                { key: 'errors', label: 'Error Tracking', desc: 'Monitor application errors and exceptions', icon: AlertTriangle },
+                { key: 'logs', label: 'Log Aggregation', desc: 'Collect and analyze application logs', icon: Server },
+                { key: 'security', label: 'Security Scanning', desc: 'Detect vulnerabilities and threats', icon: Shield }
+              ].map(({ key, label, desc, icon: Icon }) => (
+                <div key={key} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="flex items-center gap-3">
+                    <Icon className={`w-5 h-5 ${monitors[key] ? 'text-brand-orange' : 'text-gray-400'}`} />
+                    <div>
+                      <p className="font-medium text-gray-900">{label}</p>
+                      <p className="text-sm text-gray-600">{desc}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setMonitors({ ...monitors, [key]: !monitors[key] })}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-md font-medium transition-colors ${
+                      monitors[key] 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-gray-200 text-gray-600'
+                    }`}
+                  >
+                    {monitors[key] ? <ToggleRight className="w-5 h-5" /> : <ToggleLeft className="w-5 h-5" />}
+                    {monitors[key] ? 'On' : 'Off'}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      
       default:
         return (
           <div className="p-8 text-center text-gray-500">
-            <p>{activeTab} content coming soon...</p>
+            <div className="max-w-md mx-auto">
+              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Server className="w-12 h-12 text-gray-300" />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Nothing here yet</h3>
+              <p className="text-gray-600 mb-6">This feature is coming soon. Check back later for updates.</p>
+              <button className="px-6 py-2 bg-brand-orange text-white font-medium rounded-md hover:bg-orange-600 transition-colors">
+                Get Notified
+              </button>
+            </div>
           </div>
         );
     }
