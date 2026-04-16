@@ -1,20 +1,21 @@
-Task: Refine the Corefinity Control Panel with strict functional logic and premium UI interactions as per the specification document.
-​1. The "Sequential Dropdown" Logic (Environments > Deployments):  
-​Implement a "New Repository" form with four dropdowns: Pipeline, Provider, Repository, and Branch.
-​Strict Rule: Each dropdown must be disabled until the one immediately before it has a value selected.
-​Validation: If "Provider" is selected but no account is linked, display a high-visibility warning: "⚠️ No account connected. Please link a provider in Profile > API Tokens."  
-​The "Confirm & Save" button must remain disabled until all 4 fields are valid.
-​2. The "Dual-Communication" System (Tickets View):  
-​In the Ticket Detail view, implement a clearer distinction between Internal and External replies.
-​Internal Comment (Staff Only): When this tab/toggle is active, the message area background must change to a subtle Yellow (#FFFBEB) and the primary button should say "Post Internal Note."
-​Send Reply (Customer Visible): When active, use the standard white background and brand-orange "Send Reply" button.
-​Metadata Sidebar: Ensure the ticket detail page always shows the Company, Agency, and Website as OrangeLink components in the right-hand sidebar.  
-​3. Real-Time Task Simulation (Deployment Tasks):  
-​In the Deployment Tasks tab, the most recent task must be at the top.
-​Give the top task a "Running" status with a pulsing green indicator. All previous tasks should show "Succeeded" with a "Rollback" action button.  
-​4. Global Navigation "Orange Rule":  
-​Audit the entire site: Ensure every mention of a Company, Website, or Environment is rendered using the OrangeLink component.
-​Ensure the top breadcrumb is dynamic (e.g., All Clients > Example Agency > Production Env).
-​5. UI Polish:
-​Add a "Copy to Clipboard" icon next to IP addresses in the Firewall tab and API Tokens in the Profile tab.
-​Use a "skeleton loader" or a clean transition when switching between the many horizontal tabs in the Environments view. 
+Task: Convert the Corefinity Control Panel into a fully functional, state-driven React SaaS application. Every tab must be interactive.
+​1. Environments Command Center (Logic & Data):
+​Pods & Nodes Tabs: Create a realistic monitoring dashboard. Use a useEffect to simulate live data—CPU and Memory percentages should fluctuate slightly every few seconds. Use pulsing green dots for "Healthy" statuses.
+​Firewall Tab: Implement a working "Add IP" feature. Users can type an IP; clicking "Add" inserts it into a list. Validate for IPv4/IPv6. Include a "Delete" icon for each row.
+​Deployments Tab (The Contest Winner): >     * Implement the Sequential Lock: Pipeline > Provider > Repository > Branch.
+​If Provider is selected, show a "Checking for accounts..." loader, then show the "No account connected" error if no data exists.
+​Deployment Tasks: Show a vertical timeline. The top task should have a "Progress Bar" that actually fills up to 100% to simulate a real deployment.
+​2. Support Ticket System (Staff vs. Client UI):
+​Ticket View: Build a fully functional chat interface.
+​The "Yellow Box" Logic: Create a toggle for "Internal Note" vs. "Public Reply."
+​Internal: Background becomes light yellow (#FFFBEB), border becomes gold, and a "Staff Only" badge appears.
+​Public: Standard brand styling.
+​History Tab: Implement a list of "System Events" (e.g., "Status changed to Pending by Catherine") separate from the chat.
+​3. User Profile & Security:
+​2FA Setup: Create a functional "Toggle" for Google Authenticator. When turned on, show a mock QR Code and a verification code input field.
+​SSH Keys: Allow users to "Add New Key." When saved, it should appear in a list with the date added and a "Remove" button.
+​4. Global UX & Polish:
+​Navigation: Ensure the "Currently viewing as" dropdown in the top bar works to filter the context.
+​Loading States: Add "Skeleton Loaders" for all tables so the UI feels fast and "app-like."
+​Orange Links: Ensure every single ID, Environment name, and Company name is an OrangeLink.
+​5. Data Persistence (Mock): Use localStorage to save things like added IP addresses or SSH keys so that if the hirer refreshes the page, their data is still there.
