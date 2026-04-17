@@ -101,6 +101,9 @@ export default function TicketDetail() {
   const [messageContent, setMessageContent] = useState('');
   const [ticketStatus, setTicketStatus] = useState('Open');
 
+  // Tab names matching documents exactly
+  const activityTabs = ['All', 'Comments', 'History', 'Worklogs'];
+
   const ticket = mockTickets.find(t => t.id === parseInt(id));
 
   // Update breadcrumb on mount
