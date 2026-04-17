@@ -23,8 +23,9 @@ const mockRepositories = { GitHub: ['corefinity/web-app', 'corefinity/api-servic
 const mockBranches = { 'corefinity/web-app': ['main', 'develop', 'feature/new-ui'], 'corefinity/api-service': ['main', 'develop'], 'infra/terraform': ['main'], 'legacy/monolith': ['master', 'develop'] };
 
 const TABS = [
-  'General', 'Pods & Nodes', 'Deployments', 'Firewall', 
-  'Cache Warmer', 'Autoscaler', 'Diagnostics', 'Monitors'
+  'General', 'Pods', 'Nodes', 'Deployments', 'Firewall', 
+  'Cache Warmer', 'Autoscaler', 'Diagnostics', 'Monitors',
+  'Variables', 'Cron Jobs', 'Backups', 'Access Control'
 ];
 
 export default function Environments() {
@@ -425,7 +426,7 @@ export default function Environments() {
           </div>
         );
 
-      case 'Pods & Nodes':
+      case 'Pods':
         return (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -435,7 +436,7 @@ export default function Environments() {
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">Status</th>
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">CPU %</th>
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">Memory</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Actions</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Restart</th>
                 </tr>
               </thead>
               <tbody>
@@ -462,6 +463,57 @@ export default function Environments() {
                       <div className="flex items-center gap-2">
                         <MemoryStick className="w-3 h-3 text-gray-400" />
                         <span className="font-mono text-xs text-gray-600">{pod.memory}GB</span>
+                      </div>
+                    </td>
+                    <td className="py-2 px-3">
+                      <button className="text-xs px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded text-gray-700 transition-colors">
+                        Restart
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+
+      case 'Nodes':
+        return (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-200 bg-gray-50">
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Node Name</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Status</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">CPU %</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Memory</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Restart</th>
+                </tr>
+              </thead>
+              <tbody>
+                {nodes.map((node) => (
+                  <tr key={`node-${node.id}`} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <td className="py-2 px-3">
+                      <OrangeLink href="#" className="font-mono text-sm">{node.name}</OrangeLink>
+                    </td>
+                    <td className="py-2 px-3">
+                      <div className="flex items-center gap-2">
+                        <span className={`w-2 h-2 rounded-full ${node.status === 'running' ? 'bg-green-500 animate-pulse' : node.status === 'error' ? 'bg-red-500' : 'bg-yellow-500 animate-pulse'}`}></span>
+                        <span className="text-gray-700 capitalize">{node.status}</span>
+                      </div>
+                    </td>
+                    <td className="py-2 px-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-16 bg-gray-200 rounded-full h-1.5">
+                          <div className="bg-brand-orange h-1.5 rounded-full" style={{ width: `${node.cpu}%` }}></div>
+                        </div>
+                        <span className="font-mono text-xs text-gray-600">{node.cpu}%</span>
+                      </div>
+                    </td>
+                    <td className="py-2 px-3">
+                      <div className="flex items-center gap-2">
+                        <MemoryStick className="w-3 h-3 text-gray-400" />
+                        <span className="font-mono text-xs text-gray-600">{node.memory}GB</span>
                       </div>
                     </td>
                     <td className="py-2 px-3">
@@ -785,17 +837,30 @@ export default function Environments() {
               </button>
             </div>
             
-            {/* Live Active Pods Count */}
+            {/* Live Active Pods Count - Current Load Indicator */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <div className="flex items-center gap-2 text-blue-800">
-                <Container className="w-5 h-5" />
-                <span className="font-medium">Currently Active Pods: <strong>{activePodsCount}</strong></span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-blue-800">
+                  <Container className="w-5 h-5" />
+                  <span className="font-medium">Current Load: <strong>{activePodsCount} pods active</strong></span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-600">Min: {minReplicas}</span>
+                  <span className="text-gray-300">|</span>
+                  <span className="text-sm text-gray-600">Max: {maxReplicas}</span>
+                </div>
+              </div>
+              <div className="mt-3 w-full bg-gray-200 rounded-full h-2">
+                <div 
+                  className="bg-brand-orange h-2 rounded-full transition-all duration-500"
+                  style={{ width: `${Math.min(100, (activePodsCount / maxReplicas) * 100)}%` }}
+                ></div>
               </div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Minimum Pods: {minReplicas}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Min Pods: {minReplicas}</label>
                 <input
                   type="range"
                   min="1"
@@ -808,7 +873,7 @@ export default function Environments() {
               </div>
               
               <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Maximum Pods: {maxReplicas}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Max Pods: {maxReplicas}</label>
                 <input
                   type="range"
                   min="3"
@@ -982,6 +1047,190 @@ export default function Environments() {
           </div>
         );
       
+      case 'Variables':
+        return (
+          <div className="p-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Environment Variables</h3>
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <p className="text-sm text-gray-600">Manage environment variables for this deployment.</p>
+              <table className="w-full mt-4 text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 bg-white">
+                    <th className="text-left py-2 px-3 font-semibold text-gray-700">Key</th>
+                    <th className="text-left py-2 px-3 font-semibold text-gray-700">Value</th>
+                    <th className="text-right py-2 px-3 font-semibold text-gray-700">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-gray-100 bg-white">
+                    <td className="py-2 px-3 font-mono text-sm">DATABASE_URL</td>
+                    <td className="py-2 px-3 font-mono text-sm text-gray-500">••••••••••••</td>
+                    <td className="py-2 px-3 text-right">
+                      <button className="text-red-600 hover:text-red-800 transition-colors p-1">
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                  <tr className="border-b border-gray-100 bg-white">
+                    <td className="py-2 px-3 font-mono text-sm">API_KEY</td>
+                    <td className="py-2 px-3 font-mono text-sm text-gray-500">••••••••••••</td>
+                    <td className="py-2 px-3 text-right">
+                      <button className="text-red-600 hover:text-red-800 transition-colors p-1">
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <button className="mt-4 px-4 py-2 bg-brand-orange text-white rounded-md text-sm font-medium hover:bg-orange-600 transition-colors flex items-center gap-2">
+                <Plus className="w-4 h-4" />
+                Add Variable
+              </button>
+            </div>
+          </div>
+        );
+
+      case 'Cron Jobs':
+        return (
+          <div className="p-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Scheduled Cron Jobs</h3>
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <p className="text-sm text-gray-600">Schedule recurring tasks for your environment.</p>
+              <table className="w-full mt-4 text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 bg-white">
+                    <th className="text-left py-2 px-3 font-semibold text-gray-700">Name</th>
+                    <th className="text-left py-2 px-3 font-semibold text-gray-700">Schedule</th>
+                    <th className="text-left py-2 px-3 font-semibold text-gray-700">Last Run</th>
+                    <th className="text-left py-2 px-3 font-semibold text-gray-700">Status</th>
+                    <th className="text-right py-2 px-3 font-semibold text-gray-700">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-gray-100 bg-white">
+                    <td className="py-2 px-3 font-mono text-sm">daily-backup</td>
+                    <td className="py-2 px-3 font-mono text-sm">0 2 * * *</td>
+                    <td className="py-2 px-3 text-gray-500">2024-01-15 02:00</td>
+                    <td className="py-2 px-3"><span className="text-xs px-2 py-1 rounded bg-green-100 text-green-800">Success</span></td>
+                    <td className="py-2 px-3 text-right">
+                      <button className="text-gray-600 hover:text-gray-800 transition-colors p-1">
+                        <MoreVertical className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <button className="mt-4 px-4 py-2 bg-brand-orange text-white rounded-md text-sm font-medium hover:bg-orange-600 transition-colors flex items-center gap-2">
+                <Plus className="w-4 h-4" />
+                Add Cron Job
+              </button>
+            </div>
+          </div>
+        );
+
+      case 'Backups':
+        return (
+          <div className="p-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Backup Configuration</h3>
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <p className="font-medium text-gray-900">Automatic Backups</p>
+                  <p className="text-sm text-gray-600">Daily backups at 3:00 AM UTC</p>
+                </div>
+                <button className="flex items-center gap-2 px-4 py-2 rounded-md font-medium bg-green-100 text-green-800">
+                  <ToggleRight className="w-6 h-6" />
+                  Enabled
+                </button>
+              </div>
+              <table className="w-full mt-4 text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 bg-white">
+                    <th className="text-left py-2 px-3 font-semibold text-gray-700">Date</th>
+                    <th className="text-left py-2 px-3 font-semibold text-gray-700">Size</th>
+                    <th className="text-left py-2 px-3 font-semibold text-gray-700">Type</th>
+                    <th className="text-right py-2 px-3 font-semibold text-gray-700">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-gray-100 bg-white">
+                    <td className="py-2 px-3 font-mono text-sm">2024-01-15</td>
+                    <td className="py-2 px-3 font-mono text-sm">2.4 GB</td>
+                    <td className="py-2 px-3"><span className="text-xs px-2 py-1 rounded bg-blue-100 text-blue-800">Full</span></td>
+                    <td className="py-2 px-3 text-right">
+                      <OrangeLink href="#" className="text-brand-orange hover:text-orange-600 text-sm">Restore</OrangeLink>
+                    </td>
+                  </tr>
+                  <tr className="border-b border-gray-100 bg-white">
+                    <td className="py-2 px-3 font-mono text-sm">2024-01-14</td>
+                    <td className="py-2 px-3 font-mono text-sm">2.3 GB</td>
+                    <td className="py-2 px-3"><span className="text-xs px-2 py-1 rounded bg-blue-100 text-blue-800">Full</span></td>
+                    <td className="py-2 px-3 text-right">
+                      <OrangeLink href="#" className="text-brand-orange hover:text-orange-600 text-sm">Restore</OrangeLink>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        );
+
+      case 'Access Control':
+        return (
+          <div className="p-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Access Control</h3>
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <p className="text-sm text-gray-600 mb-4">Manage user access to this environment.</p>
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 bg-white">
+                    <th className="text-left py-2 px-3 font-semibold text-gray-700">User</th>
+                    <th className="text-left py-2 px-3 font-semibold text-gray-700">Role</th>
+                    <th className="text-left py-2 px-3 font-semibold text-gray-700">Last Access</th>
+                    <th className="text-right py-2 px-3 font-semibold text-gray-700">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-gray-100 bg-white">
+                    <td className="py-2 px-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-brand-orange text-white flex items-center justify-center text-sm font-medium">JD</div>
+                        <span className="font-medium">John Doe</span>
+                      </div>
+                    </td>
+                    <td className="py-2 px-3"><span className="text-xs px-2 py-1 rounded bg-purple-100 text-purple-800">Admin</span></td>
+                    <td className="py-2 px-3 text-gray-500">2024-01-15 10:30</td>
+                    <td className="py-2 px-3 text-right">
+                      <button className="text-gray-600 hover:text-gray-800 transition-colors p-1">
+                        <MoreVertical className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                  <tr className="border-b border-gray-100 bg-white">
+                    <td className="py-2 px-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-gray-300 text-gray-700 flex items-center justify-center text-sm font-medium">JS</div>
+                        <span className="font-medium">Jane Smith</span>
+                      </div>
+                    </td>
+                    <td className="py-2 px-3"><span className="text-xs px-2 py-1 rounded bg-blue-100 text-blue-800">Developer</span></td>
+                    <td className="py-2 px-3 text-gray-500">2024-01-14 15:45</td>
+                    <td className="py-2 px-3 text-right">
+                      <button className="text-gray-600 hover:text-gray-800 transition-colors p-1">
+                        <MoreVertical className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <button className="mt-4 px-4 py-2 bg-brand-orange text-white rounded-md text-sm font-medium hover:bg-orange-600 transition-colors flex items-center gap-2">
+                <Plus className="w-4 h-4" />
+                Add User
+              </button>
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
