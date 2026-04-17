@@ -259,8 +259,8 @@ export default function Environments() {
     setDiagnosticsOutput([]);
     
     const steps = [
-      { text: '> Checking SSL...', result: 'OK', delay: 800 },
-      { text: '> Testing DB...', result: 'OK', delay: 1600 },
+      { text: '> Verifying SSL...', result: 'OK', delay: 800 },
+      { text: '> Checking Database...', result: 'OK', delay: 1600 },
       { text: '> Latency:', result: '14ms', delay: 2400 },
     ];
     
