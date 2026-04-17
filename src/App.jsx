@@ -7,6 +7,7 @@ import Deployments from './pages/Deployments';
 import Tickets from './pages/Tickets';
 import TicketDetail from './pages/TicketDetail';
 import Profile from './pages/Profile';
+import PipelineDetails from './pages/PipelineDetails';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/tickets" element={<Tickets />} />
             <Route path="/tickets/:id" element={<TicketDetail />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/environment-pipeline/:id" element={<PipelineDetails />} />
           </Routes>
         </Layout>
       </HashRouter>
