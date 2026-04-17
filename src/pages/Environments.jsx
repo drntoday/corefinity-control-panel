@@ -48,6 +48,8 @@ const mockBranches = {
   'team/project-b': ['master']
 };
 
+const mockPipelines = ['main-pipeline', 'api-pipeline', 'frontend-pipeline', 'staging-pipeline', 'dev-pipeline'];
+
 // Mock pipelines for Pipelines tab table
 const mockPipelinesTableData = [
   { id: 1, notes: 'Main production pipeline', environment: 'Production', rootWebDirectory: '/var/www/html', rootStorageDirectory: '/mnt/storage', deploymentPipelineName: 'prod-deploy-pipeline', maintenanceMode: false, customBuildCommands: 'npm run build && npm run test', company: 'Acme Corp' },
