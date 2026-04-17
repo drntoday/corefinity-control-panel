@@ -96,8 +96,8 @@ const statusTypeMap = {
 export default function TicketDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('conversation');
-  const [messageType, setMessageType] = useState('reply'); // 'reply' or 'internal'
+  const [activeTab, setActiveTab] = useState('all'); // 'all', 'comments', 'history', 'worklogs'
+  const [messageType, setMessageType] = useState('reply'); // 'reply' or 'comment'
   const [messageContent, setMessageContent] = useState('');
   const [ticketStatus, setTicketStatus] = useState('Open');
 
@@ -136,9 +136,41 @@ export default function TicketDetail() {
     console.log(`Status changed to: ${newStatus}`);
   };
 
-  // Filter messages to only show replies and user messages in conversation tab
-  const conversationMessages = ticket.messages.filter(m => m.type !== 'internal');
-  const internalMessages = ticket.messages.filter(m => m.type === 'internal');
+  // Filter messages based on active tab
+  const allMessages = ticket.messages;
+  const commentsOnly = ticket.messages.filter(m => m.type === 'internal');
+  const repliesOnly = ticket.messages.filter(m => m.type === 'reply' || !m.type);
+  
+  // Get activity items based on active tab
+  const getActivityItems = () => {
+    if (activeTab === 'all') {
+      return [...ticket.history, ...ticket.messages.map(m => ({
+        id: `msg-${m.id}`,
+        action: m.type === 'internal' ? `Internal comment by ${m.sender}` : `Reply by ${m.sender}`,
+        timestamp: m.timestamp,
+        user: m.sender,
+        content: m.content
+      }))].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    }
+    if (activeTab === 'comments') {
+      return ticket.messages.filter(m => m.type === 'internal').map(m => ({
+        id: `msg-${m.id}`,
+        action: 'Internal comment',
+        timestamp: m.timestamp,
+        user: m.sender,
+        content: m.content
+      }));
+    }
+    if (activeTab === 'history') {
+      return ticket.history;
+    }
+    if (activeTab === 'worklogs') {
+      return []; // Mock empty worklogs
+    }
+    return [];
+  };
+
+  const activityItems = getActivityItems();
 
   return (
     <div className="p-6">
