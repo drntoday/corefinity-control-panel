@@ -1,19 +1,90 @@
-Task: Fully implement the "Environment View" content for all 13 sub-tabs using React state.
-​1. Sub-Tab Navigation Logic:
-​Ensure clicking the sub-tabs (Pods, Nodes, Deployments, etc.) updates a currentSubTab state.
-​Use a conditional rendering block (switch/case) to display the correct component for each tab.
-​2. Content for Specific Tabs (Per Hirer Docs):
-​Deployments (The Key Requirement): >    - Create a "New Deployment" card.
-​Implement Sequential Dropdowns: Pipeline (Select first) -> Provider (Enabled only after Pipeline) -> Repository (Enabled only after Provider).
-​Add the Red Warning: If "GitHub" is selected, show "No account connected. [Link Account]".
-​Pods & Nodes: >    - Build high-density tables with columns: Name, Status (Pulsing Green Dot), CPU % (Animated), Memory, and Restart.
-​Use a setInterval to make CPU/RAM fluctuate (e.g., 12% to 15%) to simulate a "Live" environment.
-​Firewall: >    - Implement the IP Whitelist table.
-​Add the "Use My Current IP" button next to the input field as per Image 13.
-​Diagnostics: >    - Create a black terminal-style box. Add a button "Run Check" that simulates a log scroll: > Verifying SSL... OK, > Checking Disk... 40GB Free.
-​Autoscaler: >    - Add "Min Pods" and "Max Pods" range sliders and a "Current Load" indicator.
-​3. Brand Refinement:
-​Ensure all technical IDs (e.g., env-1234) and Website names are Corefinity Orange and clickable.
-​Use a high-density font size (12px-14px) for tables to maintain the "Professional Tool" aesthetic.
-​4. Data Persistence:
-​Wrap the environment state in localStorage so the "added IPs" or "scaling settings" persist after a page refresh.
+Here is the final submission message you can send to the hirer. Replace YOUR_USERNAME and REPO_NAME with your actual GitHub username and repository name.
+
+---
+
+Subject: Corefinity Control Panel – Live Demo & Feedback Request
+
+Hello,
+
+The redesigned Corefinity control panel is now live and can be experienced at:
+
+🔗 https://YOUR_USERNAME.github.io/REPO_NAME/
+
+(If the link doesn't work, please ensure you replace YOUR_USERNAME and REPO_NAME with the correct values – or use the direct link I provided in the previous message.)
+
+---
+
+How to Navigate the Dashboard
+
+· Sidebar (left) – main navigation: Home, Deployments, Environments, Tickets, User Profile.
+· Dashboard Home – four cards link directly to each tool.
+· Header – search (click or press /), notifications, help, user avatar – all show informative toasts.
+
+---
+
+What You Can Explore
+
+1. Deployments Page
+
+· Active deployment hero – live progress bar, current step, duration.
+· Deployment Information – ID, status, commit, branch, triggered by, started at.
+· Orange links – environment, pipeline, company, website (click to see toast).
+· Action selector – choose Redeploy, Rollback, Cancel, or Restart, then click Submit.
+· Deployments Tasks tab – lists all tasks; the currently running task appears at the top.
+· Pipeline Configuration tab – read‑only pipeline steps, YAML preview, environment variables, artifacts.
+
+2. Environments Page
+
+· Status overview – four cards: Environment Health, Active Deployment, Issues Detected, Resource Summary (CPU/Memory).
+· System insights – real‑time alerts (e.g., node memory critical, slow deployment).
+· Tabs – General, Pods, Nodes, Deployments, Pipelines, Emails, Cache Warmer, Actions, Diagnostics, Autoscaler, Monitors, Quick Actions, Firewall.
+· Deployments tab – create a new deployment via cascading dropdowns (account connection → provider → repository → branch → pipeline).
+· Firewall tab – add/edit IP rules with IPv4 validation.
+
+3. User Profile Page
+
+· Profile Information – editable name, email, role, company, website (orange link).
+· Change password modal (with validation).
+· IP Whitelist – add/edit/delete, protected system rows, IPv4 validation.
+· SSH Keys – add/edit/delete, fingerprint and last used shown.
+· SSO – “Connect SSO” button (toast for future implementation).
+· API Tokens – generate with scopes, one‑time token display with copy, revoke.
+· Two‑Factor Authentication – enable/disable mock with QR code and 6‑digit verification.
+· Notification Preferences – toggles for deployment, security, billing, product announcements (saved in localStorage).
+
+4. Support Tickets Page
+
+· Listing table – filter by status, search by ID/subject, sort by any column, pagination (5 per page).
+· Click any ticket row – opens side panel with three tabs:
+  · Comments – two distinct ways to add a comment: “Comment” (visible to customer) and “Send Reply” (staff only).
+  · History – chronological timeline of status, priority, and assignment changes.
+  · Details – ticket metadata plus company, agency, website as orange links.
+
+5. Dashboard Home
+
+· Central hub with cards linking to the four main tools.
+
+---
+
+Additional UX Highlights
+
+· All interactive elements show toast notifications for feedback.
+· Real‑time simulation – deployment progress updates every second, tasks appear dynamically.
+· Responsive design – works on desktop, tablet, and mobile.
+· Sidebar collapse – remembers your preference (localStorage).
+· Empty states – tables with no data show helpful illustrations and messages.
+
+---
+
+Next Steps – New Version in Development
+
+I am currently working on an enhanced version of the control panel that includes additional features, improved performance, and further UX refinements. Once ready, I will provide you with the live link to the new version.
+
+Thank you for the opportunity. I look forward to your feedback – please let me know what works well and what you would like to see improved. I can make specific changes or, if you prefer, redesign the entire dashboard from scratch based on your revised instructions.
+
+Best regards,
+[Your Name]
+
+---
+
+Reminder: Replace YOUR_USERNAME and REPO_NAME with your actual GitHub details before sending. If you already shared the live link earlier, you can simply refer to “the link I shared previously” instead of repeating it.
