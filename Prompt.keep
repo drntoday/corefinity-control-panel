@@ -1,19 +1,20 @@
-Task: Implement the "Switch" logic for the Environment sub-tabs and build out the specific technical content for each view.
-​1. Functional Tab Switcher:
-​In the Environments component, use a useState variable activeSubTab.
-​Update the sub-nav buttons so clicking them sets the activeSubTab.
-​Use a switch or mapping object to render the specific component for each tab (e.g., <PodsView />, <DeploymentsView />).
-​2. The "Hirer's Choice" Requirements:
-​Deployments Tab (Image 11): >     - Create a "Start New Deployment" card with 4 <select> elements.
-​Sequential Logic: Provider is disabled until Pipeline is chosen. Repository is disabled until Provider is chosen.
-​Alert: If "GitHub" is the provider, show a Red Banner: "⚠️ No account connected. [Link GitHub Account]".
-​Pods & Nodes Tabs: >     - Display a table with columns: Name, Status, CPU, RAM.
-​Use a useEffect with a setInterval to make the CPU numbers move (e.g., 42.1% -> 43.5%) so the page feels "Live."
-​Use a pulsing green dot for the "Running" status.
-​Firewall Tab (Image 13): >     - Show a table of whitelisted IPs.
-​Add an input field with a button "Add My Current IP" that auto-fills a mock IP address.
-​Diagnostics Tab: >     - Create a "Terminal" UI (black background, green/white text).
-​Add a "Run Health Check" button that "streams" text lines: > Verifying SSL... OK, > Checking Database... OK.
-​3. Brand Refinement:
-​The Orange Link Rule: Ensure all technical IDs (e.g., env-3029) and Website names are rendered in Corefinity Orange and are clickable.
-​Breadcrumbs: Make the top breadcrumb dynamic: All Clients > Example Company > [Active Sub-Tab].
+Task: Build a fully functional, state-driven "Deployments" tab for Corefinity that strictly follows the sequential logic requirements.
+​1. The Sequential Form (Core Requirement):
+​Create a "Connect New Repository" card.
+​State Machine Logic: Implement four dropdowns with the following strict dependency chain:
+​Pipeline Type (Web, Worker, Cron)
+​Provider (GitHub, Bitbucket, GitLab) - Disabled until Pipeline is selected.
+​Repository (Mock list of repos) - Disabled until Provider is selected.
+​Branch (main, develop, staging) - Disabled until Repository is selected.
+​Validation Message: If 'GitHub' is selected as the Provider, display a high-visibility warning: "⚠️ No account connected. [Link GitHub Account]" (Use the OrangeLink for the link).
+​2. Live Deployment Simulation:
+​Create a "Recent Deployment Tasks" table.
+​Top Row Interaction: The most recent task should show a status of "Deploying..." with a pulsing green dot and a real Progress Bar that animates from 0% to 100% over 10 seconds.
+​Action Buttons: Add a "Rollback" button to previous successful deployments. When clicked, show a "Confirm Rollback" modal.
+​3. Technical UI Details:
+​Include columns for: Commit Hash (e.g., a7b2c3d in monospace font), Commit Message, Author (with avatar), and Duration.
+​Every Repository name and Environment ID must be rendered in Corefinity Orange (#FF6B00).
+​4. Implementation Detail:
+​Use React useState to track the currentStep of the form.
+​Ensure the "Deploy" button is only clickable once all 4 fields are filled.
+​On "Deploy" click, trigger a toast notification: "Deployment Started Successfully."
