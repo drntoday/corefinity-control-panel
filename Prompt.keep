@@ -1,24 +1,19 @@
-Task: Implement conditional rendering for all sub-tabs in the Environment View to match the hirer's technical requirements.
-​1. Tab Switching Logic:
-​In Environments.jsx, create a state activeTab (defaulting to 'General').
-​Map the 13 tab buttons to update this state.
-​Use a switch statement or a lookup object to render the specific content below the tab bar.
-​2. Content Implementation (The "Full-Fledged" details):
-​Deployments Tab (Image 11 Requirement): >     - Implement the 4-Step Sequential Form: Pipeline → Provider → Repository → Branch.
-​Use disabled attributes on each dropdown so they only unlock when the previous one is selected.
-​If "GitHub" is selected as the Provider, display a red alert box: "⚠️ No account connected. [Link GitHub Account]".
-​Pods & Nodes Tabs (Technical Monitoring):
-​Create a high-density table. Use a setInterval hook to make CPU and RAM percentages "jitter" (fluctuate by 1-2%) so the dashboard looks alive.
-​Status column should show a pulsing green dot for "Running."
-​Firewall Tab (Security Control):
-​List of whitelisted IPs with "Delete" buttons.
-​An input field with a "Use My Current IP" button that auto-fills 182.161.x.x.
-​Diagnostics Tab (Terminal Experience):
-​A black box styled as a Linux terminal.
-​A "Run Health Check" button that slowly prints lines of text: > Checking SSL... OK, > Testing DB... OK, > Latency: 14ms.
-​Autoscaler Tab (Scaling Logic):
-​Two range sliders for "Min Instances" and "Max Instances."
-​A "Current Load" progress bar that reflects the mock CPU data.
-​3. Finishing Touches:
-​The Orange Rule: Ensure every single Environment ID (e.g., env-3029) and Website Name is wrapped in your OrangeLink component.
-​Navigation Hierarchy: Ensure the top breadcrumb dynamically shows the path: All Clients > Example Company > Website Name > [Active Tab Name].
+Task: Implement the "Switch" logic for the Environment sub-tabs and build out the specific technical content for each view.
+​1. Functional Tab Switcher:
+​In the Environments component, use a useState variable activeSubTab.
+​Update the sub-nav buttons so clicking them sets the activeSubTab.
+​Use a switch or mapping object to render the specific component for each tab (e.g., <PodsView />, <DeploymentsView />).
+​2. The "Hirer's Choice" Requirements:
+​Deployments Tab (Image 11): >     - Create a "Start New Deployment" card with 4 <select> elements.
+​Sequential Logic: Provider is disabled until Pipeline is chosen. Repository is disabled until Provider is chosen.
+​Alert: If "GitHub" is the provider, show a Red Banner: "⚠️ No account connected. [Link GitHub Account]".
+​Pods & Nodes Tabs: >     - Display a table with columns: Name, Status, CPU, RAM.
+​Use a useEffect with a setInterval to make the CPU numbers move (e.g., 42.1% -> 43.5%) so the page feels "Live."
+​Use a pulsing green dot for the "Running" status.
+​Firewall Tab (Image 13): >     - Show a table of whitelisted IPs.
+​Add an input field with a button "Add My Current IP" that auto-fills a mock IP address.
+​Diagnostics Tab: >     - Create a "Terminal" UI (black background, green/white text).
+​Add a "Run Health Check" button that "streams" text lines: > Verifying SSL... OK, > Checking Database... OK.
+​3. Brand Refinement:
+​The Orange Link Rule: Ensure all technical IDs (e.g., env-3029) and Website names are rendered in Corefinity Orange and are clickable.
+​Breadcrumbs: Make the top breadcrumb dynamic: All Clients > Example Company > [Active Sub-Tab].
