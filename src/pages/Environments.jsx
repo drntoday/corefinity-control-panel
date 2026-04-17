@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ChevronDown, MoreVertical, Plus, Trash2, AlertTriangle, Copy, Check, Loader2, ToggleLeft, ToggleRight, Activity, Server, Zap, Shield, RefreshCw, Container, Globe, WifiOff, Terminal, HardDrive, MapPin, Cpu, MemoryStick } from 'lucide-react';
 import StatusBadge from '../components/StatusBadge';
 import OrangeLink from '../components/OrangeLink';
@@ -29,7 +30,13 @@ const TABS = [
 ];
 
 export default function Environments() {
-  const [activeTab, setActiveTab] = useState('General');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState(() => {
+    // Initialize from URL query params or default to 'General'
+    const params = new URLSearchParams(location.search);
+    return params.get('tab') || 'General';
+  });
   const [quickActionsOpen, setQuickActionsOpen] = useState(false);
   const [tabLoading, setTabLoading] = useState(false);
   
@@ -43,6 +50,13 @@ export default function Environments() {
     diskUsage: '45%',
     sslStatus: 'Active'
   });
+
+  // Update URL when tab changes (Tab Persistence)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    params.set('tab', activeTab);
+    navigate(`${location.pathname}?${params.toString()}`, { replace: true });
+  }, [activeTab, navigate, location.pathname]);
   
   // Live data state for Pods and Nodes
   const [pods, setPods] = useState(initialPods);
@@ -288,20 +302,26 @@ export default function Environments() {
     setCacheUrls(cacheUrls.filter(url => url !== urlToRemove));
   };
 
-  // Handle running diagnostics with typed output - terminal experience
+  // Handle running diagnostics with typed output - terminal experience with timestamps and auto-scroll
   const handleRunDiagnostics = () => {
     setDiagnosticsRunning(true);
     setDiagnosticsOutput([]);
     
+    const getCurrentTime = () => {
+      const now = new Date();
+      return now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    };
+
     const steps = [
-      { text: '> Verifying SSL...', result: 'OK', delay: 800 },
-      { text: '> Checking Database...', result: 'OK', delay: 1600 },
-      { text: '> Latency:', result: '14ms', delay: 2400 },
+      { text: `[${getCurrentTime()}] INFO: Starting diagnostics...`, result: '', delay: 400 },
+      { text: `[${getCurrentTime()}] INFO: Verifying SSL certificate...`, result: 'Valid for 89 days', delay: 1000 },
+      { text: `[${getCurrentTime()}] INFO: Checking database connection...`, result: 'OK (latency: 3ms)', delay: 1600 },
+      { text: `[${getCurrentTime()}] INFO: Testing API endpoints...`, result: 'All healthy', delay: 2200 },
+      { text: `[${getCurrentTime()}] INFO: Network latency check...`, result: '14ms avg', delay: 2800 },
+      { text: `[${getCurrentTime()}] SUCCESS: Diagnostics completed successfully.`, result: '', delay: 3200 },
     ];
     
-    let totalDelay = 0;
     steps.forEach((step, index) => {
-      totalDelay = step.delay;
       setTimeout(() => {
         setDiagnosticsOutput(prev => [...prev, { text: step.text, result: step.result }]);
         if (index === steps.length - 1) {
@@ -310,6 +330,13 @@ export default function Environments() {
       }, step.delay);
     });
   };
+
+  // Auto-scroll terminal to bottom when new output arrives
+  useEffect(() => {
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
+  }, [diagnosticsOutput]);
 
   // Simulate scaling history updates for the graph
   useEffect(() => {
