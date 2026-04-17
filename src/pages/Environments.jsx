@@ -60,12 +60,47 @@ export default function Environments() {
   const [accountConnected, setAccountConnected] = useState(true);
   const [checkingAccount, setCheckingAccount] = useState(false);
   const [deploymentStep, setDeploymentStep] = useState(0);
-  const [selectedPipeline, setSelectedPipeline] = useState('');
-  const [selectedProvider, setSelectedProvider] = useState('');
-  const [selectedRepository, setSelectedRepository] = useState('');
-  const [selectedBranch, setSelectedBranch] = useState('');
+  const [pipeline, setPipeline] = useState('');
+  const [provider, setProvider] = useState('');
+  const [repository, setRepository] = useState('');
+  const [branch, setBranch] = useState('');
   const [deploymentProgress, setDeploymentProgress] = useState(0);
   const [isDeploying, setIsDeploying] = useState(false);
+
+  // Deployment tasks state for Recent Deployment Tasks table
+  const [deploymentTasks, setDeploymentTasks] = useState(() => {
+    const saved = localStorage.getItem('deployment_tasks');
+    return saved ? JSON.parse(saved) : [
+      { id: 1, commitHash: '8f2d3a1', message: 'Update styles', author: 'Catherine J.', status: 'In Progress', progress: 0 },
+      { id: 2, commitHash: '7b4e9c2', message: 'Fix login bug', author: 'Michael T.', status: 'Completed', progress: 100 },
+      { id: 3, commitHash: '3a1f5d8', message: 'Add new feature', author: 'Sarah L.', status: 'Completed', progress: 100 },
+    ];
+  });
+  
+  // Animate progress bar for in-progress deployment task
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDeploymentTasks(prevTasks => 
+        prevTasks.map((task, index) => {
+          if (index === 0 && task.status === 'In Progress' && task.progress < 100) {
+            const newProgress = Math.min(100, task.progress + Math.random() * 5);
+            if (newProgress >= 100) {
+              return { ...task, progress: 100, status: 'Completed' };
+            }
+            return { ...task, progress: newProgress };
+          }
+          return task;
+        })
+      );
+    }, 500);
+    
+    return () => clearInterval(interval);
+  }, []);
+  
+  // Save deployment tasks to localStorage
+  useEffect(() => {
+    localStorage.setItem('deployment_tasks', JSON.stringify(deploymentTasks));
+  }, [deploymentTasks]);
   
   // Firewall state with localStorage persistence
   const [firewallRules, setFirewallRules] = useState(() => {
@@ -290,25 +325,25 @@ export default function Environments() {
   }, [autoscalerEnabled, minReplicas, maxReplicas]);
   
   // Check if all deployment fields are filled
-  const canSaveDeployment = selectedPipeline && selectedProvider && selectedRepository && selectedBranch;
+  const canSaveDeployment = pipeline && provider && repository && branch;
   
   // Get available repositories based on selected provider
   const getAvailableRepositories = () => {
-    if (!selectedProvider) return [];
-    return mockRepositories[selectedProvider] || [];
+    if (!provider) return [];
+    return mockRepositories[provider] || [];
   };
   
   // Get available branches based on selected repository
   const getAvailableBranches = () => {
-    if (!selectedRepository) return [];
-    return mockBranches[selectedRepository] || [];
+    if (!repository) return [];
+    return mockBranches[repository] || [];
   };
   
   // Handle provider selection - simulate account check
-  const handleProviderChange = (provider) => {
-    setSelectedProvider(provider);
-    setSelectedRepository('');
-    setSelectedBranch('');
+  const handleProviderChange = (newProvider) => {
+    setProvider(newProvider);
+    setRepository('');
+    setBranch('');
     setDeploymentStep(1);
     setCheckingAccount(true);
     setAccountConnected(false);
@@ -323,23 +358,23 @@ export default function Environments() {
   
   // Handle repository selection - reset branch
   const handleRepositoryChange = (repo) => {
-    setSelectedRepository(repo);
+    setRepository(repo);
     setDeploymentStep(2);
-    setSelectedBranch('');
+    setBranch('');
   };
 
   // Handle pipeline selection
-  const handlePipelineChange = (pipeline) => {
-    setSelectedPipeline(pipeline);
+  const handlePipelineChange = (newPipeline) => {
+    setPipeline(newPipeline);
     setDeploymentStep(1);
-    setSelectedProvider('');
-    setSelectedRepository('');
-    setSelectedBranch('');
+    setProvider('');
+    setRepository('');
+    setBranch('');
   };
 
   // Handle branch selection
-  const handleBranchChange = (branch) => {
-    setSelectedBranch(branch);
+  const handleBranchChange = (newBranch) => {
+    setBranch(newBranch);
     setDeploymentStep(3);
   };
 
@@ -582,16 +617,16 @@ export default function Environments() {
               </div>
             )}
             
-            {!accountConnected && !checkingAccount && selectedProvider === 'GitHub' && (
+            {!accountConnected && !checkingAccount && provider === 'GitHub' && (
               <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
                 <AlertTriangle className="w-5 h-5 text-red-600" />
                 <span className="text-red-800 font-medium">
-                  No account connected. <OrangeLink href="#" className="font-semibold">Link GitHub Account</OrangeLink>
+                  ⚠️ No account connected. <OrangeLink href="#" className="font-semibold">Link GitHub Account</OrangeLink>
                 </span>
               </div>
             )}
             
-            {!accountConnected && !checkingAccount && selectedProvider !== 'GitHub' && selectedProvider && (
+            {!accountConnected && !checkingAccount && provider !== 'GitHub' && provider && (
               <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex items-center gap-3">
                 <AlertTriangle className="w-5 h-5 text-yellow-600" />
                 <span className="text-yellow-800 font-medium">⚠️ No account connected. Please link a provider in Settings.</span>
@@ -599,12 +634,12 @@ export default function Environments() {
             )}
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl">
-              {/* Pipeline Dropdown - Step 0 */}
+              {/* Pipeline Dropdown */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Pipeline</label>
                 <div className="relative">
                   <select
-                    value={selectedPipeline}
+                    value={pipeline}
                     onChange={(e) => handlePipelineChange(e.target.value)}
                     disabled={checkingAccount}
                     className={`w-full px-3 py-2 border border-gray-300 rounded-md appearance-none bg-white pr-10
@@ -612,77 +647,71 @@ export default function Environments() {
                       focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
                   >
                     <option value="">Select Pipeline</option>
-                    {mockPipelines.map(pipeline => (
-                      <option key={pipeline} value={pipeline}>
-                        <OrangeLink href="#" className="block w-full">{pipeline}</OrangeLink>
-                      </option>
+                    {mockPipelines.map(pipelineOption => (
+                      <option key={pipelineOption} value={pipelineOption}>{pipelineOption}</option>
                     ))}
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                 </div>
               </div>
               
-              {/* Provider Dropdown - Step 1 */}
+              {/* Provider Dropdown - disabled if no pipeline selected */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Provider</label>
                 <div className="relative">
                   <select
-                    value={selectedProvider}
+                    value={provider}
                     onChange={(e) => handleProviderChange(e.target.value)}
-                    disabled={deploymentStep < 1 || checkingAccount}
+                    disabled={!pipeline || checkingAccount}
                     className={`w-full px-3 py-2 border border-gray-300 rounded-md appearance-none bg-white pr-10
-                      ${(deploymentStep < 1 || checkingAccount) ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-400'}
+                      ${(!pipeline || checkingAccount) ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-400'}
                       focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
                   >
                     <option value="">Select Provider</option>
-                    {mockProviders.map(provider => (
-                      <option key={provider} value={provider}>{provider}</option>
+                    {mockProviders.map(providerOption => (
+                      <option key={providerOption} value={providerOption}>{providerOption}</option>
                     ))}
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                 </div>
               </div>
               
-              {/* Repository Dropdown - Step 2 */}
+              {/* Repository Dropdown - disabled if no provider selected */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Repository</label>
                 <div className="relative">
                   <select
-                    value={selectedRepository}
+                    value={repository}
                     onChange={(e) => handleRepositoryChange(e.target.value)}
-                    disabled={deploymentStep < 2 || checkingAccount}
+                    disabled={!provider || checkingAccount}
                     className={`w-full px-3 py-2 border border-gray-300 rounded-md appearance-none bg-white pr-10
-                      ${(deploymentStep < 2 || checkingAccount) ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-400'}
+                      ${(!provider || checkingAccount) ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-400'}
                       focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
                   >
                     <option value="">Select Repository</option>
                     {getAvailableRepositories().map(repo => (
-                      <option key={repo} value={repo}>
-                        <OrangeLink href="#" className="block w-full">{repo}</OrangeLink>
-                      </option>
+                      <option key={repo} value={repo}>{repo}</option>
                     ))}
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                 </div>
               </div>
               
-              {/* Branch Dropdown - Step 3 */}
+              {/* Branch Dropdown - disabled if no repository selected */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Branch</label>
                 <div className="relative">
                   <select
-                    value={selectedBranch}
+                    value={branch}
                     onChange={(e) => handleBranchChange(e.target.value)}
-                    disabled={deploymentStep < 3 || checkingAccount}
+                    disabled={!repository || checkingAccount}
                     className={`w-full px-3 py-2 border border-gray-300 rounded-md appearance-none bg-white pr-10
-                      ${(deploymentStep < 3 || checkingAccount) ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-400'}
+                      ${(!repository || checkingAccount) ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-400'}
                       focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent`}
                   >
                     <option value="">Select Branch</option>
-                    {getAvailableBranches().map(branch => (
-                      <option key={branch} value={branch}>
-                        <OrangeLink href="#" className="block w-full">{branch}</OrangeLink>
-                      </option>
+                    {getAvailableBranches().map(branchOption => (
+                      <option key={branchOption} value={branchOption}>{branchOption}</option>
                     ))}
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -705,9 +734,62 @@ export default function Environments() {
                     Deploying...
                   </>
                 ) : (
-                  'Confirm & Save'
+                  'Deploy'
                 )}
               </button>
+            </div>
+
+            {/* Recent Deployment Tasks Table */}
+            <div className="mt-8">
+              <h4 className="text-md font-semibold text-gray-900 mb-4">Recent Deployment Tasks</h4>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-200 bg-gray-50">
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Commit Hash</th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Message</th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Author</th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Top Row - In Progress with pulsing green dot and animated progress bar */}
+                    {deploymentTasks.map((task, index) => (
+                      <tr key={task.id} className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${index === 0 ? 'bg-green-50' : ''}`}>
+                        <td className="py-3 px-4">
+                          <code className="font-mono text-xs bg-gray-100 px-2 py-1 rounded">{task.commitHash}</code>
+                        </td>
+                        <td className="py-3 px-4 text-gray-700">{task.message}</td>
+                        <td className="py-3 px-4 text-gray-700">{task.author}</td>
+                        <td className="py-3 px-4">
+                          {task.status === 'In Progress' ? (
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-2">
+                                <span className="relative flex h-3 w-3">
+                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                  <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                                </span>
+                                <span className="text-green-700 font-medium">In Progress</span>
+                              </div>
+                              <div className="w-24 bg-gray-200 rounded-full h-1.5">
+                                <div 
+                                  className="bg-brand-orange h-1.5 rounded-full transition-all duration-300"
+                                  style={{ width: `${task.progress}%` }}
+                                />
+                              </div>
+                              <span className="text-xs text-gray-500">{task.progress.toFixed(0)}%</span>
+                            </div>
+                          ) : (
+                            <span className={`text-xs px-2 py-1 rounded ${task.status === 'Completed' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                              {task.status}
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         );
