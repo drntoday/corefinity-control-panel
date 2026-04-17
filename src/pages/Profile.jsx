@@ -827,6 +827,7 @@ export default function Profile() {
         {/* Add New SSH Key */}
         <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
           <h4 className="font-medium text-gray-900 mb-3">Add New SSH Key</h4>
+          <p className="text-sm text-orange-800 mb-4">It might take up to 10min to install SSH key on all environments.</p>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Key Label</label>
