@@ -1,18 +1,19 @@
-Task: Finish the Environments Tab to strictly resonate with Corefinity instructions.
-​1. Sequential Deployment Form (Image 11):
-​Create a React state deploymentStep.
-​Logic: Pipeline dropdown (Step 0) -> Provider (Step 1) -> Repository (Step 2) -> Branch (Step 3).
-​Set disabled={deploymentStep < X} for each dropdown.
-​If Provider === 'GitHub', show a Red Alert: "No account connected. [Link GitHub Account]".
-​2. High-Density Technical Data (Pods/Nodes):
-​Populate the Pods tab with a table: Pod Name | Status | CPU % | Memory | Actions.
-​Use a setInterval to make the CPU and Memory numbers change every 2 seconds to simulate a live server.
-​Status should be a "Pulsing Green Dot" for 'Running'.
-​3. Interactive Diagnostics (Terminal View):
-​In the Diagnostics tab, create a black box component. When a "Run Diagnostics" button is clicked, have it "type out" lines: Checking SSL... OK, Testing Database... OK, Latency: 12ms.
-​4. Functional Firewall (Image 13):
-​Add a "Use My Current IP" button next to the IP input field.
-​Ensure the list of IPs has a "Delete" icon and a "Rule Type" label (e.g., "Allow").
-​5. Global Orange Link Audit:
-​Wrap all instance of Company Names, Website Names, and Environment IDs in the OrangeLink component.
-​Ensure the top breadcrumb matches the hierarchy: All Clients > Example Company > Website Name > Environment.
+Task: Fully implement the "Environment View" content for all 13 sub-tabs using React state.
+​1. Sub-Tab Navigation Logic:
+​Ensure clicking the sub-tabs (Pods, Nodes, Deployments, etc.) updates a currentSubTab state.
+​Use a conditional rendering block (switch/case) to display the correct component for each tab.
+​2. Content for Specific Tabs (Per Hirer Docs):
+​Deployments (The Key Requirement): >    - Create a "New Deployment" card.
+​Implement Sequential Dropdowns: Pipeline (Select first) -> Provider (Enabled only after Pipeline) -> Repository (Enabled only after Provider).
+​Add the Red Warning: If "GitHub" is selected, show "No account connected. [Link Account]".
+​Pods & Nodes: >    - Build high-density tables with columns: Name, Status (Pulsing Green Dot), CPU % (Animated), Memory, and Restart.
+​Use a setInterval to make CPU/RAM fluctuate (e.g., 12% to 15%) to simulate a "Live" environment.
+​Firewall: >    - Implement the IP Whitelist table.
+​Add the "Use My Current IP" button next to the input field as per Image 13.
+​Diagnostics: >    - Create a black terminal-style box. Add a button "Run Check" that simulates a log scroll: > Verifying SSL... OK, > Checking Disk... 40GB Free.
+​Autoscaler: >    - Add "Min Pods" and "Max Pods" range sliders and a "Current Load" indicator.
+​3. Brand Refinement:
+​Ensure all technical IDs (e.g., env-1234) and Website names are Corefinity Orange and clickable.
+​Use a high-density font size (12px-14px) for tables to maintain the "Professional Tool" aesthetic.
+​4. Data Persistence:
+​Wrap the environment state in localStorage so the "added IPs" or "scaling settings" persist after a page refresh.
