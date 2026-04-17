@@ -31,6 +31,48 @@ const mockActions = [
   { id: 4, name: 'SSL Renewal', company: 'Acme Corp', user: 'System', duration: '1m 20s', createdAt: '2024-01-14 03:00', completedAt: null, status: 'in_progress' },
 ];
 
+// Mock data for deployment dropdowns
+const mockProviders = ['GitHub', 'GitLab', 'Bitbucket'];
+const mockRepositories = {
+  'GitHub': ['corefinity/web-app', 'corefinity/api-service', 'infra/terraform'],
+  'GitLab': ['myproject/frontend', 'myproject/backend'],
+  'Bitbucket': ['team/project-a', 'team/project-b']
+};
+const mockBranches = {
+  'corefinity/web-app': ['main', 'develop', 'staging'],
+  'corefinity/api-service': ['main', 'develop'],
+  'infra/terraform': ['main', 'production'],
+  'myproject/frontend': ['main', 'dev'],
+  'myproject/backend': ['main', 'dev'],
+  'team/project-a': ['master', 'develop'],
+  'team/project-b': ['master']
+};
+
+// Mock pipelines for Pipelines tab table
+const mockPipelinesTableData = [
+  { id: 1, notes: 'Main production pipeline', environment: 'Production', rootWebDirectory: '/var/www/html', rootStorageDirectory: '/mnt/storage', deploymentPipelineName: 'prod-deploy-pipeline', maintenanceMode: false, customBuildCommands: 'npm run build && npm run test', company: 'Acme Corp' },
+  { id: 2, notes: 'Staging environment', environment: 'Staging', rootWebDirectory: '/var/www/staging', rootStorageDirectory: '/mnt/staging-storage', deploymentPipelineName: 'staging-deploy-pipeline', maintenanceMode: false, customBuildCommands: 'npm run build:staging', company: 'Beta LLC' },
+  { id: 3, notes: 'Development testing', environment: 'Development', rootWebDirectory: '/var/www/dev', rootStorageDirectory: '/mnt/dev-storage', deploymentPipelineName: 'dev-deploy-pipeline', maintenanceMode: true, customBuildCommands: 'npm run dev', company: 'Gamma Design' },
+];
+
+// Mock deployments listing data - Matches: Control panel redesign images.pdf → Deployments tab
+const mockDeploymentsListing = [
+  { id: 1, deploymentName: 'web-app-deploy-001', deploymentPipeline: 'main-pipeline', tasks: 5, status: 'completed', created: '2025-12-04 10:30:00', duration: '3m 24s' },
+  { id: 2, deploymentName: 'api-service-deploy-042', deploymentPipeline: 'api-pipeline', tasks: 3, status: 'completed', created: '2025-12-04 09:15:00', duration: '2m 10s' },
+  { id: 3, deploymentName: 'frontend-build-089', deploymentPipeline: 'frontend-pipeline', tasks: 4, status: 'failed', created: '2025-12-03 16:45:00', duration: '1m 55s' },
+];
+
+// Quick Actions list - Matches: Control panel redesign images.pdf → Quick Actions tab
+const quickActionsList = [
+  'Restart Web Pods',
+  'Restart Database Pods',
+  'Restart Redis Pods',
+  'Restart RabbitMQ Pods',
+  'Restart Elastic Search Pods',
+  'Restart Cli',
+  'Restart Varnish'
+];
+
 const TABS = [
   'General', 'Pods', 'Nodes', 'Deployments', 'Pipelines', 
   'Emails', 'Cache Warmer', 'Actions', 'Diagnostics', 
@@ -787,6 +829,145 @@ export default function Environments() {
               </button>
             </div>
 
+            {/* Configuration Block - Matches: Control panel redesign images.pdf → Deployments tab */}
+            <div className="mt-8 bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <h4 className="text-md font-semibold text-gray-900 mb-4">Configuration Block</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs text-gray-500 uppercase mb-1">Deployment Pipeline Status</label>
+                  <select className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange">
+                    <option value="enabled">Enabled</option>
+                    <option value="disabled">Disabled</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 uppercase mb-1">Git Repositories</label>
+                  <input
+                    type="text"
+                    placeholder="0"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 uppercase mb-1">Deployment Type</label>
+                  <select className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange">
+                    <option value="automatic">Automatic Deployment</option>
+                    <option value="manual">Manual</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 uppercase mb-1">Pipeline Shared Storage</label>
+                  <select className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange">
+                    <option value="enabled">Enabled</option>
+                    <option value="disabled">Disabled</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 uppercase mb-1">Shared Var Folder / Using Shared Env</label>
+                  <select disabled className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-gray-100 text-gray-400 cursor-not-allowed">
+                    <option value="disabled">Disabled</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 uppercase mb-1">Slack Channel</label>
+                  <input
+                    type="text"
+                    defaultValue="Use Default"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 uppercase mb-1">Build Server IP</label>
+                  <input
+                    type="text"
+                    placeholder="Auto detect from cluster"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 uppercase mb-1">Deployment Method Configuration</label>
+                  <select className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange">
+                    <option value="docker">From Global Config (Docker)</option>
+                    <option value="legacy">From Global Config (Legacy)</option>
+                    <option value="base">From Global Config (Base)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Deployments Listing Table - Matches: Control panel redesign images.pdf → Deployments tab */}
+            <div className="mt-8">
+              <div className="flex items-center justify-between mb-4">
+                <input
+                  type="text"
+                  placeholder="Search deployments..."
+                  className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange w-64"
+                />
+                <div className="flex items-center gap-2">
+                  <button className="px-4 py-2 bg-brand-orange text-white rounded-md text-sm font-medium hover:bg-orange-600 transition-colors">
+                    Create Deployment
+                  </button>
+                  <select className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange">
+                    <option value="">Select Action</option>
+                    <option value="retry">Retry Selected</option>
+                    <option value="rollback">Rollback Selected</option>
+                    <option value="delete">Delete Selected</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-200 bg-gray-50">
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                        <input type="checkbox" className="rounded border-gray-300 text-brand-orange focus:ring-brand-orange" />
+                      </th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">DEPLOYMENT NAME</th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">DEPLOYMENT PIPELINE</th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">TASKS</th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">STATUS</th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">CREATED</th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">DURATION</th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">ACTIONS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {mockDeploymentsListing.map((deployment) => (
+                      <tr key={`deployment-${deployment.id}`} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td className="py-3 px-4">
+                          <input type="checkbox" className="rounded border-gray-300 text-brand-orange focus:ring-brand-orange" />
+                        </td>
+                        <td className="py-3 px-4 font-mono text-xs text-gray-600">{deployment.deploymentName}</td>
+                        <td className="py-3 px-4 font-mono text-xs text-gray-600">{deployment.deploymentPipeline}</td>
+                        <td className="py-3 px-4 text-gray-700">{deployment.tasks}</td>
+                        <td className="py-3 px-4">
+                          <span className={`text-xs px-2 py-1 rounded ${deployment.status === 'completed' ? 'bg-green-100 text-green-800' : deployment.status === 'failed' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}`}>
+                            {deployment.status === 'completed' ? 'Completed' : deployment.status === 'failed' ? 'Failed' : 'In Progress'}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 font-mono text-xs text-gray-600">{deployment.created}</td>
+                        <td className="py-3 px-4 font-mono text-xs text-gray-600">{deployment.duration}</td>
+                        <td className="py-3 px-4">
+                          <div className="flex items-center gap-2">
+                            <button className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors" title="Retry">
+                              Retry
+                            </button>
+                            <button className="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded hover:bg-yellow-200 transition-colors" title="Rollback">
+                              Rollback
+                            </button>
+                            <button className="text-xs px-2 py-1 bg-gray-100 text-gray-800 rounded hover:bg-gray-200 transition-colors" title="View">
+                              View
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
             {/* Recent Deployment Tasks Table */}
             <div className="mt-8">
               <h4 className="text-md font-semibold text-gray-900 mb-4">Recent Deployment Tasks</h4>
@@ -842,6 +1023,193 @@ export default function Environments() {
           </div>
         );
       
+      // Matches: Control panel redesign images.pdf → Pipelines tab
+      case 'Pipelines':
+        return (
+          <div className="p-4">
+            {/* Header controls */}
+            <div className="flex items-center justify-between mb-6">
+              <input
+                type="text"
+                placeholder="Search pipelines..."
+                className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange w-64"
+              />
+              <button className="px-4 py-2 bg-brand-orange text-white rounded-md text-sm font-medium hover:bg-orange-600 transition-colors">
+                Create Environment Deployment Pipeline
+              </button>
+            </div>
+            
+            {/* Pipelines Table - Matches doc columns exactly */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 bg-gray-50">
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">ID</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">NOTES</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">ENVIRONMENT</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">ROOT WEB DIRECTORY</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">ROOT STORAGE DIRECTORY</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">DEPLOYMENT PIPELINE NAME</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">MAINTENANCE MODE DURING BUILD</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">CUSTOM BUILD COMMANDS</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">VIEW</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {mockPipelinesTableData.map((pipeline) => (
+                    <tr key={`pipeline-${pipeline.id}`} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                      <td className="py-3 px-4 font-mono text-xs text-gray-600">{pipeline.id}</td>
+                      <td className="py-3 px-4 text-gray-700">{pipeline.notes}</td>
+                      <td className="py-3 px-4">
+                        <span className="text-xs px-2 py-1 rounded bg-blue-100 text-blue-800">{pipeline.environment}</span>
+                      </td>
+                      <td className="py-3 px-4 font-mono text-xs text-gray-600">{pipeline.rootWebDirectory}</td>
+                      <td className="py-3 px-4 font-mono text-xs text-gray-600">{pipeline.rootStorageDirectory}</td>
+                      <td className="py-3 px-4 font-mono text-xs text-gray-600">{pipeline.deploymentPipelineName}</td>
+                      <td className="py-3 px-4">
+                        <span className={`text-xs px-2 py-1 rounded ${pipeline.maintenanceMode ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>
+                          {pipeline.maintenanceMode ? 'Enabled' : 'Disabled'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 font-mono text-xs text-gray-600">{pipeline.customBuildCommands}</td>
+                      <td className="py-3 px-4">
+                        <button className="text-gray-400 hover:text-brand-orange transition-colors" title="View Pipeline">
+                          <Eye className="w-4 h-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        );
+      
+      // Matches: Control panel redesign images.pdf → Emails tab
+      case 'Emails':
+        return (
+          <div className="p-4 space-y-6">
+            {/* Section 1: SMTP Details */}
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">SMTP Details</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs text-gray-500 uppercase">Transactional Emails</label>
+                  <p className="font-medium text-sm text-gray-900 mt-1">Pending setup</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Section 2: Outgoing emails */}
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">Outgoing Emails</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs text-gray-500 uppercase">Default outgoing email address</label>
+                  <input
+                    type="email"
+                    defaultValue="sales@manage.corefinity.com"
+                    className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      
+      // Matches: Control panel redesign images.pdf → Actions tab
+      case 'Actions':
+        return (
+          <div className="p-4">
+            {/* Header controls */}
+            <div className="flex items-center justify-between mb-6">
+              <input
+                type="text"
+                placeholder="Search actions..."
+                className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange w-64"
+              />
+              <div className="flex items-center gap-2">
+                <button className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                  Previous
+                </button>
+                <span className="text-sm text-gray-600">Page 1 of 3</span>
+                <button className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                  Next
+                </button>
+              </div>
+            </div>
+            
+            {/* Actions Table - Matches doc columns exactly */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 bg-gray-50">
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">NAME</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">COMPANY</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">USER</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">DURATION</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">CREATED AT</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">COMPLETED AT</th>
+                    <th className="text-left py-3 px-4 font-semibold text-gray-700">STATUS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* Example row from spec */}
+                  <tr className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <td className="py-3 px-4 text-gray-700">Environment Firewall Update</td>
+                    <td className="py-3 px-4 text-gray-700">Test company 123</td>
+                    <td className="py-3 px-4 text-gray-700">Pemith Fonseka</td>
+                    <td className="py-3 px-4 font-mono text-xs text-gray-600">6s</td>
+                    <td className="py-3 px-4 font-mono text-xs text-gray-600">2025-12-04 11:43:28</td>
+                    <td className="py-3 px-4 font-mono text-xs text-gray-600">2025-12-04 11:43:34</td>
+                    <td className="py-3 px-4">
+                      <span className="text-xs px-2 py-1 rounded bg-green-100 text-green-800">Finished</span>
+                    </td>
+                  </tr>
+                  {/* Additional mock rows */}
+                  {mockActions.map((action) => (
+                    <tr key={`action-${action.id}`} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                      <td className="py-3 px-4 text-gray-700">{action.name}</td>
+                      <td className="py-3 px-4 text-gray-700">{action.company}</td>
+                      <td className="py-3 px-4 text-gray-700">{action.user}</td>
+                      <td className="py-3 px-4 font-mono text-xs text-gray-600">{action.duration}</td>
+                      <td className="py-3 px-4 font-mono text-xs text-gray-600">{action.createdAt}</td>
+                      <td className="py-3 px-4 font-mono text-xs text-gray-600">{action.completedAt || '-'}</td>
+                      <td className="py-3 px-4">
+                        <span className={`text-xs px-2 py-1 rounded ${action.status === 'completed' ? 'bg-green-100 text-green-800' : action.status === 'in_progress' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}>
+                          {action.status === 'completed' ? 'Finished' : action.status === 'in_progress' ? 'In Progress' : action.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        );
+      
+      // Matches: Control panel redesign images.pdf → Quick Actions tab
+      case 'Quick Actions':
+        return (
+          <div className="p-4">
+            <div className="space-y-3">
+              {quickActionsList.map((action, index) => (
+                <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <span className="font-medium text-gray-900">{action}</span>
+                  <button className="px-4 py-2 bg-brand-orange text-white rounded-md text-sm font-medium hover:bg-orange-600 transition-colors">
+                    Run
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      
+      // Matches: Control panel redesign images.docx → Notifications tab (explicitly states no UI needed)
+      case 'Notifications':
+        return null;
+
+      // Matches: Control panel redesign images.pdf → Firewall tab
       case 'Firewall':
         return (
           <div className="p-4">
