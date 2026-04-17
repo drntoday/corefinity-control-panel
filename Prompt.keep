@@ -1,18 +1,26 @@
-Task: Fully implement the "Deployments" sub-tab logic in Environments.jsx using React state.
-​1. Form State Logic:
-​Create state variables for: pipeline, provider, repository, and branch.
-​Strict Dependency Chain: >    - Provider dropdown must have disabled={!pipeline}.
-​Repository dropdown must have disabled={!provider}.
-​Branch dropdown must have disabled={!repository}.
-​2. The "No Account" Warning:
-​If provider === 'GitHub', render a warning box: "⚠️ No account connected. [Link GitHub Account]". The link must use the brand-orange color.
-​3. Deployment Task List (Real-time Feel):
-​Below the form, create a table for "Recent Deployment Tasks."
-​Top Row: Set status to "In Progress" with a pulsing green dot.
-​Animate: Add a progress bar that uses a useEffect to move from 0% to 100%.
-​Data Columns: Commit Hash (e.g., 8f2d3a1), Message ("Update styles"), Author ("Catherine J."), and Status.
-​4. Sub-Tab Switching Fix:
-​Ensure that when the user clicks the "Deployments" tab in the sub-navigation, the activeSubTab state updates to show this specific component and hides the "General" info.
+Task: Build a high-performance, data-rich Dashboard for the Corefinity Control Panel.
+​1. Global Stats Overview (Cards):
+​Create 4 summary cards at the top:
+​Total Environments: (e.g., 12)
+​Active Deployments: (e.g., 3 - with a pulsing green dot)
+​Pending Tickets: (e.g., 5 - colored in brand-orange)
+​System Health: (e.g., 99.9% - with a small sparkline chart)
+​2. Environment Health Monitoring:
+​Create a "Top Environments" table.
+​Features: Use the OrangeLink for names. Include a "mini-gauge" or progress bar for CPU/Memory usage.
+​Interactive Data: Use a setInterval to make these metrics fluctuate by 1-2% every few seconds so the dashboard feels "live."
+​3. Recent Activity Feed:
+​Create a vertical timeline on the right side (or below) showing recent events:
+​"Deployment Successful for corefinity-api (main branch)"
+​"New Support Ticket created: #4029"
+​"Firewall Rule Added: 192.161.x.x"
+​Use icons from lucide-react to distinguish activity types (Check circle for deployments, Message for tickets, Shield for firewall).
+​4. Quick Actions Panel:
+​Add a sidebar or section with "One-Click" buttons:
+​Create New Environment (Primary Orange Button)
+​Open Support Ticket
+​System Maintenance Mode (Toggle)
 ​5. Visual Polish:
-​Use the Corefinity Orange (#FF6B00) for all links and the "Deploy" button.
-​Use a monospace font for the Commit Hash to give it a technical, high-end feel.
+​Use a light gray background (#F9FAFB) for the dashboard area to make the white cards pop.
+​Ensure every mention of a Company or Website is a functional OrangeLink.
+​Add "Skeleton Loaders" that show for 0.5s when the dashboard first loads to give it that premium SaaS feel.
