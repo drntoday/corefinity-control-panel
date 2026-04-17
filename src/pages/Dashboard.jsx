@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { usePulse } from '../context/PulseContext';
 import OrangeLink from '../components/OrangeLink';
 import { 
   Activity, 
@@ -12,7 +13,9 @@ import {
   Cpu,
   HardDrive,
   Globe,
-  Zap
+  Zap,
+  AlertTriangle,
+  X
 } from 'lucide-react';
 
 // Sparkline SVG component (defined outside main component)
@@ -44,6 +47,7 @@ function Sparkline({ data }) {
 
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
+  const { metrics, runningTasks, alerts, removeAlert } = usePulse();
   const [environments, setEnvironments] = useState([
     { id: 1, name: 'corefinity-api', cpu: 45, memory: 62, status: 'active', region: 'us-east-1' },
     { id: 2, name: 'corefinity-web', cpu: 32, memory: 48, status: 'active', region: 'us-west-2' },
@@ -61,6 +65,15 @@ export default function Dashboard() {
 
   const [sparklineData, setSparklineData] = useState([98, 99, 98.5, 99.2, 99.5, 99.1, 99.8, 99.9]);
 
+  // Sync activeDeployments with running tasks from Pulse context
+  useEffect(() => {
+    setStats(prev => ({ ...prev, activeDeployments: runningTasks }));
+  }, [runningTasks]);
+
+  // Sync systemHealth from Pulse context
+  useEffect(() => {
+    setStats(prev => ({ ...prev, systemHealth: metrics.systemHealth }));
+  }, [metrics.systemHealth]);
   const activities = [
     { id: 1, type: 'deployment', message: 'Deployment Successful for corefinity-api (main branch)', time: '2 min ago', icon: CheckCircle },
     { id: 2, type: 'ticket', message: 'New Support Ticket created: #4029', time: '15 min ago', icon: MessageSquare },
@@ -201,6 +214,23 @@ export default function Dashboard() {
 
   return (
     <div className="p-6 bg-[#F9FAFB] min-h-screen">
+      {/* Incident Banner - Shows when System Health < 98% */}
+      {stats.systemHealth < 98 && (
+        <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-lg shadow-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <AlertTriangle className="w-5 h-5 text-red-600" />
+              <div>
+                <p className="font-semibold text-red-800">System Alert</p>
+                <p className="text-sm text-red-700">System Health has dropped to {stats.systemHealth.toFixed(1)}%. Immediate attention may be required.</p>
+              </div>
+            </div>
+            <button onClick={() => setStats(prev => ({ ...prev, systemHealth: 99 }))} className="text-red-600 hover:text-red-800">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      )}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Dashboard</h2>
         <div className="flex items-center gap-2 text-sm text-gray-500">
