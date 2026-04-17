@@ -1,20 +1,18 @@
-Task: Build a fully functional, state-driven "Deployments" tab for Corefinity that strictly follows the sequential logic requirements.
-​1. The Sequential Form (Core Requirement):
-​Create a "Connect New Repository" card.
-​State Machine Logic: Implement four dropdowns with the following strict dependency chain:
-​Pipeline Type (Web, Worker, Cron)
-​Provider (GitHub, Bitbucket, GitLab) - Disabled until Pipeline is selected.
-​Repository (Mock list of repos) - Disabled until Provider is selected.
-​Branch (main, develop, staging) - Disabled until Repository is selected.
-​Validation Message: If 'GitHub' is selected as the Provider, display a high-visibility warning: "⚠️ No account connected. [Link GitHub Account]" (Use the OrangeLink for the link).
-​2. Live Deployment Simulation:
-​Create a "Recent Deployment Tasks" table.
-​Top Row Interaction: The most recent task should show a status of "Deploying..." with a pulsing green dot and a real Progress Bar that animates from 0% to 100% over 10 seconds.
-​Action Buttons: Add a "Rollback" button to previous successful deployments. When clicked, show a "Confirm Rollback" modal.
-​3. Technical UI Details:
-​Include columns for: Commit Hash (e.g., a7b2c3d in monospace font), Commit Message, Author (with avatar), and Duration.
-​Every Repository name and Environment ID must be rendered in Corefinity Orange (#FF6B00).
-​4. Implementation Detail:
-​Use React useState to track the currentStep of the form.
-​Ensure the "Deploy" button is only clickable once all 4 fields are filled.
-​On "Deploy" click, trigger a toast notification: "Deployment Started Successfully."
+Task: Fully implement the "Deployments" sub-tab logic in Environments.jsx using React state.
+​1. Form State Logic:
+​Create state variables for: pipeline, provider, repository, and branch.
+​Strict Dependency Chain: >    - Provider dropdown must have disabled={!pipeline}.
+​Repository dropdown must have disabled={!provider}.
+​Branch dropdown must have disabled={!repository}.
+​2. The "No Account" Warning:
+​If provider === 'GitHub', render a warning box: "⚠️ No account connected. [Link GitHub Account]". The link must use the brand-orange color.
+​3. Deployment Task List (Real-time Feel):
+​Below the form, create a table for "Recent Deployment Tasks."
+​Top Row: Set status to "In Progress" with a pulsing green dot.
+​Animate: Add a progress bar that uses a useEffect to move from 0% to 100%.
+​Data Columns: Commit Hash (e.g., 8f2d3a1), Message ("Update styles"), Author ("Catherine J."), and Status.
+​4. Sub-Tab Switching Fix:
+​Ensure that when the user clicks the "Deployments" tab in the sub-navigation, the activeSubTab state updates to show this specific component and hides the "General" info.
+​5. Visual Polish:
+​Use the Corefinity Orange (#FF6B00) for all links and the "Deploy" button.
+​Use a monospace font for the Commit Hash to give it a technical, high-end feel.
