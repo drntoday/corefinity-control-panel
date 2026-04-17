@@ -1,32 +1,40 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ChevronDown, MoreVertical, Plus, Trash2, AlertTriangle, Copy, Check, Loader2, ToggleLeft, ToggleRight, Activity, Server, Zap, Shield, RefreshCw, Container, Globe, WifiOff, Terminal, HardDrive, MapPin, Cpu, MemoryStick } from 'lucide-react';
+import { ChevronDown, MoreVertical, Plus, Trash2, AlertTriangle, Copy, Check, Loader2, ToggleLeft, ToggleRight, Activity, Server, Zap, Shield, RefreshCw, Container, Globe, WifiOff, Terminal, HardDrive, MapPin, Cpu, MemoryStick, Eye } from 'lucide-react';
 import StatusBadge from '../components/StatusBadge';
 import OrangeLink from '../components/OrangeLink';
 
 // Mock data for demonstration
 const initialPods = [
-  { id: 1, name: 'pod-web-frontend-7d8f9c', status: 'running', cpu: 45, memory: 1.2 },
-  { id: 2, name: 'pod-api-backend-3a2b1c', status: 'running', cpu: 62, memory: 2.4 },
-  { id: 3, name: 'pod-worker-queue-5e6f7g', status: 'pending', cpu: 12, memory: 0.5 },
-  { id: 4, name: 'pod-cache-redis-9h0i1j', status: 'running', cpu: 28, memory: 3.1 },
+  { id: 1, name: 'pod-web-frontend-7d8f9c', status: 'running', cpu: 45, memory: 1.2, nodeType: 'web', ip: '10.0.1.15', age: '12d', containers: '2/2', restarts: 0, ready: true },
+  { id: 2, name: 'pod-api-backend-3a2b1c', status: 'running', cpu: 62, memory: 2.4, nodeType: 'api', ip: '10.0.1.22', age: '8d', containers: '3/3', restarts: 1, ready: true },
+  { id: 3, name: 'pod-worker-queue-5e6f7g', status: 'pending', cpu: 12, memory: 0.5, nodeType: 'worker', ip: '10.0.1.31', age: '2d', containers: '1/2', restarts: 0, ready: false },
+  { id: 4, name: 'pod-cache-redis-9h0i1j', status: 'running', cpu: 28, memory: 3.1, nodeType: 'cache', ip: '10.0.1.45', age: '15d', containers: '1/1', restarts: 0, ready: true },
 ];
 
 const initialNodes = [
-  { id: 1, name: 'node-prod-01', status: 'running', cpu: 71, memory: 14.2 },
-  { id: 2, name: 'node-prod-02', status: 'running', cpu: 55, memory: 10.8 },
-  { id: 3, name: 'node-prod-03', status: 'error', cpu: 0, memory: 0 },
+  { id: 1, name: 'node-prod-01', status: 'running', cpu: 71, memory: 14.2, internalIp: '10.0.0.1', externalIp: '192.168.1.10', version: 'v1.28.0', kernelVersion: '5.15.0-91-generic' },
+  { id: 2, name: 'node-prod-02', status: 'running', cpu: 55, memory: 10.8, internalIp: '10.0.0.2', externalIp: '192.168.1.11', version: 'v1.28.0', kernelVersion: '5.15.0-91-generic' },
+  { id: 3, name: 'node-prod-03', status: 'error', cpu: 0, memory: 0, internalIp: '10.0.0.3', externalIp: '192.168.1.12', version: 'v1.28.0', kernelVersion: '5.15.0-91-generic' },
 ];
 
-const mockPipelines = ['main-pipeline', 'staging-pipeline', 'hotfix-pipeline'];
-const mockProviders = ['GitHub', 'GitLab', 'Bitbucket'];
-const mockRepositories = { GitHub: ['corefinity/web-app', 'corefinity/api-service'], GitLab: ['infra/terraform'], Bitbucket: ['legacy/monolith'] };
-const mockBranches = { 'corefinity/web-app': ['main', 'develop', 'feature/new-ui'], 'corefinity/api-service': ['main', 'develop'], 'infra/terraform': ['main'], 'legacy/monolith': ['master', 'develop'] };
+const mockPipelinesData = [
+  { id: 1, rootWebDirectory: '/var/www/html', rootStorageDirectory: '/mnt/storage', environment: 'Production', maintenanceMode: false, buildCommands: 'npm run build', company: 'Acme Corp' },
+  { id: 2, rootWebDirectory: '/var/www/staging', rootStorageDirectory: '/mnt/staging-storage', environment: 'Staging', maintenanceMode: false, buildCommands: 'npm run build:staging', company: 'Beta LLC' },
+  { id: 3, rootWebDirectory: '/var/www/dev', rootStorageDirectory: '/mnt/dev-storage', environment: 'Development', maintenanceMode: true, buildCommands: 'npm run dev', company: 'Gamma Design' },
+];
+
+const mockActions = [
+  { id: 1, name: 'Deploy Production', company: 'Acme Corp', user: 'John Doe', duration: '2m 34s', createdAt: '2024-01-15 10:30', completedAt: '2024-01-15 10:32', status: 'completed' },
+  { id: 2, name: 'Database Backup', company: 'Beta LLC', user: 'Jane Smith', duration: '5m 12s', createdAt: '2024-01-15 09:00', completedAt: '2024-01-15 09:05', status: 'completed' },
+  { id: 3, name: 'Cache Clear', company: 'Gamma Design', user: 'Mike Johnson', duration: '45s', createdAt: '2024-01-15 08:15', completedAt: '2024-01-15 08:16', status: 'completed' },
+  { id: 4, name: 'SSL Renewal', company: 'Acme Corp', user: 'System', duration: '1m 20s', createdAt: '2024-01-14 03:00', completedAt: null, status: 'in_progress' },
+];
 
 const TABS = [
   'General', 'Pods', 'Nodes', 'Deployments', 'Firewall', 
   'Cache Warmer', 'Autoscaler', 'Diagnostics', 'Monitors',
-  'Variables', 'Cron Jobs', 'Backups', 'Access Control'
+  'Pipelines', 'Emails', 'Actions'
 ];
 
 export default function Environments() {
@@ -245,8 +253,7 @@ export default function Environments() {
   // IPv4 and IPv6 regex validation
   const isValidIP = (ip) => {
     const ipv4Regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-    const ipv6Regex = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^([0-9a-fA-F]{1,4}:){1,7}:$|^([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}$|^([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}$|^([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}$|^([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}$|^([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}$|^[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|$|^:((:[0-9a-fA-F]{1,4}){1,7}|:)$/;
-    return ipv4Regex.test(ip) || ipv6Regex.test(ip);
+    return ipv4Regex.test(ip);
   };
   
   const canAddIP = isValidIP(newIP) && !firewallRules.some(rule => rule.ip === newIP);
@@ -498,7 +505,12 @@ export default function Environments() {
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">Status</th>
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">CPU %</th>
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">Memory</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Restart</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Node Type</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">IP</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Age</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Containers</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Restarts</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Ready</th>
                 </tr>
               </thead>
               <tbody>
@@ -528,9 +540,16 @@ export default function Environments() {
                       </div>
                     </td>
                     <td className="py-2 px-3">
-                      <button className="text-xs px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded text-gray-700 transition-colors">
-                        Restart
-                      </button>
+                      <span className="text-xs px-2 py-1 rounded bg-blue-100 text-blue-800">{pod.nodeType}</span>
+                    </td>
+                    <td className="py-2 px-3 font-mono text-xs text-gray-600">{pod.ip}</td>
+                    <td className="py-2 px-3 text-gray-600">{pod.age}</td>
+                    <td className="py-2 px-3 font-mono text-xs text-gray-600">{pod.containers}</td>
+                    <td className="py-2 px-3 text-gray-600">{pod.restarts}</td>
+                    <td className="py-2 px-3">
+                      <span className={`text-xs px-2 py-1 rounded ${pod.ready ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                        {pod.ready ? 'Yes' : 'No'}
+                      </span>
                     </td>
                   </tr>
                 ))}
@@ -549,7 +568,10 @@ export default function Environments() {
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">Status</th>
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">CPU %</th>
                   <th className="text-left py-2 px-3 font-semibold text-gray-700">Memory</th>
-                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Restart</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Internal IP</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">External IP</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Version</th>
+                  <th className="text-left py-2 px-3 font-semibold text-gray-700">Kernel Version</th>
                 </tr>
               </thead>
               <tbody>
@@ -578,11 +600,10 @@ export default function Environments() {
                         <span className="font-mono text-xs text-gray-600">{node.memory}GB</span>
                       </div>
                     </td>
-                    <td className="py-2 px-3">
-                      <button className="text-xs px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded text-gray-700 transition-colors">
-                        Restart
-                      </button>
-                    </td>
+                    <td className="py-2 px-3 font-mono text-xs text-gray-600">{node.internalIp}</td>
+                    <td className="py-2 px-3 font-mono text-xs text-gray-600">{node.externalIp}</td>
+                    <td className="py-2 px-3 font-mono text-xs text-gray-600">{node.version}</td>
+                    <td className="py-2 px-3 text-gray-600">{node.kernelVersion}</td>
                   </tr>
                 ))}
               </tbody>
@@ -824,6 +845,9 @@ export default function Environments() {
       case 'Firewall':
         return (
           <div className="p-4">
+            <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800 font-medium">Only IPv4 addresses are supported at this time.</p>
+            </div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900">Firewall Rules</h3>
               <button
@@ -887,7 +911,7 @@ export default function Environments() {
                           type="text"
                           value={newIP}
                           onChange={(e) => setNewIP(e.target.value)}
-                          placeholder="Enter IPv4 or IPv6 address"
+                          placeholder="Enter IPv4 address"
                           className={`w-full px-3 py-2 border rounded-md font-mono text-sm
                             ${isValidIP(newIP) || newIP === '' ? 'border-gray-300' : 'border-red-300 focus:border-red-500'}
                             focus:outline-none focus:ring-2 focus:ring-brand-orange`}
@@ -949,6 +973,22 @@ export default function Environments() {
               >
                 {autoscalerEnabled ? <ToggleRight className="w-6 h-6" /> : <ToggleLeft className="w-6 h-6" />}
                 {autoscalerEnabled ? 'Enabled' : 'Disabled'}
+              </button>
+            </div>
+            
+            {/* Graph Navigation Tabs */}
+            <div className="flex gap-2 border-b border-gray-200">
+              <button className="px-4 py-2 text-sm font-medium text-brand-orange border-b-2 border-brand-orange">
+                Hour
+              </button>
+              <button className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900">
+                Day
+              </button>
+              <button className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900">
+                Week
+              </button>
+              <button className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900">
+                Month
               </button>
             </div>
             
