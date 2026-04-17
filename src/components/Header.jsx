@@ -8,7 +8,8 @@ export default function Header({ onMenuClick }) {
   // Mock breadcrumb data - in real app this would come from router state or context
   const [breadcrumbData, setBreadcrumbData] = useState({
     company: 'Example Company',
-    website: 'Main Website'
+    website: 'Main Website',
+    tab: 'General'
   });
 
   // Close dropdown when clicking outside
@@ -69,6 +70,14 @@ export default function Header({ onMenuClick }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
             <OrangeLink to="/environments" className="font-medium !no-underline hover:!underline">{breadcrumbData.website}</OrangeLink>
+            {breadcrumbData.tab && (
+              <>
+                <svg className="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+                <span className="font-medium text-gray-900">{breadcrumbData.tab}</span>
+              </>
+            )}
           </nav>
         </div>
 
