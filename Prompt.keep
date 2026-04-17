@@ -1,90 +1,24 @@
-Here is the final submission message you can send to the hirer. Replace YOUR_USERNAME and REPO_NAME with your actual GitHub username and repository name.
-
----
-
-Subject: Corefinity Control Panel – Live Demo & Feedback Request
-
-Hello,
-
-The redesigned Corefinity control panel is now live and can be experienced at:
-
-🔗 https://YOUR_USERNAME.github.io/REPO_NAME/
-
-(If the link doesn't work, please ensure you replace YOUR_USERNAME and REPO_NAME with the correct values – or use the direct link I provided in the previous message.)
-
----
-
-How to Navigate the Dashboard
-
-· Sidebar (left) – main navigation: Home, Deployments, Environments, Tickets, User Profile.
-· Dashboard Home – four cards link directly to each tool.
-· Header – search (click or press /), notifications, help, user avatar – all show informative toasts.
-
----
-
-What You Can Explore
-
-1. Deployments Page
-
-· Active deployment hero – live progress bar, current step, duration.
-· Deployment Information – ID, status, commit, branch, triggered by, started at.
-· Orange links – environment, pipeline, company, website (click to see toast).
-· Action selector – choose Redeploy, Rollback, Cancel, or Restart, then click Submit.
-· Deployments Tasks tab – lists all tasks; the currently running task appears at the top.
-· Pipeline Configuration tab – read‑only pipeline steps, YAML preview, environment variables, artifacts.
-
-2. Environments Page
-
-· Status overview – four cards: Environment Health, Active Deployment, Issues Detected, Resource Summary (CPU/Memory).
-· System insights – real‑time alerts (e.g., node memory critical, slow deployment).
-· Tabs – General, Pods, Nodes, Deployments, Pipelines, Emails, Cache Warmer, Actions, Diagnostics, Autoscaler, Monitors, Quick Actions, Firewall.
-· Deployments tab – create a new deployment via cascading dropdowns (account connection → provider → repository → branch → pipeline).
-· Firewall tab – add/edit IP rules with IPv4 validation.
-
-3. User Profile Page
-
-· Profile Information – editable name, email, role, company, website (orange link).
-· Change password modal (with validation).
-· IP Whitelist – add/edit/delete, protected system rows, IPv4 validation.
-· SSH Keys – add/edit/delete, fingerprint and last used shown.
-· SSO – “Connect SSO” button (toast for future implementation).
-· API Tokens – generate with scopes, one‑time token display with copy, revoke.
-· Two‑Factor Authentication – enable/disable mock with QR code and 6‑digit verification.
-· Notification Preferences – toggles for deployment, security, billing, product announcements (saved in localStorage).
-
-4. Support Tickets Page
-
-· Listing table – filter by status, search by ID/subject, sort by any column, pagination (5 per page).
-· Click any ticket row – opens side panel with three tabs:
-  · Comments – two distinct ways to add a comment: “Comment” (visible to customer) and “Send Reply” (staff only).
-  · History – chronological timeline of status, priority, and assignment changes.
-  · Details – ticket metadata plus company, agency, website as orange links.
-
-5. Dashboard Home
-
-· Central hub with cards linking to the four main tools.
-
----
-
-Additional UX Highlights
-
-· All interactive elements show toast notifications for feedback.
-· Real‑time simulation – deployment progress updates every second, tasks appear dynamically.
-· Responsive design – works on desktop, tablet, and mobile.
-· Sidebar collapse – remembers your preference (localStorage).
-· Empty states – tables with no data show helpful illustrations and messages.
-
----
-
-Next Steps – New Version in Development
-
-I am currently working on an enhanced version of the control panel that includes additional features, improved performance, and further UX refinements. Once ready, I will provide you with the live link to the new version.
-
-Thank you for the opportunity. I look forward to your feedback – please let me know what works well and what you would like to see improved. I can make specific changes or, if you prefer, redesign the entire dashboard from scratch based on your revised instructions.
-
-Best regards,
-[Your Name]
-
----
-
-Reminder: Replace YOUR_USERNAME and REPO_NAME with your actual GitHub details before sending. If you already shared the live link earlier, you can simply refer to “the link I shared previously” instead of repeating it.
+Task: Implement conditional rendering for all sub-tabs in the Environment View to match the hirer's technical requirements.
+​1. Tab Switching Logic:
+​In Environments.jsx, create a state activeTab (defaulting to 'General').
+​Map the 13 tab buttons to update this state.
+​Use a switch statement or a lookup object to render the specific content below the tab bar.
+​2. Content Implementation (The "Full-Fledged" details):
+​Deployments Tab (Image 11 Requirement): >     - Implement the 4-Step Sequential Form: Pipeline → Provider → Repository → Branch.
+​Use disabled attributes on each dropdown so they only unlock when the previous one is selected.
+​If "GitHub" is selected as the Provider, display a red alert box: "⚠️ No account connected. [Link GitHub Account]".
+​Pods & Nodes Tabs (Technical Monitoring):
+​Create a high-density table. Use a setInterval hook to make CPU and RAM percentages "jitter" (fluctuate by 1-2%) so the dashboard looks alive.
+​Status column should show a pulsing green dot for "Running."
+​Firewall Tab (Security Control):
+​List of whitelisted IPs with "Delete" buttons.
+​An input field with a "Use My Current IP" button that auto-fills 182.161.x.x.
+​Diagnostics Tab (Terminal Experience):
+​A black box styled as a Linux terminal.
+​A "Run Health Check" button that slowly prints lines of text: > Checking SSL... OK, > Testing DB... OK, > Latency: 14ms.
+​Autoscaler Tab (Scaling Logic):
+​Two range sliders for "Min Instances" and "Max Instances."
+​A "Current Load" progress bar that reflects the mock CPU data.
+​3. Finishing Touches:
+​The Orange Rule: Ensure every single Environment ID (e.g., env-3029) and Website Name is wrapped in your OrangeLink component.
+​Navigation Hierarchy: Ensure the top breadcrumb dynamically shows the path: All Clients > Example Company > Website Name > [Active Tab Name].
