@@ -18,7 +18,8 @@ import {
   GitBranch,
   Wrench,
   Eye,
-  EyeOff
+  EyeOff,
+  Mail
 } from 'lucide-react';
 import StatusBadge from '../components/StatusBadge';
 
@@ -34,25 +35,30 @@ export default function Profile() {
     emergency: true,
     maintenance: true,
     monitoring: true,
-    deployment: false
+    deployment: false,
+    newsletters: false
+  });
+  const [ticketSubscriptions, setTicketSubscriptions] = useState({
+    yourCompany: true,
+    inheritedCompanies: []
   });
   const [sshKeys, setSshKeys] = useState(() => {
     const saved = localStorage.getItem('ssh_keys');
     return saved ? JSON.parse(saved) : [
-      { id: 1, label: 'Production Server', key: 'ssh-rsa AAAAB3NzaC1yc2E...', addedDate: '2024-01-15' },
-      { id: 2, label: 'Development Machine', key: 'ssh-rsa AAAAB3NzaC1yc2E...', addedDate: '2024-02-20' }
+      { id: 1, name: 'Production Server', signature: 'ssh-rsa AAAAB3NzaC1yc2E...', created: '2024-01-15' },
+      { id: 2, name: 'Development Machine', signature: 'ssh-rsa AAAAB3NzaC1yc2E...', created: '2024-02-20' }
     ];
   });
-  const [newSshKey, setNewSshKey] = useState({ label: '', key: '' });
+  const [showSSHModal, setShowSSHModal] = useState(false);
+  const [newSshKey, setNewSshKey] = useState({ name: '', signature: '', publicKey: '' });
   const [sshValidationStatus, setSshValidationStatus] = useState(null);
   const [whitelistedIPs, setWhitelistedIPs] = useState(() => {
     const saved = localStorage.getItem('profile_whitelist_ips');
     return saved ? JSON.parse(saved) : [
-      { id: 1, ip: '192.168.1.100', addedDate: '2024-01-10' },
-      { id: 2, ip: '10.0.0.50', addedDate: '2024-02-15' }
+      { id: 1, ip: '255.255.255.255', comment: 'Example IP', createdAt: '2026-04-13 10:21:55' }
     ];
   });
-  const [newIP, setNewIP] = useState('');
+  const [newIP, setNewIP] = useState({ ip: '', comment: '' });
   const [apiTokens, setApiTokens] = useState(() => {
     const saved = localStorage.getItem('api_tokens');
     return saved ? JSON.parse(saved) : [
@@ -63,6 +69,12 @@ export default function Profile() {
   const [newTokenName, setNewTokenName] = useState('');
   const [showNewTokenForm, setShowNewTokenForm] = useState(false);
   const [currentIP, setCurrentIP] = useState('');
+  const [showPasswordFields, setShowPasswordFields] = useState(false);
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
 
   // Fetch current IP on mount
   useEffect(() => {
