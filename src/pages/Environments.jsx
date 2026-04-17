@@ -36,7 +36,7 @@ export default function Environments() {
   // Environment details data with localStorage persistence
   const [envDetails] = useState({
     name: 'Production - Main Site',
-    id: 'env-prod-7a8b9c0d',
+    id: 'env-3029',
     ip: '192.168.1.100',
     region: 'us-east-1',
     phpVersion: '8.2',
@@ -148,13 +148,13 @@ export default function Environments() {
     localStorage.setItem('cache_urls', JSON.stringify(cacheUrls));
   }, [cacheUrls]);
 
-  // Update breadcrumb on mount - matches hierarchy: All Clients > Example Company > Website Name > Environment
+  // Update breadcrumb on mount and when activeTab changes - matches hierarchy: All Clients > Example Company > Website Name > [Active Tab Name]
   useEffect(() => {
     const event = new CustomEvent('breadcrumb-update', {
-      detail: { company: 'Example Company', website: 'Main Website' }
+      detail: { company: 'Example Company', website: 'Main Website', tab: activeTab }
     });
     window.dispatchEvent(event);
-  }, []);
+  }, [activeTab]);
 
   // Update active pods count based on running pods
   useEffect(() => {
@@ -220,9 +220,9 @@ export default function Environments() {
     setTimeout(() => setCopiedIP(null), 2000);
   };
 
-  // Get current IP for firewall
+  // Get current IP for firewall - auto-fills with 182.161.x.x format
   const handleAddCurrentIP = () => {
-    const mockCurrentIP = '203.0.113.42';
+    const mockCurrentIP = '182.161.45.123';
     if (!firewallRules.some(rule => rule.ip === mockCurrentIP)) {
       setFirewallRules([...firewallRules, { ip: mockCurrentIP, type: 'Allow' }]);
     }
@@ -253,15 +253,15 @@ export default function Environments() {
     setCacheUrls(cacheUrls.filter(url => url !== urlToRemove));
   };
 
-  // Handle running diagnostics with typed output
+  // Handle running diagnostics with typed output - terminal experience
   const handleRunDiagnostics = () => {
     setDiagnosticsRunning(true);
     setDiagnosticsOutput([]);
     
     const steps = [
-      { text: 'Checking SSL...', result: 'OK', delay: 500 },
-      { text: 'Testing Database...', result: 'OK', delay: 1200 },
-      { text: 'Latency:', result: '12ms', delay: 1800 },
+      { text: '> Checking SSL...', result: 'OK', delay: 800 },
+      { text: '> Testing DB...', result: 'OK', delay: 1600 },
+      { text: '> Latency:', result: '14ms', delay: 2400 },
     ];
     
     let totalDelay = 0;
@@ -613,7 +613,9 @@ export default function Environments() {
                   >
                     <option value="">Select Pipeline</option>
                     {mockPipelines.map(pipeline => (
-                      <option key={pipeline} value={pipeline}>{pipeline}</option>
+                      <option key={pipeline} value={pipeline}>
+                        <OrangeLink href="#" className="block w-full">{pipeline}</OrangeLink>
+                      </option>
                     ))}
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -655,7 +657,9 @@ export default function Environments() {
                   >
                     <option value="">Select Repository</option>
                     {getAvailableRepositories().map(repo => (
-                      <option key={repo} value={repo}>{repo}</option>
+                      <option key={repo} value={repo}>
+                        <OrangeLink href="#" className="block w-full">{repo}</OrangeLink>
+                      </option>
                     ))}
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -676,7 +680,9 @@ export default function Environments() {
                   >
                     <option value="">Select Branch</option>
                     {getAvailableBranches().map(branch => (
-                      <option key={branch} value={branch}>{branch}</option>
+                      <option key={branch} value={branch}>
+                        <OrangeLink href="#" className="block w-full">{branch}</OrangeLink>
+                      </option>
                     ))}
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
