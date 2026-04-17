@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import { PulseProvider } from './context/PulseContext';
 import Dashboard from './pages/Dashboard';
@@ -11,7 +11,7 @@ import Profile from './pages/Profile';
 function App() {
   return (
     <PulseProvider>
-      <BrowserRouter basename="/corefinity-control-panel">
+      <HashRouter>
         <Layout>
           <Routes>
             <Route path="/" element={<Dashboard />} />
@@ -23,7 +23,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
           </Routes>
         </Layout>
-      </BrowserRouter>
+      </HashRouter>
     </PulseProvider>
   );
 }
