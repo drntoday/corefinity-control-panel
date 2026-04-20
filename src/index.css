@@ -175,6 +175,7 @@ body {
 }
 
 /* Metric Card Border Top Variants */
+.card-metric-blue { border-top: 3px solid var(--blue-primary); }
 .card-metric-gold { border-top: 3px solid var(--gold-primary); }
 .card-metric-purple { border-top: 3px solid var(--purple-royal); }
 .card-metric-orange { border-top: 3px solid var(--orange-ember); }
@@ -247,6 +248,10 @@ th, td {
 .status-pill.active .dot,
 .status-pill.success .dot {
   background-color: var(--success);
+}
+
+.status-pill.idle .dot {
+  background-color: var(--text-tertiary);
 }
 
 .status-pill.building .dot,
@@ -397,6 +402,176 @@ code, .mono-font {
 }
 
 /* ============================================
+   TYPOGRAPHY OVERRIDES
+   ============================================ */
+code, .mono-font {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.data-table, table {
+  font-family: 'Inter', sans-serif;
+}
+
+/* ============================================
+   RECENT ACTIVITY FEED
+   ============================================ */
+.recent-activity, [class*="recent-activity"] {
+  background: var(--bg-surface);
+  border-radius: 16px;
+  border: 1px solid var(--border-default);
+  overflow: hidden;
+}
+
+.recent-activity-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.recent-activity-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.recent-activity-content {
+  padding: 1.5rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.activity-item:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.activity-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.activity-icon.deployment {
+  background: var(--success-subtle);
+  color: var(--success);
+}
+
+.activity-icon.ticket {
+  background: var(--warning-subtle);
+  color: var(--warning);
+}
+
+.activity-icon.firewall {
+  background: var(--info-subtle);
+  color: var(--info);
+}
+
+.activity-message {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-message p {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.activity-time {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+.activity-timeline-line {
+  position: absolute;
+  left: 1rem;
+  top: 2rem;
+  bottom: 0;
+  width: 1px;
+  background: var(--bg-elevated);
+}
+
+/* ============================================
+   QUICK ACTIONS CARD
+   ============================================ */
+.quick-actions, [class*="quick-actions"] {
+  background: var(--bg-surface);
+  border-radius: 16px;
+  border: 1px solid var(--border-default);
+  overflow: hidden;
+}
+
+.quick-actions-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.quick-actions-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.quick-actions-content {
+  padding: 1.5rem;
+}
+
+.quick-action-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.quick-action-btn:last-child {
+  margin-bottom: 0;
+}
+
+.quick-action-btn.primary {
+  background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-soft) 100%);
+  color: var(--text-inverse);
+  box-shadow: var(--shadow-sm);
+}
+
+.quick-action-btn.primary:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.quick-action-btn.secondary {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+}
+
+.quick-action-btn.secondary:hover {
+  background: var(--bg-elevated);
+}
+
+/* ============================================
    CODE PILL FOR COMMIT HASHES
    ============================================ */
 .code-pill {
@@ -480,6 +655,11 @@ code, .mono-font {
 .status-active, .status-healthy, .status-pill.active, .status-pill.success {
   background: var(--success-subtle) !important;
   color: var(--success) !important;
+}
+
+.status-idle, .status-pill.idle {
+  background: var(--bg-elevated) !important;
+  color: var(--text-tertiary) !important;
 }
 
 .status-pending, .status-building, .status-pill.building, .status-pill.pending, .status-pill.warning {
