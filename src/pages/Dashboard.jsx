@@ -119,23 +119,23 @@ export default function Dashboard() {
   }, [stats.systemHealth]);
 
   const getUsageColor = (value) => {
-    if (value < 50) return 'bg-green-500';
-    if (value < 75) return 'bg-yellow-500';
-    return 'bg-red-500';
+    if (value < 50) return 'bg-neon-lime';
+    if (value < 75) return 'bg-neon-gold';
+    return 'bg-error';
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'active': return 'text-green-600 bg-green-50';
-      case 'idle': return 'text-text-secondary bg-gray-50';
-      case 'error': return 'text-red-600 bg-red-50';
-      default: return 'text-text-secondary bg-gray-50';
+      case 'active': return 'text-success bg-green-50';
+      case 'idle': return 'text-text-secondary bg-bg-elevated';
+      case 'error': return 'text-error bg-red-50';
+      default: return 'text-text-secondary bg-bg-elevated';
     }
   };
 
   // Skeleton Card Component
   const SkeletonCard = () => (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 animate-pulse">
+    <div className="bg-white rounded-xl shadow-sm border border-border-default p-6 animate-pulse">
       <div className="flex items-center justify-between mb-4">
         <div className="h-4 bg-bg-elevated rounded w-24"></div>
         <div className="h-8 w-8 bg-bg-elevated rounded-lg"></div>
@@ -158,7 +158,7 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="p-6 bg-[#F9FAFB] min-h-screen">
+      <div className="p-6">
         <h2 className="text-2xl font-bold text-text-primary mb-6">Dashboard</h2>
         
         {/* Stats Cards Skeleton */}
@@ -168,11 +168,11 @@ export default function Dashboard() {
 
         {/* Main Content Skeleton */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-border-default p-6">
             <div className="h-6 bg-bg-elevated rounded w-48 mb-6"></div>
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
+                <tr className="border-b border-border-default">
                   {[...Array(5)].map((_, i) => (
                     <th key={i} className="px-6 py-3 text-left">
                       <div className="h-4 bg-bg-elevated rounded w-20"></div>
@@ -187,7 +187,7 @@ export default function Dashboard() {
           </div>
           
           <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="card-premium p-6">
               <div className="h-6 bg-bg-elevated rounded w-40 mb-6"></div>
               {[...Array(4)].map((_, i) => (
                 <div key={i} className="flex items-start gap-3 mb-4 animate-pulse">
@@ -200,7 +200,7 @@ export default function Dashboard() {
               ))}
             </div>
             
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="card-premium p-6">
               <div className="h-6 bg-bg-elevated rounded w-32 mb-4"></div>
               <div className="space-y-3">
                 {[...Array(3)].map((_, i) => (
@@ -215,19 +215,19 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-6 bg-[#F9FAFB] min-h-screen">
+    <div className="p-6">
       {/* Incident Banner - Shows when System Health < 98% */}
       {stats.systemHealth < 98 && (
         <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-lg shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <AlertTriangle className="w-5 h-5 text-red-600" />
+              <AlertTriangle className="w-5 h-5 text-error" />
               <div>
-                <p className="font-semibold text-red-800">System Alert</p>
-                <p className="text-sm text-red-700">System Health has dropped to {stats.systemHealth.toFixed(1)}%. Immediate attention may be required.</p>
+                <p className="font-semibold text-error">System Alert</p>
+                <p className="text-sm text-text-secondary">System Health has dropped to {stats.systemHealth.toFixed(1)}%. Immediate attention may be required.</p>
               </div>
             </div>
-            <button onClick={() => setStats(prev => ({ ...prev, systemHealth: 99 }))} className="text-red-600 hover:text-red-800">
+            <button onClick={() => setStats(prev => ({ ...prev, systemHealth: 99 }))} className="text-error hover:text-error">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -243,16 +243,16 @@ export default function Dashboard() {
 
       {/* Global Stats Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {/* Total Environments */}
+        {/* Total Environments - Cyan */}
         <div 
-          className={`card-premium card-metric-gold p-6 ${demoMode ? 'guide-wrapper demo-active' : ''}`}
+          className={`card-premium card-metric-cyan p-6 ${demoMode ? 'guide-wrapper demo-active' : ''}`}
           onClick={() => demoMode && showGuide('metric-environments')}
           data-guide="metric-environments"
         >
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-text-secondary">Total Environments</span>
             <div className="p-2 bg-bg-elevated rounded-lg">
-              <Server className="w-5 h-5" style={{ color: 'var(--gold-primary)' }} />
+              <Server className="w-5 h-5" style={{ color: 'var(--neon-cyan)' }} />
             </div>
           </div>
           <div className="text-3xl font-bold text-text-primary mb-1">{stats.totalEnvironments}</div>
@@ -262,23 +262,23 @@ export default function Dashboard() {
           {demoMode && <span className="guide-badge">?</span>}
         </div>
 
-        {/* Active Deployments */}
+        {/* Active Deployments - Magenta */}
         <div 
-          className={`card-premium card-metric-purple p-6 ${demoMode ? 'guide-wrapper demo-active' : ''}`}
+          className={`card-premium card-metric-magenta p-6 ${demoMode ? 'guide-wrapper demo-active' : ''}`}
           onClick={() => demoMode && showGuide('metric-deployments')}
           data-guide="metric-deployments"
         >
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-text-secondary">Active Deployments</span>
             <div className="p-2 bg-bg-elevated rounded-lg">
-              <Zap className="w-5 h-5" style={{ color: 'var(--purple-royal)' }} />
+              <Zap className="w-5 h-5" style={{ color: 'var(--neon-magenta)' }} />
             </div>
           </div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-3xl font-bold text-text-primary">{stats.activeDeployments}</span>
             <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full" style={{ backgroundColor: 'var(--purple-royal)', opacity: 0.75 }}></span>
-              <span className="relative inline-flex rounded-full h-3 w-3" style={{ backgroundColor: 'var(--purple-royal)' }}></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full" style={{ backgroundColor: 'var(--neon-magenta)', opacity: 0.75 }}></span>
+              <span className="relative inline-flex rounded-full h-3 w-3" style={{ backgroundColor: 'var(--neon-magenta)' }}></span>
             </span>
           </div>
           <OrangeLink to="/deployments" className="text-sm">
@@ -287,35 +287,35 @@ export default function Dashboard() {
           {demoMode && <span className="guide-badge">?</span>}
         </div>
 
-        {/* Pending Tickets */}
+        {/* Pending Tickets - Gold */}
         <div 
-          className={`card-premium card-metric-orange p-6 ${demoMode ? 'guide-wrapper demo-active' : ''}`}
+          className={`card-premium card-metric-gold p-6 ${demoMode ? 'guide-wrapper demo-active' : ''}`}
           onClick={() => demoMode && showGuide('metric-tickets')}
           data-guide="metric-tickets"
         >
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-text-secondary">Pending Tickets</span>
             <div className="p-2 bg-bg-elevated rounded-lg">
-              <MessageSquare className="w-5 h-5" style={{ color: 'var(--orange-ember)' }} />
+              <MessageSquare className="w-5 h-5" style={{ color: 'var(--neon-gold)' }} />
             </div>
           </div>
-          <div className="text-3xl font-bold" style={{ color: 'var(--orange-ember)' }}>{stats.pendingTickets}</div>
+          <div className="text-3xl font-bold" style={{ color: 'var(--neon-gold)' }}>{stats.pendingTickets}</div>
           <OrangeLink to="/tickets" className="text-sm">
             View tickets →
           </OrangeLink>
           {demoMode && <span className="guide-badge">?</span>}
         </div>
 
-        {/* System Health */}
+        {/* System Health - Lime */}
         <div 
-          className={`card-premium card-metric-success p-6 ${demoMode ? 'guide-wrapper demo-active' : ''}`}
+          className={`card-premium card-metric-lime p-6 ${demoMode ? 'guide-wrapper demo-active' : ''}`}
           onClick={() => demoMode && showGuide('metric-health')}
           data-guide="metric-health"
         >
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-text-secondary">System Health</span>
             <div className="p-2 bg-bg-elevated rounded-lg">
-              <Activity className="w-5 h-5" style={{ color: 'var(--success)' }} />
+              <Activity className="w-5 h-5" style={{ color: 'var(--neon-lime)' }} />
             </div>
           </div>
           <div className="flex items-end justify-between mb-1">
@@ -336,11 +336,12 @@ export default function Dashboard() {
                 cy="40"
                 r="32"
                 fill="none"
-                stroke="var(--gold-primary)"
+                stroke="var(--neon-lime)"
                 strokeWidth="8"
                 strokeLinecap="round"
                 strokeDasharray={`${(stats.systemHealth / 100) * 201.06} 201.06`}
                 className="transition-all duration-500 ease-out"
+                style={{ filter: 'drop-shadow(0 0 8px var(--neon-lime))' }}
               />
             </svg>
             <div className="text-right">
@@ -358,7 +359,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Environment Health Monitoring Table */}
         <div className="lg:col-span-2 card-premium overflow-hidden">
-          <div className="px-6 py-4 border-b var(--border-default) flex items-center justify-between">
+          <div className="px-6 py-4 border-b border-border-default flex items-center justify-between">
             <h3 className="text-lg font-semibold text-text-primary">Top Environments</h3>
             <OrangeLink to="/environments" className="text-sm">
               View all →
@@ -389,7 +390,7 @@ export default function Dashboard() {
                       <div className="flex items-center gap-2">
                         <div className="flex-1 w-24 h-2 bg-bg-elevated rounded-full overflow-hidden">
                           <div 
-                            className={`h-full ${env.cpu < 50 ? "bg-accent-secondary" : env.cpu < 75 ? "bg-warning" : "bg-error"} transition-all duration-500`}
+                            className={`h-full ${env.cpu < 50 ? "bg-neon-cyan" : env.cpu < 75 ? "bg-neon-gold" : "bg-error"} transition-all duration-500`}
                             style={{ width: `${env.cpu}%` }}
                           ></div>
                         </div>
@@ -400,7 +401,7 @@ export default function Dashboard() {
                       <div className="flex items-center gap-2">
                         <div className="flex-1 w-24 h-2 bg-bg-elevated rounded-full overflow-hidden">
                           <div 
-                            className={`h-full ${env.memory < 50 ? "bg-accent-secondary" : env.memory < 75 ? "bg-warning" : "bg-error"} transition-all duration-500`}
+                            className={`h-full ${env.memory < 50 ? "bg-neon-cyan" : env.memory < 75 ? "bg-neon-gold" : "bg-error"} transition-all duration-500`}
                             style={{ width: `${env.memory}%` }}
                           ></div>
                         </div>
@@ -422,8 +423,8 @@ export default function Dashboard() {
         {/* Right Sidebar */}
         <div className="space-y-6">
           {/* Recent Activity Feed */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200">
+          <div className="recent-activity overflow-hidden">
+            <div className="px-6 py-4 border-b border-border-default">
               <h3 className="text-lg font-semibold text-text-primary">Recent Activity</h3>
             </div>
             <div className="p-6">
@@ -436,7 +437,7 @@ export default function Dashboard() {
                     const IconComponent = activity.icon;
                     const getIconBg = () => {
                       switch (activity.type) {
-                        case 'deployment': return 'bg-green-100 text-green-600';
+                        case 'deployment': return 'bg-green-100 text-success';
                         case 'ticket': return 'bg-orange-100 text-brand-orange';
                         case 'firewall': return 'bg-blue-100 text-blue-600';
                         default: return 'bg-gray-100 text-text-secondary';
@@ -449,8 +450,8 @@ export default function Dashboard() {
                           <IconComponent className="w-4 h-4" />
                         </div>
                         <div className="flex-1 min-w-0 pt-0.5">
-                          <p className="text-sm text-text-primary">{activity.message}</p>
-                          <p className="text-xs text-text-secondary mt-1">{activity.time}</p>
+                          <p className="activity-message-text">{activity.message}</p>
+                          <p className="activity-time">{activity.time}</p>
                         </div>
                       </div>
                     );
@@ -461,22 +462,22 @@ export default function Dashboard() {
           </div>
 
           {/* Quick Actions Panel */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200">
+          <div className="recent-activity overflow-hidden">
+            <div className="px-6 py-4 border-b border-border-default">
               <h3 className="text-lg font-semibold text-text-primary">Quick Actions</h3>
             </div>
             <div className="p-6 space-y-3">
-              <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-brand-orange text-white font-medium rounded-lg hover:bg-orange-700 transition-colors duration-200 shadow-sm">
+              <button className="w-full flex items-center justify-center gap-2 px-4 py-3 quick-action-btn primary">
                 <Plus className="w-5 h-5" />
                 Create New Environment
               </button>
               
-              <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white text-text-primary font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors duration-200">
+              <button className="w-full flex items-center justify-center gap-2 px-4 py-3 quick-action-btn secondary">
                 <Ticket className="w-5 h-5" />
                 Open Support Ticket
               </button>
               
-              <div className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="flex items-center justify-between px-4 py-3 bg-bg-elevated rounded-lg border border-border-default">
                 <div className="flex items-center gap-2">
                   <Settings className="w-5 h-5 text-text-secondary" />
                   <span className="text-sm font-medium text-text-primary">Maintenance Mode</span>
@@ -484,7 +485,7 @@ export default function Dashboard() {
                 <button
                   onClick={() => setMaintenanceMode(!maintenanceMode)}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
-                    maintenanceMode ? 'bg-brand-orange' : 'bg-gray-300'
+                    maintenanceMode ? 'bg-neon-cyan' : 'bg-gray-600'
                   }`}
                 >
                   <span
