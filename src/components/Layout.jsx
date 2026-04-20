@@ -12,10 +12,10 @@ export default function Layout({ children }) {
         onClose={() => setSidebarOpen(false)} 
       />
       
-      <div className="flex-1 flex flex-col min-w-0 lg:ml-64">
+      <div className="flex-1 flex flex-col min-w-0 lg:ml-64 transition-all duration-300">
         <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
         
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto p-6 lg:p-8">
           {children}
         </main>
       </div>
