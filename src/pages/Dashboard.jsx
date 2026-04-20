@@ -256,7 +256,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="text-3xl font-bold text-text-primary mb-1">{stats.totalEnvironments}</div>
-          <OrangeLink href="https://altitude.com/environments" className="text-sm">
+          <OrangeLink to="/environments" className="text-sm">
             View all environments →
           </OrangeLink>
           {demoMode && <span className="guide-badge">?</span>}
@@ -281,7 +281,7 @@ export default function Dashboard() {
               <span className="relative inline-flex rounded-full h-3 w-3" style={{ backgroundColor: 'var(--purple-royal)' }}></span>
             </span>
           </div>
-          <OrangeLink href="https://altitude.com/deployments" className="text-sm">
+          <OrangeLink to="/deployments" className="text-sm">
             View deployments →
           </OrangeLink>
           {demoMode && <span className="guide-badge">?</span>}
@@ -347,7 +347,7 @@ export default function Dashboard() {
               <span className="text-3xl font-bold text-text-primary">{stats.systemHealth.toFixed(1)}%</span>
             </div>
           </div>
-          <OrangeLink href="https://altitude.com/status" className="text-sm">
+          <OrangeLink to="/status" className="text-sm">
             View status page →
           </OrangeLink>
           {demoMode && <span className="guide-badge">?</span>}
@@ -360,7 +360,7 @@ export default function Dashboard() {
         <div className="lg:col-span-2 card-premium overflow-hidden">
           <div className="px-6 py-4 border-b var(--border-default) flex items-center justify-between">
             <h3 className="text-lg font-semibold text-text-primary">Top Environments</h3>
-            <OrangeLink href="https://altitude.com/environments" className="text-sm">
+            <OrangeLink to="/environments" className="text-sm">
               View all →
             </OrangeLink>
           </div>
@@ -379,7 +379,7 @@ export default function Dashboard() {
                 {environments.map((env) => (
                   <tr key={env.id} className="">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <OrangeLink href={`https://altitude.com/environments/${env.name}`} className="font-medium text-text-primary">
+                      <OrangeLink to={`/environments`} className="font-medium text-text-primary">
                         <Globe className="w-4 h-4 inline mr-2 text-accent-secondary" />
                         {env.name}
                       </OrangeLink>

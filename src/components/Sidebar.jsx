@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Server, 
@@ -88,14 +88,13 @@ export default function Sidebar({ isOpen, onClose }) {
         <nav className="p-4 space-y-1">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = location.pathname === item.path;
             
             return (
-              <Link
+              <NavLink
                 key={item.path}
                 to={item.path}
                 onClick={onClose}
-                className={`
+                className={({ isActive }) => `
                   sidebar-link
                   flex items-center gap-3 px-4 py-3 rounded-lg
                   transition-all duration-200
@@ -107,7 +106,7 @@ export default function Sidebar({ isOpen, onClose }) {
               >
                 <Icon className="w-5 h-5" />
                 <span className="font-medium">{item.label}</span>
-              </Link>
+              </NavLink>
             );
           })}
         </nav>

@@ -1,4 +1,18 @@
-```javascript
-// No build artifacts, dependencies, or temp files detected in changes
-// Only source files (.jsx) were modified
+```
+# Build artifacts
+dist/
+build/
+*.js
+*.css
+
+# Dependencies
+node_modules/
+
+# Editors
+.vscode/
+
+# Environment
+.env
+.env.local
+.env.*
 ```
