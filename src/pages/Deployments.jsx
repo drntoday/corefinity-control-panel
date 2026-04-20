@@ -261,7 +261,7 @@ export default function Deployments() {
               <option value="">Select Repository</option>
               {provider && REPOSITORIES[provider]?.map(repo => (
                 <option key={repo} value={repo}>
-                  <span className="style={{ color: "var(--gold-primary)" }}">{repo}</span>
+                  {repo}
                 </option>
               ))}
             </select>
@@ -390,10 +390,10 @@ export default function Deployments() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm font-medium style={{ color: "var(--gold-primary)" }}">{deployment.repository}</span>
+                      <span className="text-sm font-medium text-gold">{deployment.repository}</span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm font-medium style={{ color: "var(--gold-primary)" }}">{deployment.environmentId}</span>
+                      <span className="text-sm font-medium text-gold">{deployment.environmentId}</span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm text-text-secondary">{deployment.duration}</span>
@@ -428,7 +428,7 @@ export default function Deployments() {
               {rollbackTarget.commitHash}
             </code>
             <p className="text-text-secondary mb-6">
-              This will redeploy <span className="style={{ color: "var(--gold-primary)" }} font-medium">{rollbackTarget.repository}</span> to environment <span className="style={{ color: "var(--gold-primary)" }} font-medium">{rollbackTarget.environmentId}</span>.
+              This will redeploy <span className="text-gold font-medium">{rollbackTarget.repository}</span> to environment <span className="text-gold font-medium">{rollbackTarget.environmentId}</span>.
             </p>
             <div className="flex gap-3 justify-end">
               <button
