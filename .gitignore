@@ -1,1 +1,42 @@
-Nothing should be ignored based on the provided file changes. The only modified file is 'src/components/Layout.jsx', which is a source code file and should not be added to .gitignore.
+```
+# Build artifacts
+dist/
+build/
+
+# Dependencies
+node_modules/
+
+# Compiled files
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.pyc
+__pycache__/
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# OS
+.DS_Store
+Thumbs.db
+```

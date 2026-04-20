@@ -42,10 +42,10 @@ export default function Sidebar({ isOpen, onClose }) {
       {/* Sidebar */}
       <aside 
         className={`
-          fixed top-0 left-0 h-full w-64 bg-white
+          fixed top-0 left-0 h-full w-64 bg-bg-canvas
           transform transition-transform duration-300 ease-in-out
           lg:static lg:flex-shrink-0
-          z-50 border-r border-gray-200
+          z-50 border-r border-border-default
           shadow-lg lg:shadow-none
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
           lg:translate-x-0
@@ -53,7 +53,7 @@ export default function Sidebar({ isOpen, onClose }) {
       >
         <div className="flex flex-col h-full">
           {/* Logo Section */}
-          <div className="flex items-center gap-3 px-5 py-5 border-b border-gray-100">
+          <div className="flex items-center gap-3 px-5 py-5 border-b border-border-default">
             <div className="flex-shrink-0">
               <svg width="36" height="36" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-9 h-9">
                 <path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" stroke="url(#logoGradient)" strokeWidth="2" strokeLinejoin="round"/>
@@ -78,27 +78,27 @@ export default function Sidebar({ isOpen, onClose }) {
           </div>
 
           {/* Hierarchy Breadcrumb */}
-          <div className="px-5 py-3 border-b border-gray-100 bg-gray-50/50">
-            <nav className="flex items-center text-xs font-medium text-gray-500" aria-label="Breadcrumb">
+          <div className="px-5 py-3 border-b border-border-default bg-bg-elevated">
+            <nav className="flex items-center text-xs font-medium text-text-tertiary" aria-label="Breadcrumb">
               {hierarchyBreadcrumb.map((item, index) => (
                 <span key={item} className="flex items-center">
-                  {index > 0 && <ChevronRight className="w-3.5 h-3.5 mx-1.5 text-gray-400" />}
+                  {index > 0 && <ChevronRight className="w-3.5 h-3.5 mx-1.5 text-text-tertiary" />}
                   {index === hierarchyBreadcrumb.length - 1 ? (
                     <button 
                       onClick={() => navigate('/environments')} 
-                      className="text-gray-700 hover:text-[#1E4F8A] transition-colors duration-150 font-semibold"
+                      className="text-text-secondary hover:text-blue-primary transition-colors duration-150 font-semibold"
                     >
                       {item}
                     </button>
                   ) : index === 1 ? (
                     <button 
                       onClick={() => navigate('/dashboard')} 
-                      className="hover:text-[#1E4F8A] transition-colors duration-150"
+                      className="hover:text-blue-primary transition-colors duration-150"
                     >
                       {item}
                     </button>
                   ) : (
-                    <span className="text-gray-500">{item}</span>
+                    <span className="text-text-tertiary">{item}</span>
                   )}
                 </span>
               ))}
@@ -120,23 +120,23 @@ export default function Sidebar({ isOpen, onClose }) {
                     group flex items-center gap-3 px-3.5 py-3 rounded-lg
                     transition-all duration-200 ease-in-out
                     ${isActive 
-                      ? 'bg-gradient-to-r from-blue-50 to-transparent text-[#1E4F8A] font-semibold shadow-sm' 
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      ? 'bg-blue-subtle text-blue-primary font-semibold' 
+                      : 'text-text-secondary hover:bg-bg-elevated hover:text-text-primary'
                     }
                   `}
                 >
                   <div className={`
                     flex-shrink-0 p-1.5 rounded-md transition-all duration-200
                     ${isActive 
-                      ? 'bg-[#1E4F8A]/10 text-[#1E4F8A]' 
-                      : 'text-gray-400 group-hover:text-gray-600 group-hover:bg-gray-100'
+                      ? 'bg-blue-primary/10 text-blue-primary' 
+                      : 'text-text-tertiary group-hover:text-text-secondary group-hover:bg-bg-highlight'
                     }
                   `}>
                     <Icon className="w-5 h-5" />
                   </div>
                   <span className="text-sm">{item.label}</span>
                   {isActive && (
-                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#1E4F8A]" />
+                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-primary" />
                   )}
                 </Link>
               );
@@ -144,12 +144,12 @@ export default function Sidebar({ isOpen, onClose }) {
           </nav>
 
           {/* Bottom Section - Logout */}
-          <div className="px-3 py-4 border-t border-gray-100">
+          <div className="px-3 py-4 border-t border-border-default">
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-3.5 py-3 rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 transition-all duration-200 group"
+              className="w-full flex items-center gap-3 px-3.5 py-3 rounded-lg text-text-secondary hover:bg-error-subtle hover:text-error transition-all duration-200 group"
             >
-              <div className="flex-shrink-0 p-1.5 rounded-md text-gray-400 group-hover:text-red-600 group-hover:bg-red-100 transition-all duration-200">
+              <div className="flex-shrink-0 p-1.5 rounded-md text-text-tertiary group-hover:text-error group-hover:bg-error-subtle transition-all duration-200">
                 <LogOut className="w-5 h-5" />
               </div>
               <span className="text-sm font-medium">Logout</span>

@@ -94,6 +94,8 @@ button[class*="primary"],
   --color-bg-highlight: #E0E8F0;
   --color-blue-primary: #1E4F8A;
   --color-blue-soft: #2B6CB0;
+  --color-blue-subtle: rgba(30, 79, 138, 0.06);
+  --color-blue-light: #EBF2FA;
   --color-gold-primary: #B8860B;
   --color-gold-soft: #D4A23E;
   --color-purple-royal: #6B46C1;
@@ -107,6 +109,14 @@ button[class*="primary"],
   --color-text-primary: #0F172A;
   --color-text-secondary: #334155;
   --color-text-tertiary: #64748B;
+  --color-border-default: #E2E8F0;
+  --color-border-accent: #93C5FD;
+  --color-border-purple: #D8B4FE;
+  --color-border-gold: #FDE68A;
+  --color-success-subtle: #CCFBF1;
+  --color-warning-subtle: #FFEDD5;
+  --color-error-subtle: #FFE4E6;
+  --color-info-subtle: #DBEAFE;
   
   --font-sans: 'Manrope', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
