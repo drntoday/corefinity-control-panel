@@ -50,7 +50,7 @@ export default function Header({ onMenuClick }) {
   }, []);
 
   return (
-    <header className="bg-bg-canvas border-b border-border-default px-4 py-3 lg:px-6">
+    <header className="bg-bg-canvas border-b border-border-default px-4 py-3 lg:px-6" style={{ paddingLeft: '260px' }}>
       <div className="flex items-center justify-between gap-4">
         {/* Left: Breadcrumb */}
         <div className="flex items-center gap-2">

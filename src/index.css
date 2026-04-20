@@ -5,6 +5,16 @@
    ============================================ */
 * {
   color-scheme: light only;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body, #root, .app, main, div, p, span, h1, h2, h3, h4, h5, h6, li, td, th, label {
@@ -136,6 +146,15 @@ body {
 
 #root {
   min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Ensure root flex container has no gap */
+#root > div {
+  margin: 0;
+  padding: 0;
+  gap: 0;
 }
 
 /* ============================================
@@ -535,57 +554,41 @@ input, textarea, select {
 }
 
 /* ============================================
-   SIDEBAR - Gradient Gray
+   SIDEBAR - Unified Background (No Gradient)
    ============================================ */
 .sidebar,
 [class*="sidebar"],
 nav[class*="side"],
 aside {
-  background: linear-gradient(180deg, #F5F5F7 0%, #E8E8EC 50%, #DEDEE3 100%) !important;
-  border-right: 1px solid rgba(0, 0, 0, 0.04) !important;
-  backdrop-filter: blur(2px);
+  background: var(--bg-canvas) !important;
+  border-right: 1px solid var(--border-default) !important;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.02) !important;
 }
 
-/* Sidebar subtle inner shadow for depth */
+/* Remove sidebar ::before pseudo-element that creates visual separation */
 .sidebar::before,
 [class*="sidebar"]::before,
 aside::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 1px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(0,0,0,0.02) 50%, rgba(255,255,255,0.4) 100%);
-  pointer-events: none;
+  content: none !important;
 }
 
 /* ============================================
-   TOPBAR/HEADER - Gradient Gray
+   TOPBAR/HEADER - Unified Background
    ============================================ */
 .topbar,
 [class*="topbar"],
 [class*="header"],
 [class*="navbar"],
 header {
-  background: linear-gradient(90deg, #F8F8FA 0%, #EBEBF0 50%, #F8F8FA 100%) !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
-  backdrop-filter: blur(2px);
+  background: var(--bg-canvas) !important;
+  border-bottom: 1px solid var(--border-default) !important;
 }
 
-/* Topbar inner highlight */
+/* Remove header ::after pseudo-element that creates visual separation */
 .topbar::after,
 [class*="header"]::after,
 header::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.8) 20%, rgba(255,255,255,0.8) 80%, transparent 100%);
-  pointer-events: none;
+  content: none !important;
 }
 
 /* ============================================
