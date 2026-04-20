@@ -523,3 +523,165 @@ input, textarea, select {
   color: #1E293B !important;
   background: #FFFFFF !important;
 }
+
+/* ============================================
+   SIDEBAR - Gradient Gray
+   ============================================ */
+.sidebar,
+[class*="sidebar"],
+nav[class*="side"],
+aside {
+  background: linear-gradient(180deg, #F5F5F7 0%, #E8E8EC 50%, #DEDEE3 100%) !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.04) !important;
+  backdrop-filter: blur(2px);
+}
+
+/* Sidebar subtle inner shadow for depth */
+.sidebar::before,
+[class*="sidebar"]::before,
+aside::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(0,0,0,0.02) 50%, rgba(255,255,255,0.4) 100%);
+  pointer-events: none;
+}
+
+/* ============================================
+   TOPBAR/HEADER - Gradient Gray
+   ============================================ */
+.topbar,
+[class*="topbar"],
+[class*="header"],
+[class*="navbar"],
+header {
+  background: linear-gradient(90deg, #F8F8FA 0%, #EBEBF0 50%, #F8F8FA 100%) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+  backdrop-filter: blur(2px);
+}
+
+/* Topbar inner highlight */
+.topbar::after,
+[class*="header"]::after,
+header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.8) 20%, rgba(255,255,255,0.8) 80%, transparent 100%);
+  pointer-events: none;
+}
+
+/* ============================================
+   SIDEBAR ITEMS - Ensure Visibility
+   ============================================ */
+.sidebar a,
+.sidebar button,
+.sidebar .nav-item,
+[class*="sidebar"] a,
+[class*="sidebar"] [class*="link"] {
+  color: #2D3748 !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  margin: 2px 8px;
+}
+
+/* Sidebar item hover - subtle elevation */
+.sidebar a:hover,
+[class*="sidebar"] a:hover {
+  background: linear-gradient(90deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.4) 100%) !important;
+  color: #1A202C !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  transform: translateX(2px);
+}
+
+/* Sidebar active item */
+.sidebar a.active,
+[class*="sidebar"] .active {
+  background: linear-gradient(90deg, rgba(30, 79, 138, 0.08) 0%, rgba(30, 79, 138, 0.03) 100%) !important;
+  color: #1E4F8A !important;
+  border-left: 3px solid #1E4F8A !important;
+  font-weight: 600;
+}
+
+/* ============================================
+   TOPBAR ITEMS
+   ============================================ */
+.topbar a,
+.topbar button,
+.topbar span,
+[class*="header"] a,
+[class*="navbar"] a {
+  color: #2D3748 !important;
+}
+
+.topbar button:hover,
+[class*="header"] button:hover {
+  background: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* ============================================
+   LOGO IN SIDEBAR
+   ============================================ */
+.sidebar .logo-container,
+[class*="sidebar"] .logo-container {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+  padding: 20px 16px !important;
+  margin-bottom: 8px;
+}
+
+.logo-text {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #1E4F8A 0%, #6B46C1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================
+   FALLBACK SELECTORS
+   ============================================ */
+body > div:first-child > div:first-child {
+  background: linear-gradient(180deg, #F5F5F7 0%, #E8E8EC 50%, #DEDEE3 100%) !important;
+}
+
+body > div:first-child > div:last-child > div:first-child {
+  background: linear-gradient(90deg, #F8F8FA 0%, #EBEBF0 50%, #F8F8FA 100%) !important;
+}
+
+/* Target any fixed position elements at top */
+div[style*="position: fixed"][style*="top: 0"],
+div[style*="position: sticky"][style*="top: 0"] {
+  background: linear-gradient(90deg, #F8F8FA 0%, #EBEBF0 50%, #F8F8FA 100%) !important;
+}
+
+/* Target any fixed left elements */
+div[style*="position: fixed"][style*="left: 0"],
+div[style*="position: sticky"][style*="left: 0"] {
+  background: linear-gradient(180deg, #F5F5F7 0%, #E8E8EC 50%, #DEDEE3 100%) !important;
+}
+
+/* Nuclear option - forces gradient on everything that looks like nav/header */
+[class*="side"],
+[class*="nav"],
+[class*="header"],
+[class*="top"] {
+  background: linear-gradient(180deg, #F5F5F7 0%, #E8E8EC 50%, #DEDEE3 100%) !important;
+}
+
+header, 
+div[class*="Header"],
+div[class*="Top"] {
+  background: linear-gradient(90deg, #F8F8FA 0%, #EBEBF0 50%, #F8F8FA 100%) !important;
+}
