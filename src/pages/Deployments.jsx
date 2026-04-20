@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useGuide } from '../context/GuideContext';
 import StatusBadge from '../components/StatusBadge';
 import OrangeLink from '../components/OrangeLink';
 
@@ -64,6 +65,7 @@ const INITIAL_DEPLOYMENTS = [
 ];
 
 export default function Deployments() {
+  const { demoMode, showGuide } = useGuide();
   // Form state machine
   const [pipelineType, setPipelineType] = useState('');
   const [provider, setProvider] = useState('');
@@ -304,8 +306,11 @@ export default function Deployments() {
               ? 'opacity-50 cursor-not-allowed'
               : ''
           }`}
+          data-guide="btn-deploy"
+          title={demoMode ? 'Click to learn about deployment' : ''}
         >
           {activeDeployment !== null ? 'Deployment in Progress...' : 'Deploy'}
+          {demoMode && <span className="guide-badge">?</span>}
         </button>
       </div>
 
