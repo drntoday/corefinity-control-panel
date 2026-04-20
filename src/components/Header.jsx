@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Search, ChevronDown, LogOut, Key, User as UserIcon } from 'lucide-react';
+import { useNavigate, Search, ChevronDown, LogOut, Key, User as UserIcon } from 'lucide-react';
 import OrangeLink from './OrangeLink';
 
 export default function Header({ onMenuClick }) {
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   
   // Mock breadcrumb data - in real app this would come from router state or context
@@ -120,28 +121,28 @@ export default function Header({ onMenuClick }) {
           {/* Dropdown Menu */}
           {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-bg-surface rounded-lg shadow-lg border border-border-subtle py-1 z-50">
-              <a
-                href="/profile"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-text-secondary hover:bg-bg-elevated hover:text-text-primary transition-colors"
+              <button
+                onClick={() => { navigate('/profile'); setIsDropdownOpen(false); }}
+                className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-text-secondary hover:bg-bg-elevated hover:text-text-primary transition-colors"
               >
                 <UserIcon className="w-4 h-4" />
                 Profile
-              </a>
-              <a
-                href="/ssh-keys"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-text-secondary hover:bg-bg-elevated hover:text-text-primary transition-colors"
+              </button>
+              <button
+                onClick={() => { navigate('/ssh-keys'); setIsDropdownOpen(false); }}
+                className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-text-secondary hover:bg-bg-elevated hover:text-text-primary transition-colors"
               >
                 <Key className="w-4 h-4" />
                 SSH Keys
-              </a>
+              </button>
               <div className="border-t border-border-subtle my-1" />
-              <a
-                href="/logout"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 transition-colors"
+              <button
+                onClick={() => { navigate('/logout'); setIsDropdownOpen(false); }}
+                className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 transition-colors"
               >
                 <LogOut className="w-4 h-4" />
                 Logout
-              </a>
+              </button>
             </div>
           )}
         </div>

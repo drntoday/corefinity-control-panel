@@ -11,6 +11,10 @@ import Tickets from './pages/Tickets';
 import TicketDetail from './pages/TicketDetail';
 import Profile from './pages/Profile';
 import PipelineDetails from './pages/PipelineDetails';
+import Status from './pages/Status';
+import SshKeys from './pages/SshKeys';
+import Logout from './pages/Logout';
+import NotFound from './components/NotFound';
 
 function App() {
   return (
@@ -28,6 +32,10 @@ function App() {
               <Route path="/tickets/:id" element={<TicketDetail />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/environment-pipeline/:id" element={<PipelineDetails />} />
+              <Route path="/status" element={<Status />} />
+              <Route path="/ssh-keys" element={<SshKeys />} />
+              <Route path="/logout" element={<Logout />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>
         </HashRouter>

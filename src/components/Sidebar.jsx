@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Server, 
@@ -71,9 +71,9 @@ export default function Sidebar({ isOpen, onClose }) {
               <span key={item} className="flex items-center">
                 {index > 0 && <ChevronRight className="w-3 h-3 mx-1" />}
                 {index === hierarchyBreadcrumb.length - 1 ? (
-                  <a href="#" className="text-text-primary hover:text-blue-primary !no-underline">{item}</a>
+                  <button onClick={() => navigate('/environments')} className="text-text-primary hover:text-blue-primary !no-underline cursor-pointer">{item}</button>
                 ) : index === 1 ? (
-                  <a href="#" className="hover:text-blue-primary !no-underline">{item}</a>
+                  <button onClick={() => navigate('/dashboard')} className="hover:text-blue-primary !no-underline cursor-pointer">{item}</button>
                 ) : (
                   <span className={index === hierarchyBreadcrumb.length - 1 ? 'text-text-primary' : ''}>
                     {item}
