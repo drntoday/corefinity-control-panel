@@ -48,34 +48,34 @@ export default function Header({ onMenuClick }) {
   }, []);
 
   return (
-    <header className="bg-white border-b border-gray-200 px-4 py-3 lg:px-6">
+    <header className="bg-bg-surface border-b border-border-subtle px-4 py-3 lg:px-6">
       <div className="flex items-center justify-between gap-4">
         {/* Left: Breadcrumb */}
         <div className="flex items-center gap-2">
           <button 
             onClick={onMenuClick}
-            className="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
+            className="lg:hidden p-2 hover:bg-bg-elevated rounded-lg transition-colors"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <nav className="hidden sm:flex items-center text-sm text-gray-600">
-            <OrangeLink to="/dashboard" className="hover:text-gray-900 transition-colors">All Clients</OrangeLink>
-            <svg className="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <nav className="hidden sm:flex items-center text-sm text-text-secondary">
+            <OrangeLink to="/dashboard" className="hover:text-text-primary transition-colors">All Clients</OrangeLink>
+            <svg className="w-4 h-4 mx-2 text-border-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            <OrangeLink to="/environments" className="font-medium !no-underline hover:!underline">{breadcrumbData.company}</OrangeLink>
-            <svg className="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <OrangeLink to="/environments" className="font-medium !no-underline hover:!underline text-text-primary">{breadcrumbData.company}</OrangeLink>
+            <svg className="w-4 h-4 mx-2 text-border-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            <OrangeLink to="/environments" className="font-medium !no-underline hover:!underline">{breadcrumbData.website}</OrangeLink>
+            <OrangeLink to="/environments" className="font-medium !no-underline hover:!underline text-text-primary">{breadcrumbData.website}</OrangeLink>
             {breadcrumbData.tab && (
               <>
-                <svg className="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 mx-2 text-border-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
-                <span className="font-medium text-gray-900">{breadcrumbData.tab}</span>
+                <span className="font-medium text-text-primary">{breadcrumbData.tab}</span>
               </>
             )}
           </nav>
@@ -84,17 +84,17 @@ export default function Header({ onMenuClick }) {
         {/* Center: Search Bar */}
         <div className="flex-1 max-w-xl hidden md:block">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary" />
             <input
               id="global-search"
               type="text"
               placeholder="Search..."
-              className="w-full pl-10 pr-12 py-2 bg-gray-100 border border-transparent rounded-lg 
-                         focus:bg-white focus:border-brand-blue focus:outline-none 
-                         transition-colors duration-200 text-sm"
+              className="w-full pl-10 pr-12 py-2 bg-bg-elevated border border-border-subtle rounded-lg 
+                         focus:border-accent-primary focus:outline-none 
+                         transition-colors duration-200 text-sm text-text-primary placeholder-text-secondary"
             />
             <kbd className="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-0.5 text-xs 
-                           text-gray-500 bg-white border border-gray-200 rounded">
+                           text-text-secondary bg-bg-surface border border-border-subtle rounded font-mono">
               /
             </kbd>
           </div>
@@ -104,40 +104,40 @@ export default function Header({ onMenuClick }) {
         <div className="relative user-dropdown">
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="flex items-center gap-2 p-2 hover:bg-bg-elevated rounded-lg transition-colors"
           >
             <img
-              src="https://ui-avatars.com/api/?name=Catherine+Jarosz&background=FF6B00&color=fff&size=32"
+              src="https://ui-avatars.com/api/?name=Catherine+Jarosz&background=D4A23E&color=0F1217&size=32"
               alt="Catherine Jarosz"
-              className="w-8 h-8 rounded-full"
+              className="w-8 h-8 rounded-full avatar-enterprise"
             />
-            <span className="hidden lg:block text-sm font-medium text-gray-700">
+            <span className="hidden lg:block text-sm font-medium text-text-primary">
               Catherine Jarosz
             </span>
-            <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+            <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
           </button>
 
           {/* Dropdown Menu */}
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+            <div className="absolute right-0 mt-2 w-48 bg-bg-surface rounded-lg shadow-lg border border-border-subtle py-1 z-50">
               <a
                 href="/profile"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-text-secondary hover:bg-bg-elevated hover:text-text-primary transition-colors"
               >
                 <UserIcon className="w-4 h-4" />
                 Profile
               </a>
               <a
                 href="/ssh-keys"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-text-secondary hover:bg-bg-elevated hover:text-text-primary transition-colors"
               >
                 <Key className="w-4 h-4" />
                 SSH Keys
               </a>
-              <div className="border-t border-gray-100 my-1" />
+              <div className="border-t border-border-subtle my-1" />
               <a
                 href="/logout"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 transition-colors"
               >
                 <LogOut className="w-4 h-4" />
                 Logout
@@ -150,13 +150,13 @@ export default function Header({ onMenuClick }) {
       {/* Mobile Search */}
       <div className="mt-3 md:hidden">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary" />
           <input
             type="text"
             placeholder="Search..."
-            className="w-full pl-10 pr-12 py-2 bg-gray-100 border border-transparent rounded-lg 
-                       focus:bg-white focus:border-brand-blue focus:outline-none 
-                       transition-colors duration-200 text-sm"
+            className="w-full pl-10 pr-12 py-2 bg-bg-elevated border border-border-subtle rounded-lg 
+                       focus:border-accent-primary focus:outline-none 
+                       transition-colors duration-200 text-sm text-text-primary placeholder-text-secondary"
           />
         </div>
       </div>

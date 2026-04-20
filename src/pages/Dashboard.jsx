@@ -125,9 +125,9 @@ export default function Dashboard() {
   const getStatusColor = (status) => {
     switch (status) {
       case 'active': return 'text-green-600 bg-green-50';
-      case 'idle': return 'text-gray-600 bg-gray-50';
+      case 'idle': return 'text-text-secondary bg-gray-50';
       case 'error': return 'text-red-600 bg-red-50';
-      default: return 'text-gray-600 bg-gray-50';
+      default: return 'text-text-secondary bg-gray-50';
     }
   };
 
@@ -135,29 +135,29 @@ export default function Dashboard() {
   const SkeletonCard = () => (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 animate-pulse">
       <div className="flex items-center justify-between mb-4">
-        <div className="h-4 bg-gray-200 rounded w-24"></div>
-        <div className="h-8 w-8 bg-gray-200 rounded-lg"></div>
+        <div className="h-4 bg-bg-elevated rounded w-24"></div>
+        <div className="h-8 w-8 bg-bg-elevated rounded-lg"></div>
       </div>
-      <div className="h-8 bg-gray-200 rounded w-16 mb-2"></div>
-      <div className="h-3 bg-gray-200 rounded w-32"></div>
+      <div className="h-8 bg-bg-elevated rounded w-16 mb-2"></div>
+      <div className="h-3 bg-bg-elevated rounded w-32"></div>
     </div>
   );
 
   // Skeleton Table Row
   const SkeletonTableRow = () => (
     <tr className="animate-pulse">
-      <td className="px-6 py-4"><div className="h-4 bg-gray-200 rounded w-32"></div></td>
-      <td className="px-6 py-4"><div className="h-4 bg-gray-200 rounded w-20"></div></td>
-      <td className="px-6 py-4"><div className="h-2 bg-gray-200 rounded w-full"></div></td>
-      <td className="px-6 py-4"><div className="h-2 bg-gray-200 rounded w-full"></div></td>
-      <td className="px-6 py-4"><div className="h-6 bg-gray-200 rounded w-16"></div></td>
+      <td className="px-6 py-4"><div className="h-4 bg-bg-elevated rounded w-32"></div></td>
+      <td className="px-6 py-4"><div className="h-4 bg-bg-elevated rounded w-20"></div></td>
+      <td className="px-6 py-4"><div className="h-2 bg-bg-elevated rounded w-full"></div></td>
+      <td className="px-6 py-4"><div className="h-2 bg-bg-elevated rounded w-full"></div></td>
+      <td className="px-6 py-4"><div className="h-6 bg-bg-elevated rounded w-16"></div></td>
     </tr>
   );
 
   if (loading) {
     return (
       <div className="p-6 bg-[#F9FAFB] min-h-screen">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Dashboard</h2>
+        <h2 className="text-2xl font-bold text-text-primary mb-6">Dashboard</h2>
         
         {/* Stats Cards Skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -167,13 +167,13 @@ export default function Dashboard() {
         {/* Main Content Skeleton */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="h-6 bg-gray-200 rounded w-48 mb-6"></div>
+            <div className="h-6 bg-bg-elevated rounded w-48 mb-6"></div>
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-200">
                   {[...Array(5)].map((_, i) => (
                     <th key={i} className="px-6 py-3 text-left">
-                      <div className="h-4 bg-gray-200 rounded w-20"></div>
+                      <div className="h-4 bg-bg-elevated rounded w-20"></div>
                     </th>
                   ))}
                 </tr>
@@ -186,23 +186,23 @@ export default function Dashboard() {
           
           <div className="space-y-6">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <div className="h-6 bg-gray-200 rounded w-40 mb-6"></div>
+              <div className="h-6 bg-bg-elevated rounded w-40 mb-6"></div>
               {[...Array(4)].map((_, i) => (
                 <div key={i} className="flex items-start gap-3 mb-4 animate-pulse">
-                  <div className="h-8 w-8 bg-gray-200 rounded-full"></div>
+                  <div className="h-8 w-8 bg-bg-elevated rounded-full"></div>
                   <div className="flex-1">
-                    <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-                    <div className="h-3 bg-gray-200 rounded w-20"></div>
+                    <div className="h-4 bg-bg-elevated rounded w-full mb-2"></div>
+                    <div className="h-3 bg-bg-elevated rounded w-20"></div>
                   </div>
                 </div>
               ))}
             </div>
             
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <div className="h-6 bg-gray-200 rounded w-32 mb-4"></div>
+              <div className="h-6 bg-bg-elevated rounded w-32 mb-4"></div>
               <div className="space-y-3">
                 {[...Array(3)].map((_, i) => (
-                  <div key={i} className="h-10 bg-gray-200 rounded"></div>
+                  <div key={i} className="h-10 bg-bg-elevated rounded"></div>
                 ))}
               </div>
             </div>
@@ -232,8 +232,8 @@ export default function Dashboard() {
         </div>
       )}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Dashboard</h2>
-        <div className="flex items-center gap-2 text-sm text-gray-500">
+        <h2 className="text-2xl font-bold text-text-primary">Dashboard</h2>
+        <div className="flex items-center gap-2 text-sm text-text-secondary">
           <Activity className="w-4 h-4" />
           <span>Live updates enabled</span>
         </div>
@@ -242,32 +242,32 @@ export default function Dashboard() {
       {/* Global Stats Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {/* Total Environments */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+        <div className="card-premium p-6">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm font-medium text-gray-500">Total Environments</span>
-            <div className="p-2 bg-blue-50 rounded-lg">
-              <Server className="w-5 h-5 text-blue-600" />
+            <span className="text-sm font-medium text-text-secondary">Total Environments</span>
+            <div className="p-2 bg-bg-elevated rounded-lg">
+              <Server className="w-5 h-5 text-accent-secondary" />
             </div>
           </div>
-          <div className="text-3xl font-bold text-gray-900 mb-1">{stats.totalEnvironments}</div>
+          <div className="text-3xl font-bold text-text-primary mb-1">{stats.totalEnvironments}</div>
           <OrangeLink href="https://corefinity.com/environments" className="text-sm">
             View all environments →
           </OrangeLink>
         </div>
 
         {/* Active Deployments */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+        <div className="card-premium p-6">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm font-medium text-gray-500">Active Deployments</span>
-            <div className="p-2 bg-green-50 rounded-lg">
-              <Zap className="w-5 h-5 text-green-600" />
+            <span className="text-sm font-medium text-text-secondary">Active Deployments</span>
+            <div className="p-2 bg-bg-elevated rounded-lg">
+              <Zap className="w-5 h-5 text-accent-secondary" />
             </div>
           </div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-3xl font-bold text-gray-900">{stats.activeDeployments}</span>
+            <span className="text-3xl font-bold text-text-primary">{stats.activeDeployments}</span>
             <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-secondary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-accent-secondary"></span>
             </span>
           </div>
           <OrangeLink href="https://corefinity.com/deployments" className="text-sm">
@@ -276,30 +276,55 @@ export default function Dashboard() {
         </div>
 
         {/* Pending Tickets */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+        <div className="card-premium p-6">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm font-medium text-gray-500">Pending Tickets</span>
-            <div className="p-2 bg-orange-50 rounded-lg">
-              <MessageSquare className="w-5 h-5 text-brand-orange" />
+            <span className="text-sm font-medium text-text-secondary">Pending Tickets</span>
+            <div className="p-2 bg-bg-elevated rounded-lg">
+              <MessageSquare className="w-5 h-5 text-accent-primary" />
             </div>
           </div>
-          <div className="text-3xl font-bold text-brand-orange mb-1">{stats.pendingTickets}</div>
+          <div className="text-3xl font-bold text-accent-primary mb-1">{stats.pendingTickets}</div>
           <OrangeLink to="/tickets" className="text-sm">
             View tickets →
           </OrangeLink>
         </div>
 
         {/* System Health */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+        <div className="card-premium p-6">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm font-medium text-gray-500">System Health</span>
-            <div className="p-2 bg-purple-50 rounded-lg">
-              <Activity className="w-5 h-5 text-purple-600" />
+            <span className="text-sm font-medium text-text-secondary">System Health</span>
+            <div className="p-2 bg-bg-elevated rounded-lg">
+              <Activity className="w-5 h-5 text-accent-primary" />
             </div>
           </div>
           <div className="flex items-end justify-between mb-1">
-            <span className="text-3xl font-bold text-gray-900">{stats.systemHealth.toFixed(1)}%</span>
-            <Sparkline data={sparklineData} />
+            {/* Donut Chart for System Health */}
+            <svg width="80" height="80" viewBox="0 0 80 80" className="transform -rotate-90">
+              {/* Background track */}
+              <circle
+                cx="40"
+                cy="40"
+                r="32"
+                fill="none"
+                stroke="#20262E"
+                strokeWidth="8"
+              />
+              {/* Progress arc */}
+              <circle
+                cx="40"
+                cy="40"
+                r="32"
+                fill="none"
+                stroke="#D4A23E"
+                strokeWidth="8"
+                strokeLinecap="round"
+                strokeDasharray={`${(stats.systemHealth / 100) * 201.06} 201.06`}
+                className="transition-all duration-500 ease-out"
+              />
+            </svg>
+            <div className="text-right">
+              <span className="text-3xl font-bold text-text-primary">{stats.systemHealth.toFixed(1)}%</span>
+            </div>
           </div>
           <OrangeLink href="https://corefinity.com/status" className="text-sm">
             View status page →
@@ -310,54 +335,54 @@ export default function Dashboard() {
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Environment Health Monitoring Table */}
-        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-900">Top Environments</h3>
+        <div className="lg:col-span-2 card-premium overflow-hidden">
+          <div className="px-6 py-4 border-b border-border-subtle flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-text-primary">Top Environments</h3>
             <OrangeLink href="https://corefinity.com/environments" className="text-sm">
               View all →
             </OrangeLink>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead>
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Environment</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Region</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CPU Usage</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Memory Usage</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 text-left">Environment</th>
+                  <th className="px-6 py-3 text-left">Region</th>
+                  <th className="px-6 py-3 text-left">CPU Usage</th>
+                  <th className="px-6 py-3 text-left">Memory Usage</th>
+                  <th className="px-6 py-3 text-left">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody>
                 {environments.map((env) => (
-                  <tr key={env.id} className="hover:bg-gray-50 transition-colors duration-150">
+                  <tr key={env.id} className="">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <OrangeLink href={`https://corefinity.com/environments/${env.name}`} className="font-medium text-gray-900">
-                        <Globe className="w-4 h-4 inline mr-2" />
+                      <OrangeLink href={`https://corefinity.com/environments/${env.name}`} className="font-medium text-text-primary">
+                        <Globe className="w-4 h-4 inline mr-2 text-accent-secondary" />
                         {env.name}
                       </OrangeLink>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{env.region}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">{env.region}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
-                        <div className="flex-1 w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div className="flex-1 w-24 h-2 bg-bg-elevated rounded-full overflow-hidden">
                           <div 
-                            className={`h-full ${getUsageColor(env.cpu)} transition-all duration-500`}
+                            className={`h-full ${env.cpu < 50 ? "bg-accent-secondary" : env.cpu < 75 ? "bg-warning" : "bg-error"} transition-all duration-500`}
                             style={{ width: `${env.cpu}%` }}
                           ></div>
                         </div>
-                        <span className="text-xs text-gray-600 w-10">{env.cpu.toFixed(0)}%</span>
+                        <span className="text-xs text-text-secondary w-10">{env.cpu.toFixed(0)}%</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
-                        <div className="flex-1 w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div className="flex-1 w-24 h-2 bg-bg-elevated rounded-full overflow-hidden">
                           <div 
-                            className={`h-full ${getUsageColor(env.memory)} transition-all duration-500`}
+                            className={`h-full ${env.memory < 50 ? "bg-accent-secondary" : env.memory < 75 ? "bg-warning" : "bg-error"} transition-all duration-500`}
                             style={{ width: `${env.memory}%` }}
                           ></div>
                         </div>
-                        <span className="text-xs text-gray-600 w-10">{env.memory.toFixed(0)}%</span>
+                        <span className="text-xs text-text-secondary w-10">{env.memory.toFixed(0)}%</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -377,12 +402,12 @@ export default function Dashboard() {
           {/* Recent Activity Feed */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
+              <h3 className="text-lg font-semibold text-text-primary">Recent Activity</h3>
             </div>
             <div className="p-6">
               <div className="relative">
                 {/* Timeline line */}
-                <div className="absolute left-4 top-0 bottom-0 w-px bg-gray-200"></div>
+                <div className="absolute left-4 top-0 bottom-0 w-px bg-bg-elevated"></div>
                 
                 <div className="space-y-6">
                   {activities.map((activity) => {
@@ -392,7 +417,7 @@ export default function Dashboard() {
                         case 'deployment': return 'bg-green-100 text-green-600';
                         case 'ticket': return 'bg-orange-100 text-brand-orange';
                         case 'firewall': return 'bg-blue-100 text-blue-600';
-                        default: return 'bg-gray-100 text-gray-600';
+                        default: return 'bg-gray-100 text-text-secondary';
                       }
                     };
 
@@ -402,8 +427,8 @@ export default function Dashboard() {
                           <IconComponent className="w-4 h-4" />
                         </div>
                         <div className="flex-1 min-w-0 pt-0.5">
-                          <p className="text-sm text-gray-900">{activity.message}</p>
-                          <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
+                          <p className="text-sm text-text-primary">{activity.message}</p>
+                          <p className="text-xs text-text-secondary mt-1">{activity.time}</p>
                         </div>
                       </div>
                     );
@@ -416,7 +441,7 @@ export default function Dashboard() {
           {/* Quick Actions Panel */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Quick Actions</h3>
+              <h3 className="text-lg font-semibold text-text-primary">Quick Actions</h3>
             </div>
             <div className="p-6 space-y-3">
               <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-brand-orange text-white font-medium rounded-lg hover:bg-orange-700 transition-colors duration-200 shadow-sm">
@@ -424,15 +449,15 @@ export default function Dashboard() {
                 Create New Environment
               </button>
               
-              <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white text-gray-700 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors duration-200">
+              <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white text-text-primary font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors duration-200">
                 <Ticket className="w-5 h-5" />
                 Open Support Ticket
               </button>
               
               <div className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-lg border border-gray-200">
                 <div className="flex items-center gap-2">
-                  <Settings className="w-5 h-5 text-gray-600" />
-                  <span className="text-sm font-medium text-gray-700">Maintenance Mode</span>
+                  <Settings className="w-5 h-5 text-text-secondary" />
+                  <span className="text-sm font-medium text-text-primary">Maintenance Mode</span>
                 </div>
                 <button
                   onClick={() => setMaintenanceMode(!maintenanceMode)}

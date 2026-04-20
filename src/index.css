@@ -1,22 +1,259 @@
 @import "tailwindcss";
 
+/* ============================================
+   ALTITUDE DESIGN SYSTEM - Obsidian & Amber
+   ============================================ */
+
+:root {
+  /* Color Palette - Obsidian & Amber */
+  --bg-base: #080A0C;
+  --bg-surface: #0F1217;
+  --bg-elevated: #161B22;
+  --accent-primary: #D4A23E;
+  --accent-secondary: #5C7C7A;
+  --text-primary: #F4F6F9;
+  --text-secondary: #959DA8;
+  --border-subtle: #20262E;
+  
+  /* Status Colors */
+  --status-success: #5C7C7A;
+  --status-warning: #D4A23E;
+  --status-error: #C75C5C;
+}
+
 @theme {
-  --color-brand-blue: #0a192f;
-  --color-brand-orange: #FF6B00;
-  --color-surface-gray: #F9FAFB;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --color-bg-base: #080A0C;
+  --color-bg-surface: #0F1217;
+  --color-bg-elevated: #161B22;
+  --color-accent-primary: #D4A23E;
+  --color-accent-secondary: #5C7C7A;
+  --color-text-primary: #F4F6F9;
+  --color-text-secondary: #959DA8;
+  --color-border-subtle: #20262E;
+  
+  --font-sans: 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
   font-family: var(--font-sans);
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  line-height: 1.6;
 }
 
 #root {
   min-height: 100vh;
 }
 
-/* Fade-in animation for tab transitions */
+/* ============================================
+   PREMIUM CARD STYLING
+   ============================================ */
+.card-premium {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  box-shadow: 0 20px 35px -8px rgba(0,0,0,0.4), 0 0 0 1px rgba(212, 162, 62, 0.03) inset;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-premium:hover {
+  border-color: rgba(212, 162, 62, 0.15);
+  box-shadow: 0 25px 40px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(212, 162, 62, 0.1) inset;
+}
+
+/* ============================================
+   TABLE STYLING - Refined
+   ============================================ */
+table {
+  font-family: 'Inter', sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+thead th {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+tbody td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+tbody tr:hover {
+  background: rgba(92, 124, 122, 0.04);
+}
+
+/* Remove vertical borders */
+th, td {
+  border-left: none;
+  border-right: none;
+}
+
+/* ============================================
+   STATUS PILL - Minimal Dot + Text
+   ============================================ */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-pill .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-pill.active .dot,
+.status-pill.success .dot {
+  background-color: var(--status-success);
+}
+
+.status-pill.building .dot,
+.status-pill.pending .dot,
+.status-pill.warning .dot {
+  background-color: var(--status-warning);
+  animation: pulse-amber 2s infinite;
+}
+
+.status-pill.error .dot {
+  background-color: var(--status-error);
+}
+
+@keyframes pulse-amber {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ============================================
+   BUTTON HIERARCHY
+   ============================================ */
+.btn-primary {
+  background: var(--accent-primary);
+  color: var(--bg-surface);
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-secondary);
+}
+
+/* ============================================
+   SIDEBAR HOVER STATES
+   ============================================ */
+.sidebar-link {
+  position: relative;
+  padding-left: 1rem;
+  transition: all 0.2s ease;
+}
+
+.sidebar-link:hover {
+  background: linear-gradient(90deg, rgba(212, 162, 62, 0.08) 0%, transparent 100%);
+}
+
+.sidebar-link.active {
+  border-left: 2px solid var(--accent-primary);
+  background: linear-gradient(90deg, rgba(212, 162, 62, 0.12) 0%, transparent 100%);
+}
+
+/* ============================================
+   SCROLLBAR STYLING - Premium Thin
+   ============================================ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #262E38;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3A4452;
+}
+
+/* ============================================
+   TYPOGRAPHY OVERRIDES
+   ============================================ */
+code, .mono-font {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.data-table, table {
+  font-family: 'Inter', sans-serif;
+}
+
+/* ============================================
+   CODE PILL FOR COMMIT HASHES
+   ============================================ */
+.code-pill {
+  font-family: 'JetBrains Mono', monospace;
+  background: #1A2028;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   AVATAR WITH GOLD RING (Enterprise Support)
+   ============================================ */
+.avatar-enterprise {
+  border: 1.5px solid var(--accent-primary);
+  border-radius: 50%;
+}
+
+/* ============================================
+   FADE-IN ANIMATION
+   ============================================ */
 @keyframes fadeIn {
   from {
     opacity: 0;
