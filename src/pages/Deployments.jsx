@@ -186,7 +186,7 @@ export default function Deployments() {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Deployments</h2>
+      <h2 className="text-2xl font-bold text-text-primary mb-6">Deployments</h2>
       
       {/* Toast Notification */}
       {toast && (
@@ -198,13 +198,13 @@ export default function Deployments() {
       )}
 
       {/* Connect New Repository Card */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Connect New Repository</h3>
+      <div className="card-premium rounded-lg shadow-sm border border-border-subtle p-6 mb-6">
+        <h3 className="text-lg font-semibold text-text-primary mb-4">Connect New Repository</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           {/* Pipeline Type */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Pipeline Type</label>
+            <label className="block text-sm font-medium text-text-primary mb-1">Pipeline Type</label>
             <select
               value={pipelineType}
               onChange={(e) => {
@@ -213,7 +213,7 @@ export default function Deployments() {
                 setRepository('');
                 setBranch('');
               }}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+              className="w-full px-3 py-2 border border-border-subtle rounded-md focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent"
             >
               <option value="">Select Pipeline</option>
               {PIPELINE_TYPES.map(type => (
@@ -224,7 +224,7 @@ export default function Deployments() {
 
           {/* Provider */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Provider</label>
+            <label className="block text-sm font-medium text-text-primary mb-1">Provider</label>
             <select
               value={provider}
               onChange={(e) => {
@@ -233,7 +233,7 @@ export default function Deployments() {
                 setBranch('');
               }}
               disabled={!pipelineType}
-              className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent ${
+              className={`w-full px-3 py-2 border border-border-subtle rounded-md focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent ${
                 !pipelineType ? 'bg-gray-100 cursor-not-allowed' : ''
               }`}
             >
@@ -246,7 +246,7 @@ export default function Deployments() {
 
           {/* Repository */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Repository</label>
+            <label className="block text-sm font-medium text-text-primary mb-1">Repository</label>
             <select
               value={repository}
               onChange={(e) => {
@@ -254,7 +254,7 @@ export default function Deployments() {
                 setBranch('');
               }}
               disabled={!provider}
-              className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent ${
+              className={`w-full px-3 py-2 border border-border-subtle rounded-md focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent ${
                 !provider ? 'bg-gray-100 cursor-not-allowed' : ''
               }`}
             >
@@ -269,12 +269,12 @@ export default function Deployments() {
 
           {/* Branch */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Branch</label>
+            <label className="block text-sm font-medium text-text-primary mb-1">Branch</label>
             <select
               value={branch}
               onChange={(e) => setBranch(e.target.value)}
               disabled={!repository}
-              className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent ${
+              className={`w-full px-3 py-2 border border-border-subtle rounded-md focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent ${
                 !repository ? 'bg-gray-100 cursor-not-allowed' : ''
               }`}
             >
@@ -302,7 +302,7 @@ export default function Deployments() {
           className={`px-6 py-2 rounded-md font-medium transition-colors ${
             isFormComplete && activeDeployment === null
               ? 'bg-brand-orange text-white hover:bg-orange-700'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-gray-300 text-text-secondary cursor-not-allowed'
           }`}
         >
           {activeDeployment !== null ? 'Deployment in Progress...' : 'Deploy'}
@@ -310,37 +310,37 @@ export default function Deployments() {
       </div>
 
       {/* Recent Deployment Tasks Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">Recent Deployment Tasks</h3>
+      <div className="card-premium rounded-lg shadow-sm border border-border-subtle overflow-hidden">
+        <div className="px-6 py-4 border-b border-border-subtle">
+          <h3 className="text-lg font-semibold text-text-primary">Recent Deployment Tasks</h3>
         </div>
         
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left">
                   Commit Hash
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left">
                   Commit Message
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left">
                   Author
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left">
                   Repository
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left">
                   Environment ID
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left">
                   Duration
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left">
                   Actions
                 </th>
               </tr>
@@ -362,7 +362,7 @@ export default function Deployments() {
                                 style={{ width: `${progress}%` }}
                               />
                             </div>
-                            <span className="text-xs text-gray-500 mt-1">{Math.round(progress)}%</span>
+                            <span className="text-xs text-text-secondary mt-1">{Math.round(progress)}%</span>
                           </div>
                         </div>
                       ) : (
@@ -377,7 +377,7 @@ export default function Deployments() {
                       </code>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm text-gray-900">{deployment.commitMessage}</span>
+                      <span className="text-sm text-text-primary">{deployment.commitMessage}</span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
@@ -386,7 +386,7 @@ export default function Deployments() {
                           alt={deployment.author}
                           className="w-8 h-8 rounded-full"
                         />
-                        <span className="text-sm text-gray-900">{deployment.author}</span>
+                        <span className="text-sm text-text-primary">{deployment.author}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -396,13 +396,13 @@ export default function Deployments() {
                       <span className="text-sm font-medium text-brand-orange">{deployment.environmentId}</span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm text-gray-600">{deployment.duration}</span>
+                      <span className="text-sm text-text-secondary">{deployment.duration}</span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {!isActive && deployment.status === 'success' && index > 0 && (
                         <button
                           onClick={() => handleRollbackClick(deployment)}
-                          className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
+                          className="px-3 py-1 text-sm bg-gray-100 text-text-primary rounded-md hover:bg-gray-200 transition-colors"
                         >
                           Rollback
                         </button>
@@ -419,15 +419,15 @@ export default function Deployments() {
       {/* Rollback Confirmation Modal */}
       {showRollbackModal && rollbackTarget && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4 animate-fadeIn">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Confirm Rollback</h3>
-            <p className="text-gray-600 mb-2">
+          <div className="card-premium rounded-lg shadow-xl p-6 max-w-md w-full mx-4 animate-fadeIn">
+            <h3 className="text-lg font-semibold text-text-primary mb-4">Confirm Rollback</h3>
+            <p className="text-text-secondary mb-2">
               Are you sure you want to rollback to commit:
             </p>
             <code className="block bg-gray-100 px-3 py-2 rounded font-mono text-sm mb-4">
               {rollbackTarget.commitHash}
             </code>
-            <p className="text-gray-600 mb-6">
+            <p className="text-text-secondary mb-6">
               This will redeploy <span className="text-brand-orange font-medium">{rollbackTarget.repository}</span> to environment <span className="text-brand-orange font-medium">{rollbackTarget.environmentId}</span>.
             </p>
             <div className="flex gap-3 justify-end">
@@ -436,7 +436,7 @@ export default function Deployments() {
                   setShowRollbackModal(false);
                   setRollbackTarget(null);
                 }}
-                className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                className="px-4 py-2 text-text-primary bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
               >
                 Cancel
               </button>
