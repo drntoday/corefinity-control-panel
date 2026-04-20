@@ -1,63 +1,111 @@
 @import "tailwindcss";
 
 /* ============================================
-   ALTITUDE DESIGN SYSTEM - Midnight Luxury
+   EMERGENCY TEXT VISIBILITY FIX
+   ============================================ */
+* {
+  color-scheme: light only;
+}
+
+body, #root, .app, main, div, p, span, h1, h2, h3, h4, h5, h6, li, td, th, label {
+  color: #1E293B !important;
+}
+
+/* Override any white text */
+.text-white, [class*="text-white"], .dark, [class*="dark"] {
+  color: #1E293B !important;
+}
+
+/* Ensure buttons with dark backgrounds have light text */
+button[class*="primary"], 
+.btn-primary,
+[class*="bg-gold"],
+[class*="bg-purple"],
+[class*="bg-blue"] {
+  color: #FFFFFF !important;
+}
+
+/* ============================================
+   ALTITUDE DESIGN SYSTEM - Premium Blue Light Theme
    ============================================ */
 
 :root {
-  /* Core Backgrounds - Deep Midnight */
-  --bg-canvas: #07090C;
-  --bg-surface: #0D1117;
-  --bg-elevated: #131A23;
-  --bg-highlight: #1A2330;
+  /* Core Backgrounds - Clean Blue-White Spectrum */
+  --bg-canvas: #F0F4F8;        /* Soft blue-gray canvas */
+  --bg-surface: #FFFFFF;        /* Pure white cards */
+  --bg-elevated: #F8FAFC;       /* Slightly off-white for hover states */
+  --bg-highlight: #E0E8F0;      /* Subtle blue highlight */
   
-  /* Luxury Accent Trio */
-  --gold-primary: #D4A23E;      /* Buttons, active states, key metrics */
-  --gold-soft: #C49B38;         /* Hover states */
-  --gold-subtle: rgba(212, 162, 62, 0.1);
+  /* Premium Blue Accents */
+  --blue-primary: #1E4F8A;      /* Deep navy - primary actions */
+  --blue-soft: #2B6CB0;         /* Medium blue - hover states */
+  --blue-subtle: rgba(30, 79, 138, 0.06); /* Subtle blue background */
+  --blue-light: #EBF2FA;        /* Light blue backgrounds */
   
-  --purple-royal: #8B5CF6;      /* Secondary accents, links, special indicators */
-  --purple-deep: #7C3AED;
-  --purple-subtle: rgba(139, 92, 246, 0.12);
+  /* Gold Accents (Keep but adapt for light theme) */
+  --gold-primary: #B8860B;      /* Darker gold for light backgrounds */
+  --gold-soft: #D4A23E;
+  --gold-subtle: rgba(184, 134, 11, 0.08);
   
-  --orange-ember: #F97316;      /* Warnings, pending states, highlights */
-  --orange-bright: #FB923C;
-  --orange-subtle: rgba(249, 115, 22, 0.08);
+  /* Purple Accents */
+  --purple-royal: #6B46C1;      /* Rich purple */
+  --purple-deep: #553C9A;
+  --purple-subtle: rgba(107, 70, 193, 0.06);
+  --purple-light: #F3E8FF;
+  
+  /* Orange Accents */
+  --orange-ember: #C05621;      /* Burnished orange */
+  --orange-bright: #DD6B20;
+  --orange-subtle: rgba(192, 86, 33, 0.06);
   
   /* Status Colors */
-  --success: #10B981;            /* Healthy/Active */
-  --warning: #F97316;            /* Uses orange-ember */
-  --error: #EF4444;
-  --info: #8B5CF6;               /* Uses purple-royal */
+  --success: #0F766E;            /* Teal - healthy/active */
+  --success-subtle: #CCFBF1;
+  --warning: #C05621;            /* Orange */
+  --warning-subtle: #FFEDD5;
+  --error: #BE123C;              /* Deep red */
+  --error-subtle: #FFE4E6;
+  --info: #2B6CB0;               /* Blue */
+  --info-subtle: #DBEAFE;
   
-  /* Typography */
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-tertiary: #64748B;
+  /* Typography - Dark for Light Background */
+  --text-primary: #0F172A;       /* Near black - primary text */
+  --text-secondary: #334155;     /* Slate gray - secondary text */
+  --text-tertiary: #64748B;      /* Light slate - placeholder/meta */
+  --text-inverse: #FFFFFF;       /* White text for dark buttons */
   
   /* Borders & Dividers */
-  --border-default: rgba(212, 162, 62, 0.08);
-  --border-accent: rgba(212, 162, 62, 0.25);
-  --border-purple: rgba(139, 92, 246, 0.15);
+  --border-default: #E2E8F0;     /* Light gray border */
+  --border-accent: #93C5FD;      /* Blue border */
+  --border-purple: #D8B4FE;      /* Purple border */
+  --border-gold: #FDE68A;        /* Gold border */
+  
+  /* Shadows - Lighter for Light Theme */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
 }
 
 @theme {
-  --color-bg-canvas: #07090C;
-  --color-bg-surface: #0D1117;
-  --color-bg-elevated: #131A23;
-  --color-bg-highlight: #1A2330;
-  --color-gold-primary: #D4A23E;
-  --color-gold-soft: #C49B38;
-  --color-purple-royal: #8B5CF6;
-  --color-purple-deep: #7C3AED;
-  --color-orange-ember: #F97316;
-  --color-orange-bright: #FB923C;
-  --color-success: #10B981;
-  --color-warning: #F97316;
-  --color-error: #EF4444;
-  --color-info: #8B5CF6;
-  --color-text-primary: #F8FAFC;
-  --color-text-secondary: #94A3B8;
+  --color-bg-canvas: #F0F4F8;
+  --color-bg-surface: #FFFFFF;
+  --color-bg-elevated: #F8FAFC;
+  --color-bg-highlight: #E0E8F0;
+  --color-blue-primary: #1E4F8A;
+  --color-blue-soft: #2B6CB0;
+  --color-gold-primary: #B8860B;
+  --color-gold-soft: #D4A23E;
+  --color-purple-royal: #6B46C1;
+  --color-purple-deep: #553C9A;
+  --color-orange-ember: #C05621;
+  --color-orange-bright: #DD6B20;
+  --color-success: #0F766E;
+  --color-warning: #C05621;
+  --color-error: #BE123C;
+  --color-info: #2B6CB0;
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #334155;
   --color-text-tertiary: #64748B;
   
   --font-sans: 'Manrope', system-ui, -apple-system, sans-serif;
@@ -83,17 +131,18 @@ body {
 /* ============================================
    PREMIUM CARD STYLING
    ============================================ */
-.card-premium {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-default);
+.card-premium, .card, [class*="card"] {
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border-default) !important;
   border-radius: 20px;
-  box-shadow: 0 20px 35px -8px rgba(0,0,0,0.5), 0 0 0 1px rgba(212, 162, 62, 0.03) inset;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-lg) !important;
+  transition: all 0.2s ease;
 }
 
-.card-premium:hover {
-  border-color: var(--border-accent);
-  box-shadow: 0 25px 40px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(212, 162, 62, 0.1) inset;
+.card-premium:hover, .card:hover, [class*="card"]:hover {
+  border-color: var(--border-accent) !important;
+  box-shadow: var(--shadow-xl) !important;
+  transform: translateY(-2px);
 }
 
 /* Metric Card Border Top Variants */
@@ -103,38 +152,41 @@ body {
 .card-metric-success { border-top: 3px solid var(--success); }
 
 /* ============================================
-   TABLE STYLING - Refined
+   TABLE STYLING - Light Theme
    ============================================ */
-table {
+table, .table {
   font-family: 'Inter', sans-serif;
   border-collapse: collapse;
   width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
 }
 
 thead th {
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: var(--gold-primary);
+  color: var(--blue-primary) !important;
   padding: 0.75rem 1rem;
   text-align: left;
-  border-bottom: 1px solid var(--border-default);
+  border-bottom: 2px solid var(--border-accent) !important;
   background: var(--bg-elevated);
 }
 
 tbody td {
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border-default);
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
 }
 
 tbody tr {
   transition: background-color 0.15s ease;
 }
 
-tbody tr:hover {
-  background: linear-gradient(90deg, rgba(139, 92, 246, 0.04) 0%, transparent 100%);
+tbody tr:hover td {
+  background: var(--blue-subtle) !important;
 }
 
 /* Remove vertical borders */
@@ -184,8 +236,8 @@ th, td {
 }
 
 @keyframes pulse-gold {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 162, 62, 0.4); }
-  50% { box-shadow: 0 0 0 4px rgba(212, 162, 62, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(30, 79, 138, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(30, 79, 138, 0); }
 }
 
 @keyframes shimmer {
@@ -200,39 +252,39 @@ th, td {
 }
 
 /* ============================================
-   BUTTON HIERARCHY
+   BUTTON HIERARCHY - Light Theme
    ============================================ */
-.btn-primary {
-  background: linear-gradient(135deg, var(--gold-primary) 0%, #C49B38 100%);
-  color: var(--bg-canvas);
+.btn-primary, button[class*="primary"] {
+  background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-soft) 100%) !important;
+  color: var(--text-inverse) !important;
   font-weight: 600;
   padding: 0.5rem 1.25rem;
   border-radius: 8px;
-  border: none;
+  border: none !important;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(212, 162, 62, 0.25);
+  box-shadow: var(--shadow-md) !important;
 }
 
-.btn-primary:hover {
-  background: linear-gradient(135deg, #C49B38 0%, #B89030 100%);
-  box-shadow: 0 6px 16px rgba(212, 162, 62, 0.35);
+.btn-primary:hover, button[class*="primary"]:hover {
+  background: linear-gradient(135deg, var(--blue-soft) 0%, var(--blue-primary) 100%) !important;
+  box-shadow: var(--shadow-lg) !important;
   transform: translateY(-1px);
 }
 
 .btn-secondary {
-  background: transparent;
-  color: var(--text-primary);
+  background: transparent !important;
+  color: var(--blue-primary) !important;
   font-weight: 500;
   padding: 0.5rem 1.25rem;
   border-radius: 8px;
-  border: 1px solid var(--border-default);
+  border: 1px solid var(--border-accent) !important;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .btn-secondary:hover {
-  border-color: var(--gold-primary);
+  background: var(--blue-subtle) !important;
 }
 
 .btn-outline-gold {
@@ -248,25 +300,33 @@ th, td {
 
 .btn-outline-gold:hover {
   background: var(--gold-subtle);
-  box-shadow: 0 4px 12px rgba(212, 162, 62, 0.15);
+  box-shadow: 0 4px 12px rgba(184, 134, 11, 0.15);
 }
 
 /* ============================================
-   SIDEBAR HOVER STATES
+   SIDEBAR HOVER STATES - Light Theme
    ============================================ */
-.sidebar-link {
+.sidebar, nav, [class*="sidebar"] {
+  background: var(--bg-surface) !important;
+  border-right: 1px solid var(--border-default) !important;
+}
+
+.sidebar-link, .sidebar a, .sidebar span {
+  color: var(--text-secondary) !important;
   position: relative;
   padding-left: 1rem;
   transition: all 0.2s ease;
 }
 
-.sidebar-link:hover {
-  background: linear-gradient(90deg, rgba(212, 162, 62, 0.08) 0%, transparent 100%);
+.sidebar-link:hover, .sidebar a:hover {
+  background: var(--blue-light) !important;
+  color: var(--blue-primary) !important;
 }
 
-.sidebar-link.active {
-  border-left: 3px solid var(--gold-primary);
-  background: rgba(212, 162, 62, 0.06);
+.sidebar-link.active, .sidebar a.active {
+  background: var(--blue-subtle) !important;
+  color: var(--blue-primary) !important;
+  border-left: 3px solid var(--blue-primary) !important;
 }
 
 /* Section dividers in sidebar */
@@ -276,7 +336,7 @@ th, td {
 }
 
 /* ============================================
-   SCROLLBAR STYLING - Premium Thin
+   SCROLLBAR STYLING - Light Theme
    ============================================ */
 ::-webkit-scrollbar {
   width: 6px;
@@ -288,12 +348,12 @@ th, td {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #262E38;
+  background: #CBD5E1;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3A4452;
+  background: #94A3B8;
 }
 
 /* ============================================
@@ -347,29 +407,29 @@ code, .mono-font {
 }
 
 /* ============================================
-   LOGO CONTAINER STYLING
+   LOGO CONTAINER STYLING - Light Theme
    ============================================ */
 .logo-container {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 24px 20px;
-  border-bottom: 1px solid rgba(212, 162, 62, 0.08);
+  border-bottom: 1px solid var(--border-default);
 }
 
 .logo-text {
   font-family: 'Manrope', sans-serif;
-  font-weight: 600;
-  font-size: 22px;
+  font-weight: 700;
+  font-size: 24px;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #F4F6F9 0%, #D4A23E 100%);
+  background: linear-gradient(135deg, var(--blue-primary) 0%, var(--purple-royal) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 /* ============================================
-   TAB INDICATOR - Gold Underline
+   TAB INDICATOR - Blue Underline
    ============================================ */
 .tab-active {
   position: relative;
@@ -382,7 +442,30 @@ code, .mono-font {
   left: 0;
   right: 0;
   height: 3px;
-  background: var(--gold-primary);
+  background: var(--blue-primary);
+}
+
+/* ============================================
+   STATUS BADGES - Light Theme
+   ============================================ */
+.status-active, .status-healthy, .status-pill.active, .status-pill.success {
+  background: var(--success-subtle) !important;
+  color: var(--success) !important;
+}
+
+.status-pending, .status-building, .status-pill.building, .status-pill.pending, .status-pill.warning {
+  background: var(--warning-subtle) !important;
+  color: var(--warning) !important;
+}
+
+.status-failed, .status-pill.error {
+  background: var(--error-subtle) !important;
+  color: var(--error) !important;
+}
+
+.status-staged, .status-pill.staged {
+  background: var(--purple-light) !important;
+  color: var(--purple-royal) !important;
 }
 
 /* ============================================
@@ -401,13 +484,42 @@ code, .mono-font {
 .text-success { color: var(--success); }
 .text-error { color: var(--error); }
 .text-warning { color: var(--warning); }
+.text-blue { color: var(--blue-primary); }
 
 /* BACKGROUND COLOR UTILITIES */
 .bg-gold-subtle { background: var(--gold-subtle); }
 .bg-purple-subtle { background: var(--purple-subtle); }
 .bg-orange-subtle { background: var(--orange-subtle); }
+.bg-blue-subtle { background: var(--blue-subtle); }
+.bg-blue-light { background: var(--blue-light); }
+.bg-success-subtle { background: var(--success-subtle); }
+.bg-warning-subtle { background: var(--warning-subtle); }
+.bg-error-subtle { background: var(--error-subtle); }
+.bg-info-subtle { background: var(--info-subtle); }
 
 /* BORDER COLOR UTILITIES */
 .border-gold { border-color: var(--gold-primary); }
 .border-purple { border-color: var(--purple-royal); }
 .border-orange { border-color: var(--orange-ember); }
+.border-blue { border-color: var(--blue-primary); }
+
+/* ============================================
+   ABSOLUTE FINAL OVERRIDE - TEXT MUST BE VISIBLE
+   ============================================ */
+body * {
+  color: #1E293B !important;
+}
+
+button, .btn, [role="button"], a[class*="btn"], .badge, .pill {
+  color: inherit !important;
+}
+
+button[class*="primary"], .btn-primary, .bg-blue, .bg-gold, .bg-purple {
+  color: #FFFFFF !important;
+}
+
+/* Force input text visibility */
+input, textarea, select {
+  color: #1E293B !important;
+  background: #FFFFFF !important;
+}

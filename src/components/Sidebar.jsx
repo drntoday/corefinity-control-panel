@@ -7,7 +7,6 @@ import {
   User, 
   ChevronRight
 } from 'lucide-react';
-import OrangeLink from './OrangeLink';
 
 const navItems = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -35,7 +34,7 @@ export default function Sidebar({ isOpen, onClose }) {
       {/* Sidebar */}
       <aside 
         className={`
-          fixed top-0 left-0 h-full w-64 bg-bg-surface text-white
+          fixed top-0 left-0 h-full w-64 bg-bg-surface
           transform transition-transform duration-300 ease-in-out
           lg:translate-x-0 lg:static lg:flex-shrink-0
           z-50 border-r var(--border-default)
@@ -48,16 +47,16 @@ export default function Sidebar({ isOpen, onClose }) {
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" stroke="url(#logoGradient)" strokeWidth="2" strokeLinejoin="round"/>
               <path d="M16 12L10 15V21L16 24L22 21V15L16 12Z" fill="url(#logoGradientFill)" fillOpacity="0.3" stroke="url(#logoGradient)" strokeWidth="1.5"/>
-              <circle cx="16" cy="15" r="2" fill="#D4A23E"/>
+              <circle cx="16" cy="15" r="2" fill="#1E4F8A"/>
               <defs>
                 <linearGradient id="logoGradient" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#D4A23E"/>
-                  <stop offset="0.5" stopColor="#9B59B6"/>
-                  <stop offset="1" stopColor="#E67E22"/>
+                  <stop stopColor="#1E4F8A"/>
+                  <stop offset="0.5" stopColor="#6B46C1"/>
+                  <stop offset="1" stopColor="#B8860B"/>
                 </linearGradient>
                 <linearGradient id="logoGradientFill" x1="10" y1="12" x2="22" y2="24" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#D4A23E"/>
-                  <stop offset="1" stopColor="#9B59B6"/>
+                  <stop stopColor="#1E4F8A"/>
+                  <stop offset="1" stopColor="#6B46C1"/>
                 </linearGradient>
               </defs>
             </svg>
@@ -72,9 +71,9 @@ export default function Sidebar({ isOpen, onClose }) {
               <span key={item} className="flex items-center">
                 {index > 0 && <ChevronRight className="w-3 h-3 mx-1" />}
                 {index === hierarchyBreadcrumb.length - 1 ? (
-                  <OrangeLink className="text-text-primary hover:text-accent-primary !no-underline">{item}</OrangeLink>
+                  <a href="#" className="text-text-primary hover:text-blue-primary !no-underline">{item}</a>
                 ) : index === 1 ? (
-                  <OrangeLink className="hover:text-accent-primary !no-underline">{item}</OrangeLink>
+                  <a href="#" className="hover:text-blue-primary !no-underline">{item}</a>
                 ) : (
                   <span className={index === hierarchyBreadcrumb.length - 1 ? 'text-text-primary' : ''}>
                     {item}
