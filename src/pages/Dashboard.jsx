@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { usePulse } from '../context/PulseContext';
+import { useGuide } from '../context/GuideContext';
 import OrangeLink from '../components/OrangeLink';
 import { 
   Activity, 
@@ -48,6 +49,7 @@ function Sparkline({ data }) {
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const { metrics, runningTasks, alerts, removeAlert } = usePulse();
+  const { demoMode, showGuide } = useGuide();
   const [environments, setEnvironments] = useState([
     { id: 1, name: 'altitude-api', cpu: 45, memory: 62, status: 'active', region: 'us-east-1' },
     { id: 2, name: 'altitude-web', cpu: 32, memory: 48, status: 'active', region: 'us-west-2' },
@@ -242,7 +244,11 @@ export default function Dashboard() {
       {/* Global Stats Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {/* Total Environments */}
-        <div className="card-premium card-metric-gold p-6">
+        <div 
+          className={`card-premium card-metric-gold p-6 ${demoMode ? 'guide-wrapper demo-active' : ''}`}
+          onClick={() => demoMode && showGuide('metric-environments')}
+          data-guide="metric-environments"
+        >
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-text-secondary">Total Environments</span>
             <div className="p-2 bg-bg-elevated rounded-lg">
@@ -253,10 +259,15 @@ export default function Dashboard() {
           <OrangeLink href="https://altitude.com/environments" className="text-sm">
             View all environments →
           </OrangeLink>
+          {demoMode && <span className="guide-badge">?</span>}
         </div>
 
         {/* Active Deployments */}
-        <div className="card-premium card-metric-purple p-6">
+        <div 
+          className={`card-premium card-metric-purple p-6 ${demoMode ? 'guide-wrapper demo-active' : ''}`}
+          onClick={() => demoMode && showGuide('metric-deployments')}
+          data-guide="metric-deployments"
+        >
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-text-secondary">Active Deployments</span>
             <div className="p-2 bg-bg-elevated rounded-lg">
@@ -273,10 +284,15 @@ export default function Dashboard() {
           <OrangeLink href="https://altitude.com/deployments" className="text-sm">
             View deployments →
           </OrangeLink>
+          {demoMode && <span className="guide-badge">?</span>}
         </div>
 
         {/* Pending Tickets */}
-        <div className="card-premium card-metric-orange p-6">
+        <div 
+          className={`card-premium card-metric-orange p-6 ${demoMode ? 'guide-wrapper demo-active' : ''}`}
+          onClick={() => demoMode && showGuide('metric-tickets')}
+          data-guide="metric-tickets"
+        >
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-text-secondary">Pending Tickets</span>
             <div className="p-2 bg-bg-elevated rounded-lg">
@@ -287,10 +303,15 @@ export default function Dashboard() {
           <OrangeLink to="/tickets" className="text-sm">
             View tickets →
           </OrangeLink>
+          {demoMode && <span className="guide-badge">?</span>}
         </div>
 
         {/* System Health */}
-        <div className="card-premium card-metric-success p-6">
+        <div 
+          className={`card-premium card-metric-success p-6 ${demoMode ? 'guide-wrapper demo-active' : ''}`}
+          onClick={() => demoMode && showGuide('metric-health')}
+          data-guide="metric-health"
+        >
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-text-secondary">System Health</span>
             <div className="p-2 bg-bg-elevated rounded-lg">
@@ -329,6 +350,7 @@ export default function Dashboard() {
           <OrangeLink href="https://altitude.com/status" className="text-sm">
             View status page →
           </OrangeLink>
+          {demoMode && <span className="guide-badge">?</span>}
         </div>
       </div>
 
