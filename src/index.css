@@ -391,3 +391,23 @@ code, .mono-font {
 .row-alternate:nth-child(even) {
   background: var(--bg-elevated);
 }
+
+/* ============================================
+   TEXT COLOR UTILITIES
+   ============================================ */
+.text-gold { color: var(--gold-primary); }
+.text-purple { color: var(--purple-royal); }
+.text-orange { color: var(--orange-ember); }
+.text-success { color: var(--success); }
+.text-error { color: var(--error); }
+.text-warning { color: var(--warning); }
+
+/* BACKGROUND COLOR UTILITIES */
+.bg-gold-subtle { background: var(--gold-subtle); }
+.bg-purple-subtle { background: var(--purple-subtle); }
+.bg-orange-subtle { background: var(--orange-subtle); }
+
+/* BORDER COLOR UTILITIES */
+.border-gold { border-color: var(--gold-primary); }
+.border-purple { border-color: var(--purple-royal); }
+.border-orange { border-color: var(--orange-ember); }
