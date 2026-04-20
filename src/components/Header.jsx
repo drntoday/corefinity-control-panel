@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Search, ChevronDown, LogOut, Key, User as UserIcon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Search, ChevronDown, LogOut, Key, User as UserIcon } from 'lucide-react';
 import OrangeLink from './OrangeLink';
 
 export default function Header({ onMenuClick }) {
