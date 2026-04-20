@@ -685,3 +685,252 @@ div[class*="Header"],
 div[class*="Top"] {
   background: linear-gradient(90deg, #F8F8FA 0%, #EBEBF0 50%, #F8F8FA 100%) !important;
 }
+
+/* ============================================
+   GUIDE SYSTEM STYLES
+   ============================================ */
+.guide-controls {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  z-index: 1000;
+  display: flex;
+  gap: 8px;
+}
+
+.guide-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+
+.guide-toggle.active {
+  background: var(--blue-primary);
+  color: white;
+  border-color: var(--blue-primary);
+}
+
+.guide-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.guide-icon {
+  font-size: 14px;
+}
+
+.guide-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.guide-wrapper.demo-active {
+  cursor: help;
+  position: relative;
+}
+
+.guide-wrapper.demo-active::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 2px dashed var(--blue-primary);
+  border-radius: 8px;
+  opacity: 0.5;
+  pointer-events: none;
+  animation: pulse-guide 2s infinite;
+}
+
+.guide-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 18px;
+  height: 18px;
+  background: var(--blue-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+}
+
+@keyframes pulse-guide {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+/* Guide Modal */
+.guide-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.guide-modal {
+  background: var(--bg-surface);
+  border-radius: 20px;
+  width: 450px;
+  max-width: 90vw;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-default);
+}
+
+.guide-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.guide-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.guide-modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.guide-modal-close:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.guide-modal-body {
+  padding: 24px;
+}
+
+.guide-description {
+  margin: 0 0 20px 0;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.guide-detail {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.guide-label {
+  width: 120px;
+  font-size: 13px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.guide-value {
+  flex: 1;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.guide-shortcut {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bg-elevated);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.guide-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px 24px;
+  border-top: 1px solid var(--border-default);
+}
+
+/* Empty State with Guide */
+.empty-state-guided {
+  text-align: center;
+  padding: 60px 40px;
+  background: var(--bg-surface);
+  border-radius: 20px;
+  border: 1px solid var(--border-default);
+}
+
+.empty-state-guided h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.empty-state-guided p {
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.empty-state-steps {
+  background: var(--bg-elevated);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+  text-align: left;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.empty-state-steps ol {
+  margin: 0;
+  padding-left: 24px;
+}
+
+.empty-state-steps li {
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  padding-left: 8px;
+}
+
+.empty-state-steps li:last-child {
+  margin-bottom: 0;
+}
+
+.empty-state-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
