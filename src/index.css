@@ -1,35 +1,64 @@
 @import "tailwindcss";
 
 /* ============================================
-   ALTITUDE DESIGN SYSTEM - Obsidian & Amber
+   ALTITUDE DESIGN SYSTEM - Midnight Luxury
    ============================================ */
 
 :root {
-  /* Color Palette - Obsidian & Amber */
-  --bg-base: #080A0C;
-  --bg-surface: #0F1217;
-  --bg-elevated: #161B22;
-  --accent-primary: #D4A23E;
-  --accent-secondary: #5C7C7A;
-  --text-primary: #F4F6F9;
-  --text-secondary: #959DA8;
-  --border-subtle: #20262E;
+  /* Core Backgrounds - Deep Midnight */
+  --bg-canvas: #07090C;
+  --bg-surface: #0D1117;
+  --bg-elevated: #131A23;
+  --bg-highlight: #1A2330;
+  
+  /* Luxury Accent Trio */
+  --gold-primary: #D4A23E;      /* Buttons, active states, key metrics */
+  --gold-soft: #C49B38;         /* Hover states */
+  --gold-subtle: rgba(212, 162, 62, 0.1);
+  
+  --purple-royal: #8B5CF6;      /* Secondary accents, links, special indicators */
+  --purple-deep: #7C3AED;
+  --purple-subtle: rgba(139, 92, 246, 0.12);
+  
+  --orange-ember: #F97316;      /* Warnings, pending states, highlights */
+  --orange-bright: #FB923C;
+  --orange-subtle: rgba(249, 115, 22, 0.08);
   
   /* Status Colors */
-  --status-success: #5C7C7A;
-  --status-warning: #D4A23E;
-  --status-error: #C75C5C;
+  --success: #10B981;            /* Healthy/Active */
+  --warning: #F97316;            /* Uses orange-ember */
+  --error: #EF4444;
+  --info: #8B5CF6;               /* Uses purple-royal */
+  
+  /* Typography */
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-tertiary: #64748B;
+  
+  /* Borders & Dividers */
+  --border-default: rgba(212, 162, 62, 0.08);
+  --border-accent: rgba(212, 162, 62, 0.25);
+  --border-purple: rgba(139, 92, 246, 0.15);
 }
 
 @theme {
-  --color-bg-base: #080A0C;
-  --color-bg-surface: #0F1217;
-  --color-bg-elevated: #161B22;
-  --color-accent-primary: #D4A23E;
-  --color-accent-secondary: #5C7C7A;
-  --color-text-primary: #F4F6F9;
-  --color-text-secondary: #959DA8;
-  --color-border-subtle: #20262E;
+  --color-bg-canvas: #07090C;
+  --color-bg-surface: #0D1117;
+  --color-bg-elevated: #131A23;
+  --color-bg-highlight: #1A2330;
+  --color-gold-primary: #D4A23E;
+  --color-gold-soft: #C49B38;
+  --color-purple-royal: #8B5CF6;
+  --color-purple-deep: #7C3AED;
+  --color-orange-ember: #F97316;
+  --color-orange-bright: #FB923C;
+  --color-success: #10B981;
+  --color-warning: #F97316;
+  --color-error: #EF4444;
+  --color-info: #8B5CF6;
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #94A3B8;
+  --color-text-tertiary: #64748B;
   
   --font-sans: 'Manrope', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -42,7 +71,7 @@
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background-color: var(--bg-base);
+  background-color: var(--bg-canvas);
   color: var(--text-primary);
   line-height: 1.6;
 }
@@ -56,16 +85,22 @@ body {
    ============================================ */
 .card-premium {
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-default);
   border-radius: 20px;
-  box-shadow: 0 20px 35px -8px rgba(0,0,0,0.4), 0 0 0 1px rgba(212, 162, 62, 0.03) inset;
+  box-shadow: 0 20px 35px -8px rgba(0,0,0,0.5), 0 0 0 1px rgba(212, 162, 62, 0.03) inset;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card-premium:hover {
-  border-color: rgba(212, 162, 62, 0.15);
+  border-color: var(--border-accent);
   box-shadow: 0 25px 40px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(212, 162, 62, 0.1) inset;
 }
+
+/* Metric Card Border Top Variants */
+.card-metric-gold { border-top: 3px solid var(--gold-primary); }
+.card-metric-purple { border-top: 3px solid var(--purple-royal); }
+.card-metric-orange { border-top: 3px solid var(--orange-ember); }
+.card-metric-success { border-top: 3px solid var(--success); }
 
 /* ============================================
    TABLE STYLING - Refined
@@ -81,15 +116,16 @@ thead th {
   letter-spacing: 0.05em;
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--gold-primary);
   padding: 0.75rem 1rem;
   text-align: left;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-default);
+  background: var(--bg-elevated);
 }
 
 tbody td {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-default);
   color: var(--text-primary);
 }
 
@@ -98,7 +134,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background: rgba(92, 124, 122, 0.04);
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.04) 0%, transparent 100%);
 }
 
 /* Remove vertical borders */
@@ -129,41 +165,59 @@ th, td {
 
 .status-pill.active .dot,
 .status-pill.success .dot {
-  background-color: var(--status-success);
+  background-color: var(--success);
 }
 
 .status-pill.building .dot,
 .status-pill.pending .dot,
 .status-pill.warning .dot {
-  background-color: var(--status-warning);
-  animation: pulse-amber 2s infinite;
+  background-color: var(--orange-ember);
+  animation: pulse-gold 2s infinite;
 }
 
 .status-pill.error .dot {
-  background-color: var(--status-error);
+  background-color: var(--error);
 }
 
-@keyframes pulse-amber {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+.status-pill.staged .dot {
+  background-color: var(--purple-royal);
+}
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 162, 62, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(212, 162, 62, 0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.loading-skeleton {
+  background: linear-gradient(90deg, var(--bg-surface) 25%, var(--bg-elevated) 50%, var(--bg-surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
 }
 
 /* ============================================
    BUTTON HIERARCHY
    ============================================ */
 .btn-primary {
-  background: var(--accent-primary);
-  color: var(--bg-surface);
+  background: linear-gradient(135deg, var(--gold-primary) 0%, #C49B38 100%);
+  color: var(--bg-canvas);
   font-weight: 600;
   padding: 0.5rem 1.25rem;
   border-radius: 8px;
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(212, 162, 62, 0.25);
 }
 
 .btn-primary:hover {
-  filter: brightness(1.1);
+  background: linear-gradient(135deg, #C49B38 0%, #B89030 100%);
+  box-shadow: 0 6px 16px rgba(212, 162, 62, 0.35);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
@@ -172,13 +226,29 @@ th, td {
   font-weight: 500;
   padding: 0.5rem 1.25rem;
   border-radius: 8px;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-default);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .btn-secondary:hover {
-  border-color: var(--accent-secondary);
+  border-color: var(--gold-primary);
+}
+
+.btn-outline-gold {
+  background: transparent;
+  color: var(--gold-primary);
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  border: 1.5px solid var(--gold-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-gold:hover {
+  background: var(--gold-subtle);
+  box-shadow: 0 4px 12px rgba(212, 162, 62, 0.15);
 }
 
 /* ============================================
@@ -195,8 +265,14 @@ th, td {
 }
 
 .sidebar-link.active {
-  border-left: 2px solid var(--accent-primary);
-  background: linear-gradient(90deg, rgba(212, 162, 62, 0.12) 0%, transparent 100%);
+  border-left: 3px solid var(--gold-primary);
+  background: rgba(212, 162, 62, 0.06);
+}
+
+/* Section dividers in sidebar */
+.sidebar-divider {
+  border-top: 1px solid var(--border-default);
+  margin: 12px 0;
 }
 
 /* ============================================
@@ -236,18 +312,19 @@ code, .mono-font {
    ============================================ */
 .code-pill {
   font-family: 'JetBrains Mono', monospace;
-  background: #1A2028;
+  background: var(--bg-highlight);
   padding: 2px 6px;
   border-radius: 12px;
   font-size: 0.75rem;
-  color: var(--text-secondary);
+  color: var(--purple-royal);
+  border: 1px solid var(--border-purple);
 }
 
 /* ============================================
    AVATAR WITH GOLD RING (Enterprise Support)
    ============================================ */
 .avatar-enterprise {
-  border: 1.5px solid var(--accent-primary);
+  border: 1.5px solid var(--gold-primary);
   border-radius: 50%;
 }
 
@@ -267,4 +344,50 @@ code, .mono-font {
 
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* ============================================
+   LOGO CONTAINER STYLING
+   ============================================ */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(212, 162, 62, 0.08);
+}
+
+.logo-text {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #F4F6F9 0%, #D4A23E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================
+   TAB INDICATOR - Gold Underline
+   ============================================ */
+.tab-active {
+  position: relative;
+}
+
+.tab-active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gold-primary);
+}
+
+/* ============================================
+   ALTERNATING ROW BACKGROUNDS
+   ============================================ */
+.row-alternate:nth-child(even) {
+  background: var(--bg-elevated);
 }

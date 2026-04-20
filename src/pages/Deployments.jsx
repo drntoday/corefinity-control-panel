@@ -6,7 +6,7 @@ import OrangeLink from '../components/OrangeLink';
 const PIPELINE_TYPES = ['Web', 'Worker', 'Cron'];
 const PROVIDERS = ['GitHub', 'Bitbucket', 'GitLab'];
 const REPOSITORIES = {
-  GitHub: ['corefinity/app', 'corefinity/api', 'corefinity/frontend'],
+  GitHub: ['altitude/app', 'altitude/api', 'altitude/frontend'],
   Bitbucket: ['bitbucket/team/project-a', 'bitbucket/team/project-b'],
   GitLab: ['gitlab/group/service-x', 'gitlab/group/service-y'],
 };
@@ -21,7 +21,7 @@ const INITIAL_DEPLOYMENTS = [
     avatar: 'https://i.pravatar.cc/100?u=john',
     duration: '2m 34s',
     status: 'success',
-    repository: 'corefinity/app',
+    repository: 'altitude/app',
     environmentId: 'ENV-001',
     branch: 'main',
   },
@@ -33,7 +33,7 @@ const INITIAL_DEPLOYMENTS = [
     avatar: 'https://i.pravatar.cc/100?u=jane',
     duration: '3m 12s',
     status: 'success',
-    repository: 'corefinity/api',
+    repository: 'altitude/api',
     environmentId: 'ENV-002',
     branch: 'develop',
   },
@@ -45,7 +45,7 @@ const INITIAL_DEPLOYMENTS = [
     avatar: 'https://i.pravatar.cc/100?u=bob',
     duration: '1m 58s',
     status: 'success',
-    repository: 'corefinity/frontend',
+    repository: 'altitude/frontend',
     environmentId: 'ENV-003',
     branch: 'staging',
   },
@@ -57,7 +57,7 @@ const INITIAL_DEPLOYMENTS = [
     avatar: 'https://i.pravatar.cc/100?u=alice',
     duration: '4m 05s',
     status: 'error',
-    repository: 'corefinity/app',
+    repository: 'altitude/app',
     environmentId: 'ENV-001',
     branch: 'develop',
   },
@@ -198,7 +198,7 @@ export default function Deployments() {
       )}
 
       {/* Connect New Repository Card */}
-      <div className="card-premium rounded-lg shadow-sm border border-border-subtle p-6 mb-6">
+      <div className="card-premium rounded-lg shadow-sm border var(--border-default) p-6 mb-6">
         <h3 className="text-lg font-semibold text-text-primary mb-4">Connect New Repository</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
@@ -213,7 +213,7 @@ export default function Deployments() {
                 setRepository('');
                 setBranch('');
               }}
-              className="w-full px-3 py-2 border border-border-subtle rounded-md focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent"
+              className="w-full px-3 py-2 border var(--border-default) rounded-md focus:outline-none focus:ring-2 focus:ring-gold-primary focus:border-transparent"
             >
               <option value="">Select Pipeline</option>
               {PIPELINE_TYPES.map(type => (
@@ -233,7 +233,7 @@ export default function Deployments() {
                 setBranch('');
               }}
               disabled={!pipelineType}
-              className={`w-full px-3 py-2 border border-border-subtle rounded-md focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent ${
+              className={`w-full px-3 py-2 border var(--border-default) rounded-md focus:outline-none focus:ring-2 focus:ring-gold-primary focus:border-transparent ${
                 !pipelineType ? 'bg-gray-100 cursor-not-allowed' : ''
               }`}
             >
@@ -254,14 +254,14 @@ export default function Deployments() {
                 setBranch('');
               }}
               disabled={!provider}
-              className={`w-full px-3 py-2 border border-border-subtle rounded-md focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent ${
+              className={`w-full px-3 py-2 border var(--border-default) rounded-md focus:outline-none focus:ring-2 focus:ring-gold-primary focus:border-transparent ${
                 !provider ? 'bg-gray-100 cursor-not-allowed' : ''
               }`}
             >
               <option value="">Select Repository</option>
               {provider && REPOSITORIES[provider]?.map(repo => (
                 <option key={repo} value={repo}>
-                  <span className="text-brand-orange">{repo}</span>
+                  <span className="style={{ color: "var(--gold-primary)" }}">{repo}</span>
                 </option>
               ))}
             </select>
@@ -274,7 +274,7 @@ export default function Deployments() {
               value={branch}
               onChange={(e) => setBranch(e.target.value)}
               disabled={!repository}
-              className={`w-full px-3 py-2 border border-border-subtle rounded-md focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent ${
+              className={`w-full px-3 py-2 border var(--border-default) rounded-md focus:outline-none focus:ring-2 focus:ring-gold-primary focus:border-transparent ${
                 !repository ? 'bg-gray-100 cursor-not-allowed' : ''
               }`}
             >
@@ -299,10 +299,10 @@ export default function Deployments() {
         <button
           onClick={handleDeploy}
           disabled={!isFormComplete || activeDeployment !== null}
-          className={`px-6 py-2 rounded-md font-medium transition-colors ${
-            isFormComplete && activeDeployment === null
-              ? 'bg-brand-orange text-white hover:bg-orange-700'
-              : 'bg-gray-300 text-text-secondary cursor-not-allowed'
+          className={`px-6 py-2 rounded-md font-medium transition-all btn-primary ${
+            !isFormComplete || activeDeployment !== null
+              ? 'opacity-50 cursor-not-allowed'
+              : ''
           }`}
         >
           {activeDeployment !== null ? 'Deployment in Progress...' : 'Deploy'}
@@ -310,8 +310,8 @@ export default function Deployments() {
       </div>
 
       {/* Recent Deployment Tasks Table */}
-      <div className="card-premium rounded-lg shadow-sm border border-border-subtle overflow-hidden">
-        <div className="px-6 py-4 border-b border-border-subtle">
+      <div className="card-premium rounded-lg shadow-sm border var(--border-default) overflow-hidden">
+        <div className="px-6 py-4 border-b var(--border-default)">
           <h3 className="text-lg font-semibold text-text-primary">Recent Deployment Tasks</h3>
         </div>
         
@@ -390,10 +390,10 @@ export default function Deployments() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm font-medium text-brand-orange">{deployment.repository}</span>
+                      <span className="text-sm font-medium style={{ color: "var(--gold-primary)" }}">{deployment.repository}</span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm font-medium text-brand-orange">{deployment.environmentId}</span>
+                      <span className="text-sm font-medium style={{ color: "var(--gold-primary)" }}">{deployment.environmentId}</span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm text-text-secondary">{deployment.duration}</span>
@@ -428,7 +428,7 @@ export default function Deployments() {
               {rollbackTarget.commitHash}
             </code>
             <p className="text-text-secondary mb-6">
-              This will redeploy <span className="text-brand-orange font-medium">{rollbackTarget.repository}</span> to environment <span className="text-brand-orange font-medium">{rollbackTarget.environmentId}</span>.
+              This will redeploy <span className="style={{ color: "var(--gold-primary)" }} font-medium">{rollbackTarget.repository}</span> to environment <span className="style={{ color: "var(--gold-primary)" }} font-medium">{rollbackTarget.environmentId}</span>.
             </p>
             <div className="flex gap-3 justify-end">
               <button

@@ -1,4 +1,4 @@
-// Corefinity Control Panel - Verbatim Strings/Constants
+// Altitude Control Panel - Verbatim Strings/Constants
 // All text content extracted directly from embedded specifications
 
 // ===== DEPLOYMENTS PAGE =====
@@ -171,7 +171,7 @@ export const ENVIRONMENTS = {
     SMTP_DETAILS_HEADER: 'SMTP Details',
     TRANSACTIONAL_EMAILS: 'Pending setup',
     DEFAULT_OUTGOING_EMAIL_LABEL: 'Default outgoing email address',
-    DEFAULT_OUTGOING_EMAIL_EXAMPLE: 'sales@manage.corefinity.com',
+    DEFAULT_OUTGOING_EMAIL_EXAMPLE: 'sales@manage.altitude.com',
   },
   
   // Cache Warmer Tab

@@ -49,9 +49,9 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const { metrics, runningTasks, alerts, removeAlert } = usePulse();
   const [environments, setEnvironments] = useState([
-    { id: 1, name: 'corefinity-api', cpu: 45, memory: 62, status: 'active', region: 'us-east-1' },
-    { id: 2, name: 'corefinity-web', cpu: 32, memory: 48, status: 'active', region: 'us-west-2' },
-    { id: 3, name: 'corefinity-db', cpu: 78, memory: 85, status: 'active', region: 'eu-west-1' },
+    { id: 1, name: 'altitude-api', cpu: 45, memory: 62, status: 'active', region: 'us-east-1' },
+    { id: 2, name: 'altitude-web', cpu: 32, memory: 48, status: 'active', region: 'us-west-2' },
+    { id: 3, name: 'altitude-db', cpu: 78, memory: 85, status: 'active', region: 'eu-west-1' },
     { id: 4, name: 'staging-env', cpu: 12, memory: 24, status: 'idle', region: 'us-east-1' },
     { id: 5, name: 'analytics-prod', cpu: 56, memory: 71, status: 'active', region: 'ap-south-1' },
   ]);
@@ -75,12 +75,12 @@ export default function Dashboard() {
     setStats(prev => ({ ...prev, systemHealth: metrics.systemHealth }));
   }, [metrics.systemHealth]);
   const activities = [
-    { id: 1, type: 'deployment', message: 'Deployment Successful for corefinity-api (main branch)', time: '2 min ago', icon: CheckCircle },
+    { id: 1, type: 'deployment', message: 'Deployment Successful for altitude-api (main branch)', time: '2 min ago', icon: CheckCircle },
     { id: 2, type: 'ticket', message: 'New Support Ticket created: #4029', time: '15 min ago', icon: MessageSquare },
     { id: 3, type: 'firewall', message: 'Firewall Rule Added: 192.161.x.x', time: '1 hour ago', icon: Shield },
-    { id: 4, type: 'deployment', message: 'Deployment Successful for corefinity-web (develop branch)', time: '2 hours ago', icon: CheckCircle },
+    { id: 4, type: 'deployment', message: 'Deployment Successful for altitude-web (develop branch)', time: '2 hours ago', icon: CheckCircle },
     { id: 5, type: 'ticket', message: 'Ticket #4028 resolved by support team', time: '3 hours ago', icon: MessageSquare },
-    { id: 6, type: 'firewall', message: 'SSL Certificate renewed for corefinity.com', time: '5 hours ago', icon: Shield },
+    { id: 6, type: 'firewall', message: 'SSL Certificate renewed for altitude.com', time: '5 hours ago', icon: Shield },
   ];
 
   const [maintenanceMode, setMaintenanceMode] = useState(false);
@@ -242,59 +242,59 @@ export default function Dashboard() {
       {/* Global Stats Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {/* Total Environments */}
-        <div className="card-premium p-6">
+        <div className="card-premium card-metric-gold p-6">
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-text-secondary">Total Environments</span>
             <div className="p-2 bg-bg-elevated rounded-lg">
-              <Server className="w-5 h-5 text-accent-secondary" />
+              <Server className="w-5 h-5" style={{ color: 'var(--gold-primary)' }} />
             </div>
           </div>
           <div className="text-3xl font-bold text-text-primary mb-1">{stats.totalEnvironments}</div>
-          <OrangeLink href="https://corefinity.com/environments" className="text-sm">
+          <OrangeLink href="https://altitude.com/environments" className="text-sm">
             View all environments →
           </OrangeLink>
         </div>
 
         {/* Active Deployments */}
-        <div className="card-premium p-6">
+        <div className="card-premium card-metric-purple p-6">
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-text-secondary">Active Deployments</span>
             <div className="p-2 bg-bg-elevated rounded-lg">
-              <Zap className="w-5 h-5 text-accent-secondary" />
+              <Zap className="w-5 h-5" style={{ color: 'var(--purple-royal)' }} />
             </div>
           </div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-3xl font-bold text-text-primary">{stats.activeDeployments}</span>
             <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-secondary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-accent-secondary"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full" style={{ backgroundColor: 'var(--purple-royal)', opacity: 0.75 }}></span>
+              <span className="relative inline-flex rounded-full h-3 w-3" style={{ backgroundColor: 'var(--purple-royal)' }}></span>
             </span>
           </div>
-          <OrangeLink href="https://corefinity.com/deployments" className="text-sm">
+          <OrangeLink href="https://altitude.com/deployments" className="text-sm">
             View deployments →
           </OrangeLink>
         </div>
 
         {/* Pending Tickets */}
-        <div className="card-premium p-6">
+        <div className="card-premium card-metric-orange p-6">
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-text-secondary">Pending Tickets</span>
             <div className="p-2 bg-bg-elevated rounded-lg">
-              <MessageSquare className="w-5 h-5 text-accent-primary" />
+              <MessageSquare className="w-5 h-5" style={{ color: 'var(--orange-ember)' }} />
             </div>
           </div>
-          <div className="text-3xl font-bold text-accent-primary mb-1">{stats.pendingTickets}</div>
+          <div className="text-3xl font-bold" style={{ color: 'var(--orange-ember)' }}>{stats.pendingTickets}</div>
           <OrangeLink to="/tickets" className="text-sm">
             View tickets →
           </OrangeLink>
         </div>
 
         {/* System Health */}
-        <div className="card-premium p-6">
+        <div className="card-premium card-metric-success p-6">
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-text-secondary">System Health</span>
             <div className="p-2 bg-bg-elevated rounded-lg">
-              <Activity className="w-5 h-5 text-accent-primary" />
+              <Activity className="w-5 h-5" style={{ color: 'var(--success)' }} />
             </div>
           </div>
           <div className="flex items-end justify-between mb-1">
@@ -306,7 +306,7 @@ export default function Dashboard() {
                 cy="40"
                 r="32"
                 fill="none"
-                stroke="#20262E"
+                stroke="var(--bg-highlight)"
                 strokeWidth="8"
               />
               {/* Progress arc */}
@@ -315,7 +315,7 @@ export default function Dashboard() {
                 cy="40"
                 r="32"
                 fill="none"
-                stroke="#D4A23E"
+                stroke="var(--gold-primary)"
                 strokeWidth="8"
                 strokeLinecap="round"
                 strokeDasharray={`${(stats.systemHealth / 100) * 201.06} 201.06`}
@@ -326,7 +326,7 @@ export default function Dashboard() {
               <span className="text-3xl font-bold text-text-primary">{stats.systemHealth.toFixed(1)}%</span>
             </div>
           </div>
-          <OrangeLink href="https://corefinity.com/status" className="text-sm">
+          <OrangeLink href="https://altitude.com/status" className="text-sm">
             View status page →
           </OrangeLink>
         </div>
@@ -336,9 +336,9 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Environment Health Monitoring Table */}
         <div className="lg:col-span-2 card-premium overflow-hidden">
-          <div className="px-6 py-4 border-b border-border-subtle flex items-center justify-between">
+          <div className="px-6 py-4 border-b var(--border-default) flex items-center justify-between">
             <h3 className="text-lg font-semibold text-text-primary">Top Environments</h3>
-            <OrangeLink href="https://corefinity.com/environments" className="text-sm">
+            <OrangeLink href="https://altitude.com/environments" className="text-sm">
               View all →
             </OrangeLink>
           </div>
@@ -357,7 +357,7 @@ export default function Dashboard() {
                 {environments.map((env) => (
                   <tr key={env.id} className="">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <OrangeLink href={`https://corefinity.com/environments/${env.name}`} className="font-medium text-text-primary">
+                      <OrangeLink href={`https://altitude.com/environments/${env.name}`} className="font-medium text-text-primary">
                         <Globe className="w-4 h-4 inline mr-2 text-accent-secondary" />
                         {env.name}
                       </OrangeLink>
