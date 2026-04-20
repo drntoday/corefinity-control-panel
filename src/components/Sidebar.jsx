@@ -37,9 +37,10 @@ export default function Sidebar({ isOpen, onClose }) {
         className={`
           fixed top-0 left-0 h-full w-64 bg-bg-surface
           transform transition-transform duration-300 ease-in-out
-          lg:translate-x-0 lg:static lg:flex-shrink-0
+          lg:static lg:flex-shrink-0
           z-50 border-r var(--border-default)
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+          lg:translate-x-0
         `}
       >
         {/* Logo - Altitude Wordmark with Diamond SVG */}
