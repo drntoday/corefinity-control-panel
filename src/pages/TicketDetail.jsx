@@ -257,7 +257,7 @@ export default function TicketDetail() {
                     >
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-semibold text-sm">
-                          {msg.sender === 'user' ? 'User' : 'Corefinity Support'}
+                          {msg.sender === 'user' ? 'User' : 'Altitude Support'}
                         </span>
                         <span className="text-xs opacity-70">{msg.timestamp}</span>
                       </div>

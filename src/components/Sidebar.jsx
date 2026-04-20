@@ -38,23 +38,35 @@ export default function Sidebar({ isOpen, onClose }) {
           fixed top-0 left-0 h-full w-64 bg-bg-surface text-white
           transform transition-transform duration-300 ease-in-out
           lg:translate-x-0 lg:static lg:flex-shrink-0
-          z-50 border-r border-border-subtle
+          z-50 border-r var(--border-default)
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
-        {/* Logo - Altitude Wordmark */}
-        <div className="p-6 border-b border-border-subtle">
-          <div className="flex items-center gap-2">
-            {/* 8x8px square accent in primary color */}
-            <div className="w-2 h-2 bg-accent-primary rounded-sm"></div>
-            <h1 className="text-xl font-medium tracking-tight" style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '-0.02em' }}>
-              Altitude
-            </h1>
+        {/* Logo - Altitude Wordmark with Diamond SVG */}
+        <div className="logo-container">
+          <div className="logo-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" stroke="url(#logoGradient)" strokeWidth="2" strokeLinejoin="round"/>
+              <path d="M16 12L10 15V21L16 24L22 21V15L16 12Z" fill="url(#logoGradientFill)" fillOpacity="0.3" stroke="url(#logoGradient)" strokeWidth="1.5"/>
+              <circle cx="16" cy="15" r="2" fill="#D4A23E"/>
+              <defs>
+                <linearGradient id="logoGradient" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#D4A23E"/>
+                  <stop offset="0.5" stopColor="#9B59B6"/>
+                  <stop offset="1" stopColor="#E67E22"/>
+                </linearGradient>
+                <linearGradient id="logoGradientFill" x1="10" y1="12" x2="22" y2="24" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#D4A23E"/>
+                  <stop offset="1" stopColor="#9B59B6"/>
+                </linearGradient>
+              </defs>
+            </svg>
           </div>
+          <span className="logo-text">Altitude</span>
         </div>
 
         {/* Hierarchy Breadcrumb */}
-        <div className="px-4 py-3 border-b border-border-subtle">
+        <div className="px-4 py-3 border-b var(--border-default)">
           <nav className="flex items-center text-sm text-text-secondary">
             {hierarchyBreadcrumb.map((item, index) => (
               <span key={item} className="flex items-center">

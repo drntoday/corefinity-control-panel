@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Plus } from 'lucide-react';
 import OrangeLink from '../components/OrangeLink';
 import StatusBadge from '../components/StatusBadge';
 
@@ -150,13 +151,21 @@ export default function Tickets() {
             onClick={() => setFilterStatus(status)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               filterStatus === status
-                ? 'bg-brand-blue text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'btn-primary'
+                : 'bg-bg-surface text-text-secondary hover:text-text-primary border border-default'
             }`}
           >
             {status}
           </button>
         ))}
+      </div>
+
+      {/* New Ticket Button - Gold Outline */}
+      <div className="mb-4">
+        <button className="btn-outline-gold flex items-center gap-2">
+          <Plus className="w-4 h-4" />
+          New Ticket
+        </button>
       </div>
 
       {/* Tickets Table */}
