@@ -46,10 +46,10 @@ export default function Sidebar({ isOpen, onClose }) {
           transform transition-transform duration-300 ease-in-out
           lg:static lg:flex-shrink-0
           z-50 border-r border-border-default
-          shadow-lg lg:shadow-none
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
           lg:translate-x-0
         `}
+        style={{ height: '100vh', position: 'sticky', top: '0', boxShadow: '2px 0 8px rgba(0, 0, 0, 0.02)' }}
       >
         <div className="flex flex-col h-full">
           {/* Logo Section */}
